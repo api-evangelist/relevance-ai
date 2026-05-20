@@ -24,6 +24,10 @@ apis:
       - type: Documentation
         url: https://docs.relevanceai.com
 common:
+  - type: GitHubOrganization
+    url: https://github.com/RelevanceAI
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/relevanceai
   - type: Website
     url: https://relevanceai.com
   - type: Documentation
