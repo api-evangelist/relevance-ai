@@ -3,7 +3,7 @@ name: Relevance AI
 description: >-
   Relevance AI is a platform for building and deploying AI agents and AI-powered workflows.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - AI Agents
   - AI Automation
