@@ -24,6 +24,8 @@ apis:
       - type: Documentation
         url: https://docs.relevanceai.com
 common:
+  - type: DomainSecurity
+    url: security/relevance-ai-domain-security.yml
   - type: GitHubOrganization
     url: https://github.com/RelevanceAI
   - type: LinkedIn
