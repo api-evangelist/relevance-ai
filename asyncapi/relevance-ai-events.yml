@@ -1,0 +1,192 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://relevanceai.com/docs/enterprise/streaming-events,
+  https://relevanceai.com/docs/build/agents/build-your-agent/agent-triggers/custom-webhook,
+  https://relevanceai.com/docs/build/agents/build-your-agent/triggers,
+  openapi/relevance-ai-openapi.json, https://github.com/RelevanceAI/relevance-js-sdk
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  Relevance AI has three distinct event surfaces and publishes no AsyncAPI for any of them.
+  (1) INBOUND webhook triggers, where an external system POSTs to a per-agent URL to start the
+  agent. (2) An OUTBOUND OpenTelemetry event feed — audit logs and execution traces delivered
+  to the customer's own S3 bucket, Enterprise only. (3) A server-sent-events stream for live
+  task output. Nothing here was fabricated; where a shape is not published, it says so.
+asyncapi_spec:
+  published: false
+  probed:
+    - url: https://relevanceai.com/asyncapi.yaml
+      note: not present (site 404 page)
+    - url: https://api-f1db6c.stack.tryrelevance.com/latest/asyncapi.json
+      note: not present
+  note: >-
+    N/A rather than a defect for the OTEL feed, which is an OpenTelemetry contract rather than
+    an AsyncAPI one. The webhook and SSE surfaces genuinely have no machine-readable contract.
+surfaces:
+  - id: webhook-triggers
+    direction: inbound
+    type: webhook
+    description: >-
+      Each agent can expose a unique webhook URL. Any system that can send an HTTP request can
+      POST to it; the payload becomes a message to the agent.
+    endpoint: per-agent unique URL, issued in the agent's Triggers panel
+    payload: >-
+      Arbitrary caller-defined JSON. A message template maps it into the agent prompt with
+      double-brace variables ({{first_name}}), or {{$}} passes the whole payload.
+    configuration:
+      - name: message_template
+        detail: 'Template variables in double braces; {{$}} for the entire payload.'
+      - name: thread_id_mapping
+        detail: Maps a payload field to a Thread ID so related messages share a conversation.
+      - name: unique_id_mapping
+        detail: >-
+          Maps a payload field used to suppress duplicate processing. This is the only
+          deduplication mechanism on the surface — there is no signature header.
+    security:
+      signature: none documented
+      detail: >-
+        The provider's own FAQ says security rests on the URL being "difficult to guess", plus
+        optional unique-ID deduplication. No HMAC signature, no shared secret, no mTLS is
+        documented. Treat the URL as a bearer credential.
+    controls:
+      - Pause / resume individual triggers
+      - Pause all / resume all
+    related_operations:
+      - TriggerStudioFromWebhook
+      - SlackAgentsWebhook
+    source: https://relevanceai.com/docs/build/agents/build-your-agent/agent-triggers/custom-webhook
+  - id: otel-event-streaming
+    direction: outbound
+    type: telemetry-feed
+    standard: OpenTelemetry
+    availability: Enterprise plan only
+    transport: gzipped OTEL JSON objects written to the customer's own S3 bucket
+    collector_required: false
+    destinations_supported: [s3]
+    roadmap: 'Direct OTEL collector endpoints are stated as "on our roadmap".'
+    path_pattern: >-
+      {prefix}/customer-otel-{type}-formatted/org_id={org_id}/dt={YYYY-MM-DD}/year={YYYY}/month={MM}/day={DD}/hour={HH}/minute={MM}/{type}_{org_id}_{timestamp}_{uuid}.json.gz
+    regions:
+      Australia: ap-southeast-2
+      Europe: eu-west-2
+      US: us-east-1
+    staging_retention_days: 30
+    source: https://relevanceai.com/docs/enterprise/streaming-events
+    event_types:
+      - name: logs
+        description: Audit logs for administrative and lifecycle events.
+      - name: traces
+        description: Execution traces for agents, workforces and LLM completions.
+    base_attributes:
+      - relevance_ai.organization_id
+      - relevance_ai.project_id
+      - relevance_ai.user_id
+      - relevance_ai.user_email
+      - relevance_ai.user_type
+      - relevance_ai.ip_address
+      - relevance_ai.device_info
+    events:
+      - name: agent_created
+        category: agent
+        attributes: [relevance_ai.event.agent_id, relevance_ai.event.cloned_from_agent_id, relevance_ai.event.cloned_from_region, relevance_ai.event.cloned_from_project_id]
+      - name: agent_updated
+        category: agent
+        attributes: [relevance_ai.event.agent_id]
+      - name: agent_deleted
+        category: agent
+        attributes: [relevance_ai.event.agent_id]
+      - name: agent_draft_saved
+        category: agent
+        attributes: [relevance_ai.event.agent_id, relevance_ai.event.version_id]
+      - name: agent_published
+        category: agent
+        attributes: [relevance_ai.event.agent_id, relevance_ai.event.version_id]
+      - name: tool_created
+        category: tool
+        attributes: [relevance_ai.event.tool_id, relevance_ai.event.cloned_from_tool_id, relevance_ai.event.cloned_from_region, relevance_ai.event.cloned_from_project_id]
+      - name: tool_deleted
+        category: tool
+        attributes: [relevance_ai.event.tool_id]
+      - name: tool_draft_saved
+        category: tool
+        attributes: [relevance_ai.event.tool_id, relevance_ai.event.version_id]
+      - name: tool_published
+        category: tool
+        attributes: [relevance_ai.event.tool_id, relevance_ai.event.version_id]
+      - name: workforce_created
+        category: workforce
+        attributes: [relevance_ai.event.workforce_id, relevance_ai.event.cloned_from_workforce_id, relevance_ai.event.cloned_from_region, relevance_ai.event.cloned_from_project_id]
+      - name: workforce_deleted
+        category: workforce
+        attributes: [relevance_ai.event.workforce_id]
+      - name: workforce_draft_saved
+        category: workforce
+        attributes: [relevance_ai.event.workforce_id, relevance_ai.event.version_id]
+      - name: workforce_published
+        category: workforce
+        attributes: [relevance_ai.event.workforce_id, relevance_ai.event.version_id]
+      - name: project_user_role_updated
+        category: permission
+        attributes: [relevance_ai.event.target_user_id, relevance_ai.event.project_role]
+      - name: organization_user_role_updated
+        category: permission
+        attributes: [relevance_ai.event.target_user_id, relevance_ai.event.organization_role]
+    event_count: 15
+    spans:
+      - name: invoke_agent
+        semantic_convention: OTEL GenAI
+        key_attributes:
+          - gen_ai.operation.name
+          - gen_ai.agent.id
+          - gen_ai.agent.name
+          - gen_ai.conversation.id
+          - relevance_ai.agent.relevance_model
+          - relevance_ai.agent.runtime
+          - relevance_ai.agent.version_id
+          - relevance_ai.prompt_injection.detected
+          - relevance_ai.prompt_injection.confidence
+      - name: chat
+        semantic_convention: OTEL GenAI
+        key_attributes:
+          - gen_ai.request.model
+          - gen_ai.request.temperature
+          - gen_ai.request.max_tokens
+          - gen_ai.input.messages
+          - gen_ai.output.messages
+          - gen_ai.tool.definitions
+          - gen_ai.response.finish_reasons
+          - gen_ai.usage.input_tokens
+      - name: multi_agent_system_trigger
+        semantic_convention: OTEL GenAI
+      - name: condition_trigger
+        semantic_convention: OTEL GenAI
+    span_count: 4
+    resource_attributes:
+      service.name: Relevance AI
+    privacy:
+      pii_redaction:
+        availability: Enterprise, enabled by the Relevance AI team (no self-serve UI)
+        engine: Presidio-powered ML detection
+        always_scrubbed: [user email addresses, IP addresses, device info]
+        conditional_scrubbed: [LLM input messages, LLM output messages, system instructions]
+        entities: [EMAIL_ADDRESS, PHONE_NUMBER, PERSON, CREDIT_CARD, US_SSN, IP_ADDRESS, IBAN_CODE, URL, DATE_TIME, LOCATION]
+        actions: [replace, mask, redact, hash]
+        default_action: replace
+  - id: sse-streaming
+    direction: outbound
+    type: server-sent-events
+    endpoint: https://{region}.streaming.tryrelevance.com/v1/stream
+    auth: 'bearer token passed as the ?authorization query parameter'
+    description: >-
+      Live task/message streaming, constructed by the SDK's regionStreamingURL(). A related
+      REST operation, GetWorkforceStreamingToken, mints the workforce streaming token.
+    contract: >-
+      No published event schema. The endpoint is documented only in SDK source and the
+      streaming SDK guide; the message shapes are not specified anywhere machine-readable.
+    source: https://github.com/RelevanceAI/relevance-js-sdk/blob/main/region.ts
+gaps:
+  - No AsyncAPI document for any of the three surfaces.
+  - Inbound webhooks carry no signature or shared secret — only an unguessable URL.
+  - The SSE stream has no published event schema.
+  - The OTEL feed is Enterprise-only and S3-only; no push endpoint for other tiers.

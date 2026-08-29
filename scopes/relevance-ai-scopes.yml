@@ -1,0 +1,64 @@
+generated: '2026-08-29'
+method: probed
+source: >-
+  https://mcp.relevanceai.com/.well-known/oauth-authorization-server,
+  https://mcp.relevanceai.com/.well-known/oauth-protected-resource,
+  https://relevanceai.com/docs/integrations/mcp/mcp-server
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  The REST API declares no oauth2 security scheme — it authenticates with a static
+  `Authorization: project:api_key` header and has no scope concept at all. The only OAuth
+  surface is the MCP server, and its scope model is deliberately coarse: one scope, with real
+  authorization carried by the caller's project role rather than by scope strings.
+rest_api:
+  oauth2: false
+  scopes: []
+  detail: >-
+    derive-oauth-scopes.py over openapi/relevance-ai-openapi.json found 0 oauth2 flows across
+    566 operations. The single securityScheme is apiKey in header. An API key grants
+    unrestricted access to every resource in its project — the docs say so explicitly — so
+    there is no way to issue a least-privilege REST credential.
+mcp:
+  authorization_server: https://mcp.relevanceai.com/
+  scopes_supported:
+    - name: claudeai
+      description: >-
+        The only scope the authorization server advertises, in both the authorization-server
+        and protected-resource metadata. It carries no capability semantics.
+  grant_types: [authorization_code, refresh_token]
+  pkce: S256
+  dynamic_client_registration: true
+  effective_authorization:
+    model: project role, enforced server-side
+    detail: >-
+      Because there is one scope, the real permission boundary is the caller's Relevance AI
+      project role, applied at consent time. Write and destructive tools are REMOVED from the
+      tool list server-side for restricted sessions rather than merely hidden client-side.
+    roles:
+      - role: Admin
+        access: full
+        can_opt_into_run_only: true
+      - role: Editor
+        access: full
+        can_opt_into_run_only: true
+      - role: Member
+        access: full
+        can_opt_into_run_only: true
+      - role: Viewer
+        access: run-only
+        can_opt_into_run_only: forced
+      - role: Chat
+        access: chat-only
+        can_opt_into_run_only: forced
+    consent_toggle: >-
+      The OAuth consent screen shows a Run-Only mode toggle for Member, Editor and Admin,
+      defaulting to off (full access).
+    limitation: >-
+      Chat-role users cannot set up dynamic (user-level) OAuth connections via MCP.
+  session_scope: one Relevance AI project per authenticated connection
+docs: https://relevanceai.com/docs/integrations/mcp/mcp-server#access-control
+gaps:
+  - REST API keys cannot be scoped or least-privileged; they are all-or-nothing per project.
+  - A single OAuth scope means a client cannot request narrower access than its role allows.
+  - No scope reference page is published; the scope name was read from the metadata document.

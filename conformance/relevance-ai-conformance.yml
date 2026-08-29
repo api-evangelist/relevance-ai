@@ -1,0 +1,186 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  openapi/relevance-ai-openapi.json, https://relevanceai.com/docs/admin/security,
+  https://relevanceai.com/docs/enterprise/streaming-events, https://trust.relevanceai.com/,
+  https://relevanceai.com/enterprise,
+  https://mcp.relevanceai.com/.well-known/oauth-authorization-server
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  Standards and cross-cutting conventions the Relevance AI contract and platform actually
+  assert, each with the evidence that establishes it. Absence is recorded as absence.
+conformance:
+  - id: openapi
+    conforms: true
+    version: 3.0.0
+    evidence: >-
+      openapi/relevance-ai-openapi.json — 521 paths, 566 operations, 1,132 component schemas.
+      Every operation carries a unique operationId, a summary and a description.
+    ownership: >-
+      Harvested from https://api-f1db6c.stack.tryrelevance.com/latest/openapi_schema.json, the
+      spec URL named by the Scalar API reference at .../latest/documentation. The host is
+      tryrelevance.com, not relevanceai.com, and that is correct rather than a mismatch:
+      tryrelevance.com is Relevance AI's own API domain, hardcoded as the regional base in the
+      company's own SDK source (RelevanceAI/relevance-js-sdk region.ts:
+      `https://api-${region}.stack.tryrelevance.com`), and Relevance AI's own agent-skills
+      repository links to https://api-f1db6c.stack.tryrelevance.com/latest/documentation as
+      "API documentation — complete API reference". The spec says the same about itself:
+      info.title "Relevance AI Endpoints", info.contact.email dev@tryrelevance.com. No sibling
+      brand or third party is named anywhere in it.
+  - id: oauth2
+    conforms: true
+    scope: MCP surface only
+    evidence: >-
+      https://mcp.relevanceai.com/.well-known/oauth-authorization-server declares
+      authorization_code + refresh_token grants, PKCE S256, and a registration endpoint. The
+      REST API itself uses a static apiKey header, not OAuth.
+  - id: rfc8414
+    name: OAuth 2.0 Authorization Server Metadata
+    conforms: true
+    evidence: 200 at https://mcp.relevanceai.com/.well-known/oauth-authorization-server
+  - id: rfc9728
+    name: OAuth 2.0 Protected Resource Metadata
+    conforms: true
+    evidence: 200 at https://mcp.relevanceai.com/.well-known/oauth-protected-resource
+  - id: rfc7591
+    name: OAuth 2.0 Dynamic Client Registration
+    conforms: true
+    evidence: registration_endpoint https://mcp.relevanceai.com/register in the AS metadata
+  - id: mcp
+    name: Model Context Protocol
+    conforms: true
+    transport: Streamable HTTP
+    evidence: >-
+      https://mcp.relevanceai.com/ answers a JSON-RPC tools/list with a 401 invalid_token and
+      a Bearer WWW-Authenticate challenge — a live MCP server behind OAuth. The provider's own
+      .mcp.json declares "type": "http".
+  - id: a2a
+    name: Agent2Agent Protocol
+    conforms: partial
+    version_declared: '0.3'
+    evidence: >-
+      https://docs.relevanceai.com/.well-known/agent-card.json serves a valid AgentCard object.
+      It describes the documentation surface rather than a callable A2A endpoint, and omits
+      the required top-level description. See a2a/relevance-ai-a2a.yml for the full grade.
+  - id: opentelemetry
+    conforms: true
+    evidence: >-
+      Audit logs and execution traces are delivered in OpenTelemetry JSON, with resource
+      attribute service.name = "Relevance AI".
+      https://relevanceai.com/docs/enterprise/streaming-events
+  - id: otel-genai-semconv
+    name: OpenTelemetry GenAI semantic conventions
+    conforms: true
+    evidence: >-
+      Trace spans use the gen_ai.* attribute namespace verbatim — gen_ai.operation.name,
+      gen_ai.agent.id, gen_ai.conversation.id, gen_ai.request.model, gen_ai.input.messages,
+      gen_ai.output.messages, gen_ai.tool.definitions, gen_ai.response.finish_reasons,
+      gen_ai.usage.input_tokens — alongside vendor-namespaced relevance_ai.* attributes.
+      https://relevanceai.com/docs/enterprise/streaming-events#supported-spans
+  - id: saml
+    name: SAML 2.0 SSO
+    conforms: true
+    scope: Enterprise tier
+    evidence: 'SSO (SAML) listed as an Enterprise feature. https://relevanceai.com/docs/enterprise/sso-setup'
+  - id: rbac
+    conforms: true
+    scope: Enterprise tier
+    evidence: >-
+      Role-based access control with a published role matrix (Admin / Editor / Member /
+      Viewer / Chat) that is also enforced server-side on the MCP surface.
+  - id: soc2-type-ii
+    name: AICPA SOC 2 Type II
+    conforms: true
+    evidence: >-
+      Stated on https://relevanceai.com/enterprise, https://relevanceai.com/docs/admin/security
+      and in the provider's own llms.txt; the Vanta-hosted trust center at
+      https://trust.relevanceai.com/ (HTTP 200) is the report portal.
+  - id: gdpr
+    conforms: true
+    evidence: >-
+      GDPR compliance stated on the enterprise page, the security overview and the pricing
+      feature matrix (all four tiers). Multi-region data residency (US / EU / AU) is the
+      supporting control.
+  - id: rfc9457
+    name: RFC 9457 Problem Details
+    conforms: false
+    evidence: >-
+      Errors return a vendor envelope { message, error_type, error_audience } with content-type
+      application/json, not application/problem+json. No 4xx/5xx is declared in the spec at all.
+  - id: idempotency
+    conforms: partial
+    evidence: >-
+      An idempotency_key body field on 7 of 566 operations, all billing/subscription, required
+      on 4. No Idempotency-Key header and no coverage of the agent/tool/workforce write surface.
+      See conventions/relevance-ai-conventions.yml.
+  - id: pagination
+    conforms: partial
+    evidence: >-
+      Two coexisting styles — offset (page / page_size, 1-indexed) on ~39 operations and an
+      opaque cursor on ~10 — with no documented rule for which applies where.
+  - id: rate-limit-headers
+    name: IETF RateLimit header fields
+    conforms: false
+    evidence: >-
+      No RateLimit-* or X-RateLimit-* header observed on a live call and none documented.
+  - id: rfc8594
+    name: Sunset / Deprecation HTTP headers
+    conforms: false
+    evidence: No Sunset or Deprecation header, and no operation in the spec is marked deprecated.
+  - id: rfc9116
+    name: security.txt
+    conforms: false
+    evidence: 404 on /.well-known/security.txt across relevanceai.com, docs, and the MCP host.
+  - id: openid-connect
+    conforms: false
+    evidence: 404 on /.well-known/openid-configuration across every probed host.
+  - id: graphql
+    conforms: false
+    evidence: No /graphql surface found on any Relevance AI host.
+  - id: grpc
+    conforms: false
+    evidence: No .proto published in the GitHub org, on buf.build, or in the docs.
+  - id: soap-wsdl
+    conforms: false
+    evidence: No ?wsdl / ?singleWsdl surface; not an enterprise SOAP provider.
+domain_standard:
+  market: AI agent platforms / agentic automation
+  assessment: >-
+    This market's emerging interoperability standards are MCP (tool exposure), A2A (agent
+    discovery) and the OpenTelemetry GenAI semantic conventions (agent observability).
+    Relevance AI declares all three in its own artifacts rather than only in marketing prose:
+    a live MCP server with RFC 8414/9728 metadata, a served A2A agent card, and gen_ai.*
+    span attributes in its published telemetry contract. An observability or agent-ops buyer
+    who already speaks OTEL GenAI can consume Relevance AI traces with no bespoke connector.
+  declared:
+    - standard: MCP
+      evidence: live JSON-RPC endpoint at https://mcp.relevanceai.com/ + OAuth metadata documents
+    - standard: A2A
+      evidence: https://docs.relevanceai.com/.well-known/agent-card.json
+    - standard: OpenTelemetry GenAI semantic conventions
+      evidence: >-
+        gen_ai.* span attribute namespace documented at
+        https://relevanceai.com/docs/enterprise/streaming-events#supported-spans
+  not_applicable:
+    - 'Sector standards (FHIR, FAPI, PSD2, SCIM, OData, OpenRTB, LTI, HL7v2, ISO 20022): the
+      provider is a horizontal agent platform, not a participant in a regulated vertical.'
+compliance:
+  certifications:
+    - name: SOC 2 Type II
+      body: AICPA
+      status: current
+      evidence_url: https://trust.relevanceai.com/
+    - name: GDPR
+      status: compliant
+      evidence_url: https://relevanceai.com/docs/admin/security
+  third_party_assessments: >-
+    "We regularly undergo third-party assessments... Reports are available to Enterprise
+    customers under NDA."
+  data_residency: [United States, Europe, Australia]
+  trust_center: https://trust.relevanceai.com/
+  not_claimed:
+    - ISO 27001
+    - PCI DSS
+    - HIPAA
+    - FedRAMP

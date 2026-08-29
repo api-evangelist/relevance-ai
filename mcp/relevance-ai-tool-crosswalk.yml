@@ -1,0 +1,637 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/relevance-ai-openapi.json (521 paths / 566 operations) bound against the MCP tool
+  names the provider publishes in RelevanceAI/cc-plugin and RelevanceAI/agent-skills
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  Binds each Relevance AI MCP tool to the REST operation(s) that back it, so an agent holding
+  only the MCP tool list can recover the real parameter and request-body shapes from the
+  OpenAPI. Mapping is by name and documented semantics: the live MCP tools/list is OAuth-gated
+  (401 invalid_token anonymously), so no inputSchema was read and confidence is set honestly.
+surfaces:
+  openapi:
+    file: openapi/relevance-ai-openapi.json
+    source_url: https://api-f1db6c.stack.tryrelevance.com/latest/openapi_schema.json
+    gated: false
+    operations: 566
+  mcp:
+    url: https://mcp.relevanceai.com/
+    gated: true
+    gate: OAuth 2.0 (authorization_code + PKCE); anonymous tools/list returns 401 invalid_token
+    tools_named_by_provider_docs: 125
+  graphql:
+    present: false
+naming_note: >-
+  The REST API calls a Tool a "studio" (ListStudios, TriggerStudio, CloneStudio, BulkDeleteStudios)
+  while the MCP layer and the product docs call it a "tool". Both names are the provider's own;
+  the crosswalk is the only place the two vocabularies are reconciled.
+crosswalk:
+  - tool: relevance_list_agents
+    category: agents
+    rest: [ListAgents]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_agent
+    category: agents
+    rest: [GetAgent]
+    binding: direct
+    confidence: high
+  - tool: relevance_upsert_agent
+    category: agents
+    rest: [UpsertAgent]
+    binding: direct
+    confidence: high
+  - tool: relevance_update_agent
+    category: agents
+    rest: [UpsertAgent]
+    binding: direct
+    confidence: medium
+    note: The REST surface exposes upsert only; the provider's own skill warns that a save wipes omitted fields.
+  - tool: relevance_save_agent_draft
+    category: agents
+    rest: [SaveAgentAsDraft]
+    binding: direct
+    confidence: high
+  - tool: relevance_publish_agent
+    category: agents
+    rest: [PublishAgent]
+    binding: direct
+    confidence: high
+  - tool: relevance_restore_agent_version
+    category: agents
+    rest: [RestoreAgentVersion]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_agent_versions
+    category: agents
+    rest: [ListAgentVersions]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_agent_version
+    category: agents
+    rest: [GetAgentVersion]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_agent_tools
+    category: agents
+    rest: [GetAgentsTools]
+    binding: direct
+    confidence: high
+  - tool: relevance_attach_tools_to_agent
+    category: agents
+    rest: [GetAgent, SaveAgentAsDraft, PublishAgent]
+    binding: composite
+    confidence: high
+    note: >-
+      The provider's skill documents this tool as performing fetch, merge, save, publish and
+      action-ID retrieval in one call — a composite over three REST operations.
+  - tool: relevance_detach_tools_from_agent
+    category: agents
+    rest: [GetAgent, SaveAgentAsDraft, PublishAgent]
+    binding: composite
+    confidence: medium
+  - tool: relevance_read_agent_system_prompt
+    category: agents
+    rest: [GetAgent]
+    binding: projection
+    confidence: medium
+  - tool: relevance_edit_agent_system_prompt
+    category: agents
+    rest: [GetAgent, SaveAgentAsDraft]
+    binding: composite
+    confidence: medium
+  - tool: relevance_search_agent_system_prompt
+    category: agents
+    rest: [GetAgent]
+    binding: projection
+    confidence: low
+  - tool: relevance_trigger_agent
+    category: agents
+    rest: [TriggerAgent]
+    binding: direct
+    confidence: high
+  - tool: relevance_trigger_agent_sync
+    category: agents
+    rest: [TriggerAgent]
+    binding: direct
+    confidence: medium
+    note: Synchronous variant, documented 120-second timeout.
+  - tool: relevance_poll_agent_result
+    category: agents
+    rest: [ListAgentTaskView, GetAgentConversationMetadata]
+    binding: composite
+    confidence: low
+    note: Async polling helper; which REST read it wraps is not stated in the docs.
+  - tool: relevance_list_agent_tasks
+    category: agents
+    rest: [ListTaskGroups, ListTasksForGroup]
+    binding: composite
+    confidence: medium
+  - tool: relevance_list_agent_task_messages
+    category: agents
+    rest: [ListAgentTaskView]
+    binding: direct
+    confidence: medium
+  - tool: relevance_get_agent_task_metadata
+    category: agents
+    rest: [GetAgentConversationMetadata]
+    binding: direct
+    confidence: medium
+  - tool: relevance_get_agent_task_summary
+    category: agents
+    rest: [GetAgentConversationMetadata]
+    binding: projection
+    confidence: low
+  - tool: relevance_list_agent_triggers
+    category: triggers
+    rest: [ListAgentTriggerGroupsSummaries, ListAgentActiveTriggerGroupsOverview]
+    binding: composite
+    confidence: medium
+  - tool: relevance_create_trigger
+    category: triggers
+    rest: [UpsertAgentScheduledTriggersGroup, CreateAgentScheduledTriggersItem]
+    binding: composite
+    confidence: medium
+  - tool: relevance_delete_trigger
+    category: triggers
+    rest: [CancelAgentScheduledTriggerItem]
+    binding: direct
+    confidence: low
+    note: REST exposes cancel rather than delete for scheduled trigger items.
+  - tool: relevance_meeting_bot
+    category: agents
+    rest: [GetMeetingAgentConnectionDetails]
+    binding: direct
+    confidence: low
+  - tool: relevance_list_tools
+    category: tools
+    rest: [ListStudios, ListStudiosView]
+    binding: direct
+    confidence: high
+  - tool: relevance_search_tools
+    category: tools
+    rest: [ListStudiosView, ListStudiosFoldersAwareView]
+    binding: direct
+    confidence: medium
+  - tool: relevance_get_tool
+    category: tools
+    rest: [GetStudio]
+    binding: direct
+    confidence: high
+  - tool: relevance_upsert_tool
+    category: tools
+    rest: [UpsertToolVersion]
+    binding: direct
+    confidence: medium
+  - tool: relevance_create_tool
+    category: tools
+    rest: [UpsertToolVersion]
+    binding: direct
+    confidence: medium
+  - tool: relevance_update_tool
+    category: tools
+    rest: [UpsertToolVersion]
+    binding: direct
+    confidence: medium
+  - tool: relevance_publish_tool
+    category: tools
+    rest: [PublishTool]
+    binding: direct
+    confidence: high
+  - tool: relevance_restore_tool_version
+    category: tools
+    rest: [RestoreToolVersion]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_tool_versions
+    category: tools
+    rest: [ListToolVersions]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_tool_version
+    category: tools
+    rest: [GetToolVersion]
+    binding: direct
+    confidence: high
+  - tool: relevance_bulk_delete_tools
+    category: tools
+    rest: [BulkDeleteStudios]
+    binding: direct
+    confidence: high
+  - tool: relevance_trigger_tool
+    category: tools
+    rest: [TriggerStudio]
+    binding: direct
+    confidence: high
+  - tool: relevance_run_tool
+    category: tools
+    rest: [TriggerStudio]
+    binding: direct
+    confidence: high
+  - tool: relevance_trigger_tool_async
+    category: tools
+    rest: [TriggerStudioAsync]
+    binding: direct
+    confidence: high
+  - tool: relevance_poll_tool_result
+    category: tools
+    rest: [StudioAsyncPoll]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_latest_tool_run
+    category: tools
+    rest: [ListStudiosRunHistory]
+    binding: direct
+    confidence: medium
+  - tool: relevance_search_public_tools
+    category: tools
+    rest: [ListPublicStudios]
+    binding: direct
+    confidence: medium
+  - tool: relevance_clone_public_tool
+    category: tools
+    rest: [CloneStudio]
+    binding: direct
+    confidence: medium
+  - tool: relevance_list_transformations
+    category: tools
+    rest: [ListStudioTransformations]
+    binding: direct
+    confidence: high
+  - tool: relevance_search_transformations
+    category: tools
+    rest: [ListStudioTransformations]
+    binding: direct
+    confidence: high
+  - tool: relevance_create_tool_from_transformation
+    category: tools
+    rest: [GetStudioTransformation, UpsertToolVersion]
+    binding: composite
+    confidence: medium
+  - tool: relevance_add_tool_step
+    category: tools
+    rest: [GetStudio, UpsertToolVersion]
+    binding: composite
+    confidence: medium
+    note: Tool steps are edited inside the studio document, so every step mutation is a read-modify-upsert.
+  - tool: relevance_update_tool_step
+    category: tools
+    rest: [GetStudio, UpsertToolVersion]
+    binding: composite
+    confidence: medium
+  - tool: relevance_move_tool_step
+    category: tools
+    rest: [GetStudio, UpsertToolVersion]
+    binding: composite
+    confidence: medium
+  - tool: relevance_remove_tool_step
+    category: tools
+    rest: [GetStudio, UpsertToolVersion]
+    binding: composite
+    confidence: medium
+  - tool: relevance_set_tool_output
+    category: tools
+    rest: [GenerateToolDisplayOutput, ApplyToolDisplayOutput]
+    binding: composite
+    confidence: low
+  - tool: relevance_list_workforces
+    category: workforces
+    rest: [ListWorkforces]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_workforce
+    category: workforces
+    rest: [GetWorkforce]
+    binding: direct
+    confidence: high
+  - tool: relevance_create_workforce
+    category: workforces
+    rest: [SaveWorkforce, UpsertWorkforceVersion]
+    binding: composite
+    confidence: medium
+  - tool: relevance_update_workforce
+    category: workforces
+    rest: [SaveWorkforce]
+    binding: direct
+    confidence: medium
+  - tool: relevance_delete_workforce
+    category: workforces
+    rest: [DeleteWorkforce]
+    binding: direct
+    confidence: high
+  - tool: relevance_publish_workforce
+    category: workforces
+    rest: [UpsertWorkforceVersion]
+    binding: direct
+    confidence: low
+  - tool: relevance_trigger_workforce
+    category: workforces
+    rest: [TriggerWorkforce]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_workforce_tasks
+    category: workforces
+    rest: [ListWorkforceTasks]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_workforce_task_messages
+    category: workforces
+    rest: [ListWorkforceTaskMessages]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_workforce_task_metadata
+    category: workforces
+    rest: [GetWorkforceConversationMetadata]
+    binding: direct
+    confidence: high
+  - tool: relevance_poll_workforce_task_result
+    category: workforces
+    rest: [GetWorkforceConversationMetadata, ListWorkforceTaskMessages]
+    binding: composite
+    confidence: medium
+  - tool: relevance_list_workforce_versions
+    category: workforces
+    rest: [ListWorkforceVersions]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_knowledge_sets
+    category: knowledge
+    rest: [ListKnowledgeSets]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_knowledge_set
+    category: knowledge
+    rest: [GetKnowledgeSetMetadata]
+    binding: direct
+    confidence: high
+  - tool: relevance_create_knowledge_set
+    category: knowledge
+    rest: [AddKnowledge]
+    binding: direct
+    confidence: medium
+    note: The provider's skill states tables are created implicitly when the first row is added.
+  - tool: relevance_update_knowledge_set
+    category: knowledge
+    rest: [UpdateKnowledgeSetMetadata]
+    binding: direct
+    confidence: high
+  - tool: relevance_delete_knowledge_set
+    category: knowledge
+    rest: [DeleteKnowledgeSet]
+    binding: direct
+    confidence: high
+  - tool: relevance_add_knowledge_rows
+    category: knowledge
+    rest: [AddKnowledge]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_knowledge_rows
+    category: knowledge
+    rest: [ListKnowledge]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_knowledge_row
+    category: knowledge
+    rest: [ListKnowledge]
+    binding: projection
+    confidence: medium
+  - tool: relevance_update_knowledge_rows
+    category: knowledge
+    rest: [BulkUpdateKnowledge]
+    binding: direct
+    confidence: high
+  - tool: relevance_delete_knowledge_rows
+    category: knowledge
+    rest: [DeleteKnowledge]
+    binding: direct
+    confidence: high
+  - tool: relevance_export_knowledge
+    category: knowledge
+    rest: [KnowledgeExportTrigger]
+    binding: direct
+    confidence: high
+  - tool: relevance_run_evaluation
+    category: evals
+    rest: [EvaluateResource]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_eval_batches
+    category: evals
+    rest: [ListEvalBatchByResourceNew]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_eval_batch_summary
+    category: evals
+    rest: [GetEvalBatchSummaryForResource]
+    binding: direct
+    confidence: high
+  - tool: relevance_poll_eval_batch_result
+    category: evals
+    rest: [GetEvalBatchSummaryForResource]
+    binding: direct
+    confidence: medium
+  - tool: relevance_cancel_eval_batch
+    category: evals
+    rest: [CancelEvalBatchForResource]
+    binding: direct
+    confidence: high
+  - tool: relevance_delete_eval_batch
+    category: evals
+    rest: [DeleteEvalBatchForResource]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_eval_runs
+    category: evals
+    rest: [ListEvalRunsForResource]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_eval_checks
+    category: evals
+    rest: [ListEvalRulesForResource]
+    binding: direct
+    confidence: medium
+    note: MCP calls them checks; REST calls them eval rules.
+  - tool: relevance_create_eval_check
+    category: evals
+    rest: [CreateEvalRuleForResource]
+    binding: direct
+    confidence: medium
+  - tool: relevance_update_eval_check
+    category: evals
+    rest: [UpdateEvalRuleForResource]
+    binding: direct
+    confidence: medium
+  - tool: relevance_delete_eval_check
+    category: evals
+    rest: [DeleteEvalRuleForResource]
+    binding: direct
+    confidence: medium
+  - tool: relevance_create_performance_dashboard
+    category: analytics
+    rest: [CreateObservabilityConfigV2]
+    binding: direct
+    confidence: low
+  - tool: relevance_list_performance_dashboards
+    category: analytics
+    rest: [ListObservabilityConfigs]
+    binding: direct
+    confidence: low
+  - tool: relevance_update_performance_dashboard
+    category: analytics
+    rest: [UpdateObservabilityConfigV2]
+    binding: direct
+    confidence: low
+  - tool: relevance_delete_performance_dashboard
+    category: analytics
+    rest: [DeleteObservabilityConfigV2]
+    binding: direct
+    confidence: low
+  - tool: relevance_get_performance_dashboard_timeseries
+    category: analytics
+    rest: [GetObservabilityEvalScoreTimeseriesForResource]
+    binding: direct
+    confidence: low
+  - tool: relevance_get_analytics_usage_breakdown
+    category: analytics
+    rest: [GetAgentUsageBreakdown, GetToolUsageBreakdown, GetWorkforceUsageBreakdown]
+    binding: composite
+    confidence: medium
+  - tool: relevance_get_analytics_usage_timeseries
+    category: analytics
+    rest: [GetAgentUsageTimeseries, GetToolUsageTimeseries, GetWorkforceUsageTimeseries]
+    binding: composite
+    confidence: medium
+  - tool: relevance_get_analytics_agent_activity_timeseries
+    category: analytics
+    rest: [GetAgentUsageBreakdownTimeseries]
+    binding: direct
+    confidence: low
+  - tool: relevance_get_analytics_errors
+    category: analytics
+    rest: [GetAgentErrors]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_analytics_resource_breakdown
+    category: analytics
+    rest: [GetAgentBreakdown, GetWorkforceBreakdown]
+    binding: composite
+    confidence: medium
+  - tool: relevance_get_analytics_task_status_counts
+    category: analytics
+    rest: [GetTaskOpsTabCounts]
+    binding: direct
+    confidence: medium
+  - tool: relevance_search_marketplace_listings
+    category: marketplace
+    rest: [ListPublishedMarketplaceListings]
+    binding: direct
+    confidence: high
+  - tool: relevance_list_folders
+    category: folders
+    rest: [ListFolders]
+    binding: direct
+    confidence: high
+  - tool: relevance_upsert_folder
+    category: folders
+    rest: [UpsertFolder]
+    binding: direct
+    confidence: high
+  - tool: relevance_delete_folder
+    category: folders
+    rest: [DeleteFolder]
+    binding: direct
+    confidence: high
+  - tool: relevance_get_project_info
+    category: projects
+    rest: [GetProjectsOrgInfo]
+    binding: direct
+    confidence: medium
+  - tool: relevance_list_oauth_accounts
+    category: auth
+    rest: [ListOAuthTokenData]
+    binding: direct
+    confidence: medium
+  - tool: relevance_submit_feedback
+    category: support
+    rest: [SubmitMessageFeedback]
+    binding: direct
+    confidence: medium
+  - tool: relevance_raw_api
+    category: raw
+    rest: []
+    binding: passthrough
+    confidence: high
+    note: >-
+      Escape hatch. The provider's skill documents it as issuing arbitrary REST calls
+      (e.g. POST /knowledge/add, /knowledge/list, /knowledge/bulk_update, /knowledge/delete),
+      so it can reach any of the 566 operations in the OpenAPI. No single operationId binds.
+  - tool: relevance_api_request
+    category: raw
+    rest: []
+    binding: passthrough
+    confidence: medium
+mcp_only:
+  - tool: relevance_create_eval_test_case
+    reason: No public REST operation for eval test cases in the harvested spec.
+  - tool: relevance_get_eval_test_case
+    reason: No public REST operation for eval test cases in the harvested spec.
+  - tool: relevance_update_eval_test_case
+    reason: No public REST operation for eval test cases in the harvested spec.
+  - tool: relevance_delete_eval_test_case
+    reason: No public REST operation for eval test cases in the harvested spec.
+  - tool: relevance_list_eval_test_cases
+    reason: No public REST operation for eval test cases in the harvested spec.
+  - tool: relevance_add_eval_test_case_rule
+    reason: No public REST operation for eval test-case rules in the harvested spec.
+  - tool: relevance_remove_eval_test_case_rule
+    reason: No public REST operation for eval test-case rules in the harvested spec.
+  - tool: relevance_set_eval_test_case_simulation_config
+    reason: No public REST operation for eval test-case simulation config in the harvested spec.
+  - tool: relevance_create_eval_test_set
+    reason: No public REST operation for eval test sets in the harvested spec.
+  - tool: relevance_get_eval_test_set
+    reason: No public REST operation for eval test sets in the harvested spec.
+  - tool: relevance_update_eval_test_set
+    reason: No public REST operation for eval test sets in the harvested spec.
+  - tool: relevance_delete_eval_test_set
+    reason: No public REST operation for eval test sets in the harvested spec.
+  - tool: relevance_list_eval_test_sets
+    reason: No public REST operation for eval test sets in the harvested spec.
+  - tool: relevance_add_performance_dashboard_rule
+    reason: Composite over observability config editing; no single REST operation.
+  - tool: relevance_remove_performance_dashboard_rule
+    reason: Composite over observability config editing; no single REST operation.
+  - tool: relevance_list_performance_dashboard_runs
+    reason: No matching REST operation identified in the harvested spec.
+rest_only_families:
+  - family: organizations
+    operations: 55
+    note: Org creation, membership, roles, subscriptions, usage alarms, data-retention config.
+  - family: auth
+    operations: 52
+    note: Users, keys, invites, OAuth account linking, SSO. Only account listing is surfaced via MCP.
+  - family: billing
+    operations: 22
+    note: Credit aggregation, subscriptions, downgrades, cancellation. Not exposed as MCP tools.
+  - family: chat
+    operations: 171
+    note: >-
+      The largest REST family. Conversations, task views, streaming tokens, embed keys,
+      bulk triggers and batch scheduling are mostly not reachable from the MCP tool list.
+  - family: replicate / fal_ai / apify / inventor / alarms / user-memory
+    operations: 20
+    note: Model-vendor passthrough and internal surfaces with no MCP counterpart.
+coverage:
+  mcp_tools_named: 125
+  mcp_tools_mapped: 106
+  mcp_only: 16
+  passthrough: 2
+  rest_operations_total: 566
+  rest_operations_bound: 92
+  rest_operations_unbound: 474
+  note: >-
+    rest_operations_bound counts distinct operationIds named at least once above. The large
+    unbound remainder is genuine: the MCP server exposes a curated build/run surface, not the
+    whole platform API.

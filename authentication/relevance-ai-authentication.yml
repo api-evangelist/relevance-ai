@@ -1,0 +1,87 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  openapi/relevance-ai-openapi.json (derived baseline) upgraded from
+  https://relevanceai.com/docs/sdk/authentication and
+  https://mcp.relevanceai.com/.well-known/oauth-authorization-server
+docs: https://relevanceai.com/docs/sdk/authentication
+provider: Relevance AI
+providerId: relevance-ai
+summary:
+  types:
+    - apiKey
+    - oauth2
+  api_key_in:
+    - header
+  surfaces:
+    rest: apiKey header
+    mcp: oauth2 authorization_code + PKCE
+schemes:
+  - name: AuthorizationHeader
+    type: apiKey
+    in: header
+    parameter: Authorization
+    description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'
+    sources:
+      - openapi/relevance-ai-openapi.json
+    applied_globally: true
+    detail: >-
+      Declared as the single global security requirement in the spec, so every one of the 566
+      operations is gated by it.
+  - name: MCP OAuth 2.0
+    type: oauth2
+    surface: https://mcp.relevanceai.com/
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://mcp.relevanceai.com/authorize
+        tokenUrl: https://mcp.relevanceai.com/token
+        refreshUrl: https://mcp.relevanceai.com/token
+        revocationUrl: https://mcp.relevanceai.com/revoke
+        registrationUrl: https://mcp.relevanceai.com/register
+        pkce: S256
+        scopes:
+          claudeai: The only advertised scope; authorization is really carried by project role.
+    sources:
+      - https://mcp.relevanceai.com/.well-known/oauth-authorization-server
+      - https://mcp.relevanceai.com/.well-known/oauth-protected-resource
+credential_types:
+  - name: API key
+    format: 'sk-...'
+    header_form: 'Authorization: <project_id>:<api_key>'
+    scope: full access to every resource in the project
+    environment: server-side only
+    expiry: >-
+      Does not auto-expire. "Existing keys do not auto-expire and must be manually
+      decommissioned via the dashboard to terminate access."
+    rotation: manual, via the dashboard
+    warning: >-
+      The provider warns explicitly against embedding API keys in client-side code,
+      browser-accessible environment variables, or version control.
+  - name: Embed key
+    generated: at runtime via Key.generateEmbedKey()
+    scope: exactly one public agent OR one workforce
+    environment: browser-safe
+    persistence: >-
+      Serialize with key.toJSON() and restore via the Key constructor. Regenerating on every
+      page load breaks conversation continuity, because a key initializes a user session.
+    constraint: The target agent must be marked public; private agents are not reachable with an embed key.
+  - name: MCP OAuth token
+    obtained_via: browser consent flow, per project
+    scope: bounded by the caller's project role; Run-Only mode strips write tools server-side
+regions:
+  required: true
+  detail: >-
+    The client must select the region its project lives in. Region is part of the API hostname,
+    so an otherwise valid key against the wrong regional host will not work.
+  values:
+    REGION_US: bcbe5a
+    REGION_EU: d7b62b
+    REGION_AU: f1db6c
+cross_links:
+  scopes: scopes/relevance-ai-scopes.yml
+  conventions: conventions/relevance-ai-conventions.yml
+  mcp: mcp/relevance-ai-mcp.yml
+gaps:
+  - No OAuth on the REST API; API keys are the only server-side credential.
+  - No key scoping or least-privilege on REST — a key is project-wide.
+  - No documented key expiry or forced rotation.

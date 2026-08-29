@@ -1,0 +1,82 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://trust.relevanceai.com/, https://relevanceai.com/docs/admin/security,
+  https://relevanceai.com/enterprise, https://relevanceai.com/data-security-policy
+provider: Relevance AI
+providerId: relevance-ai
+trust_center:
+  url: https://trust.relevanceai.com/
+  status: 200
+  platform: Vanta Trust Report
+  machine_readable: false
+  note: >-
+    The page is a Vanta-hosted trust report rendered entirely client-side; every /api/* path on
+    the host returns the same SPA shell, so no machine-readable certification list can be read
+    from it. The certifications below are taken from the provider's own security overview,
+    enterprise page and pricing feature matrix, which state them in text.
+certifications:
+  - name: SOC 2 Type II
+    body: AICPA
+    status: current
+    scope: platform
+    evidence:
+      - https://relevanceai.com/docs/admin/security
+      - https://relevanceai.com/enterprise
+      - https://relevanceai.com/llms.txt
+  - name: GDPR
+    status: compliant
+    evidence:
+      - https://relevanceai.com/docs/admin/security
+      - https://relevanceai.com/docs/get-started/pricing
+not_claimed:
+  - ISO 27001
+  - PCI DSS
+  - HIPAA
+  - FedRAMP
+  - ISO 42001
+security_program:
+  data_residency:
+    regions: [United States, Europe, Australia]
+    detail: A project is deployed to one region; the API host encodes it (api-{region}.stack.tryrelevance.com).
+  tenant_isolation: documented
+  encryption:
+    at_rest: true
+    in_transit: true
+    customer_managed_keys: documented
+  access_management:
+    sso_saml: Enterprise
+    rbac: Enterprise
+    audit_logs: Enterprise
+  ai_specific_controls:
+    - PII masking / redaction (Presidio-powered, Enterprise)
+    - Prompt-injection detection recorded on the invoke_agent span (Enterprise)
+    - Human-in-the-loop approval gates
+    - Work hour controls
+  vulnerability_management: >-
+    "Our infrastructure is continuously scanned for vulnerabilities and patched within strict
+    SLAs." No SLA figure is published.
+  third_party_assessments: Performed by independent security firms; reports available to Enterprise customers under NDA.
+  security_questionnaire: Available via the trust center / sales.
+  policies:
+    data_security_policy: https://relevanceai.com/data-security-policy
+    privacy_policy: https://relevanceai.com/privacy-policy
+    terms: https://relevanceai.com/terms-and-conditions
+vulnerability_disclosure:
+  program_found: false
+  security_txt: false
+  bug_bounty: false
+  probed:
+    - url: https://relevanceai.com/.well-known/security.txt
+      status: 404
+    - url: https://docs.relevanceai.com/.well-known/security.txt
+      status: 404
+    - url: https://mcp.relevanceai.com/.well-known/security.txt
+      status: 404
+    - url: https://relevanceai.com/security
+      status: 404
+  detail: >-
+    No RFC 9116 security.txt, no published disclosure policy page, and no HackerOne / Bugcrowd
+    / Intigriti program was found. There is no documented channel for reporting a
+    vulnerability other than general support. Recorded as an honest absence — no
+    VulnerabilityDisclosure or Security pointer is emitted, because none is served.

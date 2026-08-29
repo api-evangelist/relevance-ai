@@ -1,0 +1,85 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://registry.npmjs.org/@relevanceai/sdk, https://jsr.io/@relevanceai/sdk,
+  https://pypi.org/pypi/relevanceai/json, https://relevanceai.com/docs/sdk/installation,
+  https://github.com/RelevanceAI
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  First-party client libraries Relevance AI publishes for its REST API and agent platform.
+  The current, actively maintained client is the JavaScript/TypeScript SDK (@relevanceai/sdk),
+  shipped to both npm and JSR. The Python library (relevanceai on PyPI) predates the current
+  agent platform and has not published a release since 2025-02-13.
+packages:
+  - name: '@relevanceai/sdk'
+    registry: npm
+    official: true
+    language: javascript
+    url: https://www.npmjs.com/package/@relevanceai/sdk
+    repository: https://github.com/RelevanceAI/relevance-js-sdk
+    docs: https://relevanceai.com/docs/sdk/introduction
+    install: npm install @relevanceai/sdk@latest
+    version: 3.1.0
+    published: '2026-03-12'
+    note: >-
+      Official JavaScript/TypeScript SDK for building applications with Relevance AI agents
+      and workforces. Runs on Node.js, Deno, Bun, Cloudflare Workers and the browser.
+      Version and date read from registry.npmjs.org dist-tags.latest + time map.
+  - name: '@relevanceai/sdk'
+    registry: jsr
+    official: true
+    language: typescript
+    url: https://jsr.io/@relevanceai/sdk
+    repository: https://github.com/RelevanceAI/relevance-js-sdk
+    docs: https://relevanceai.com/docs/sdk/installation
+    install: deno add jsr:@relevanceai/sdk
+    version: 3.1.0
+    published: '2026-03-12'
+    note: >-
+      The same SDK published to JSR for Deno. Version and date read from
+      https://jsr.io/@relevanceai/sdk/meta.json (latest + versions[].createdAt).
+  - name: relevanceai
+    registry: pypi
+    official: true
+    language: python
+    url: https://pypi.org/project/relevanceai/
+    repository: https://github.com/RelevanceAI/relevanceai
+    docs: https://relevanceai.com/
+    install: pip install relevanceai
+    version: 10.2.2
+    published: '2025-02-13'
+    note: >-
+      Published by "Relevance AI" (author email @relevanceai.com) with homepage relevanceai.com,
+      so first-party. Last release 2025-02-13 — it predates the agent/workforce API surface the
+      current docs describe, and the docs SDK section names only the JavaScript SDK. Treat as
+      legacy: the abandonment signal is the provider's own release date, not an inference.
+  - name: '@relevanceai/sdk (CDN)'
+    registry: cdn
+    official: true
+    language: javascript
+    url: https://esm.run/@relevanceai/sdk
+    docs: https://relevanceai.com/docs/sdk/installation#browser-via-cdn
+    version: null
+    published: null
+    note: >-
+      The docs' browser import-map recipe points at https://esm.run/@relevanceai/sdk with no
+      version pin, so the distribution floats to latest and a consumer cannot tell which build
+      they receive. Recorded as null deliberately — checked, nothing pinned to record.
+counts:
+  total: 4
+  official: 4
+  registries:
+    - npm
+    - jsr
+    - pypi
+    - cdn
+not_found:
+  - registry: npm
+    query: 'scope:relevanceai (registry search) + @relevanceai/arg'
+    result: >-
+      No other @relevanceai npm packages resolve. RelevanceAI/arg-releases advertises
+      "npm install --global @relevanceai/arg" but registry.npmjs.org returns Not found for that
+      name; the arg CLI is also a separate product (arg.ai), not a client for this API.
+  - registry: maven / nuget / rubygems / crates.io / pkg.go.dev
+    result: No first-party Relevance AI client library found in these registries.

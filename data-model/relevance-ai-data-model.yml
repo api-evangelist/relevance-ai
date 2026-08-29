@@ -1,0 +1,226 @@
+generated: '2026-08-29'
+method: derived
+source: openapi/relevance-ai-openapi.json (521 paths, 566 operations, 1132 component schemas)
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  Entity-relationship graph for the Relevance AI platform, derived from the id-reference fields
+  and path hierarchy in the published OpenAPI. Relationships are read from real field names
+  (agent_id, workforce_id, version_id, knowledge_set, project_id, organization_id) — none is
+  inferred from prose. Where the contract does not state a relationship, it is absent here.
+naming_note: >-
+  The REST API's word for a Tool is "studio". studio_id and tool_id both appear and refer to
+  the same entity; the tools/* paths and the studios/* paths address it under two names.
+entities:
+  - name: Organization
+    id_field: organization_id
+    description: Billing and top-level tenancy boundary. Subscriptions, credits, usage alarms and data-retention config attach here.
+    operations_family: organizations
+  - name: Project
+    id_field: project_id
+    alt_id: project_display_id
+    description: >-
+      The authorization and isolation boundary. An API key is scoped to exactly one project,
+      and an MCP OAuth session binds to exactly one project.
+    operations_family: projects
+  - name: User
+    id_field: user_id
+    description: A person, holding a role at both organization and project level.
+    operations_family: auth
+  - name: Agent
+    id_field: agent_id
+    description: A configured specialist agent with a system prompt, attached tools, triggers and memory.
+    operations_family: chat / agents
+  - name: AgentVersion
+    id_field: version_id
+    related_fields: [active_version_id, draft_version_id]
+    description: An immutable snapshot of an agent's configuration; publish promotes a draft, restore returns one to draft.
+  - name: Tool
+    id_field: tool_id
+    alt_id: studio_id
+    description: A callable workflow made of transformation steps. One run of a Tool is one billable Action.
+    operations_family: studios / tools
+  - name: ToolVersion
+    id_field: version_id
+    description: Versioned tool configuration with the same draft/publish/restore lifecycle as an agent.
+  - name: Transformation
+    id_field: id
+    description: A catalogued integration primitive (8000+ per the provider's own skill) that a Tool step wraps.
+  - name: Workforce
+    id_field: workforce_id
+    alt_id: document_id
+    description: A multi-agent system — a graph of agent nodes and handover edges.
+    operations_family: chat / workforce
+  - name: WorkforceVersion
+    id_field: version_id
+  - name: WorkforceTask
+    id_field: workforce_task_id
+    alt_id: task_id
+    description: One execution of a workforce, carrying its own message history and files.
+  - name: Conversation
+    id_field: conversation_id
+    alt_id: knowledge_set
+    description: >-
+      An agent task/thread. Notably, conversations are addressed through the knowledge_set
+      parameter on several paths — the conversation store and the knowledge store share an
+      addressing scheme.
+  - name: Message
+    id_field: document_id
+    description: A single message within a conversation; carries feedback and generation operations.
+  - name: KnowledgeSet
+    id_field: knowledge_set
+    description: A knowledge table. Created implicitly when the first row is added.
+    operations_family: knowledge
+  - name: KnowledgeRow
+    id_field: document_id
+    description: A row in a knowledge set; chunked and vectorized for retrieval.
+  - name: Trigger
+    description: >-
+      A scheduled trigger item/group, an integration trigger, or a webhook trigger attached to
+      an agent.
+  - name: Folder
+    id_field: folder_id
+    description: Organizational container for agents and tools.
+  - name: MarketplaceListing
+    id_field: listing_display_id
+    related_fields: [entity_display_id, entity_version_display_id]
+    description: A published, clonable agent/tool/workforce bundle with versions, assets and reviews.
+    operations_family: marketplace
+  - name: EvalRule
+    id_field: eval_rule_id
+    description: A pass/fail check applied to an agent or workforce. Called a "check" on the MCP surface.
+    operations_family: evals
+  - name: EvalBatch
+    id_field: eval_batch_id
+  - name: EvalRun
+    id_field: eval_run_id
+  - name: ObservabilityConfig
+    id_field: config_id
+    description: Production monitoring configuration; the MCP layer calls it a performance dashboard.
+  - name: OAuthAccount
+    id_field: account_id
+    description: A linked third-party credential, optionally bound to a specific Tool.
+  - name: ApiKey
+    description: Project-scoped credential. Also issued at organization level (native API keys).
+  - name: Alarm
+    id_field: alarm_id
+    description: Usage alarm on a resource, at project or organization level.
+relationships:
+  - from: Organization
+    to: Project
+    type: has_many
+    via: project.organization_id
+  - from: Organization
+    to: User
+    type: has_many
+    via: organization role assignment
+  - from: Project
+    to: Agent
+    type: has_many
+    via: agent.project_id
+  - from: Project
+    to: Tool
+    type: has_many
+    via: studio.project
+  - from: Project
+    to: KnowledgeSet
+    type: has_many
+  - from: Project
+    to: ApiKey
+    type: has_many
+  - from: Agent
+    to: AgentVersion
+    type: has_many
+    via: version_id (active_version_id / draft_version_id point at the current pair)
+  - from: Agent
+    to: Tool
+    type: has_many
+    via: agent.actions -> action id, populated by attach_tools_to_agent
+  - from: Agent
+    to: Trigger
+    type: has_many
+    via: agent_id on scheduled_triggers_item / triggers paths
+  - from: Agent
+    to: Conversation
+    type: has_many
+    via: /agents/{agent_id}/conversations/{conversation_id}
+  - from: Agent
+    to: KnowledgeSet
+    type: has_many
+    via: relevance_ai.agent.knowledge_used
+  - from: Conversation
+    to: Message
+    type: has_many
+    via: /agents/tasks/{knowledge_set}/messages/{document_id}
+  - from: Tool
+    to: ToolVersion
+    type: has_many
+  - from: Tool
+    to: Transformation
+    type: has_many
+    via: tool steps wrap transformations
+  - from: Tool
+    to: OAuthAccount
+    type: has_many
+    via: /auth/oauth/{account_id}/link/tool
+  - from: Workforce
+    to: Agent
+    type: has_many
+    via: agent_ids on the workforce node graph
+  - from: Workforce
+    to: WorkforceVersion
+    type: has_many
+  - from: Workforce
+    to: WorkforceTask
+    type: has_many
+    via: /workforce/items/{workforce_id}/tasks/{task_id}
+  - from: WorkforceTask
+    to: Conversation
+    type: has_many
+    via: conversation_ids
+  - from: KnowledgeSet
+    to: KnowledgeRow
+    type: has_many
+    via: knowledge_set
+  - from: Folder
+    to: Agent
+    type: has_many
+  - from: Folder
+    to: Tool
+    type: has_many
+  - from: MarketplaceListing
+    to: Agent
+    type: belongs_to
+    via: entity_display_id
+  - from: EvalBatch
+    to: EvalRun
+    type: has_many
+    via: eval_batch_id
+  - from: EvalRule
+    to: Agent
+    type: belongs_to
+    via: '/evals/{resource_type}/{resource_id}/rules — resource_type is agent or workforce'
+polymorphic_addressing:
+  pattern: '/evals/{resource_type}/{resource_id}/...'
+  resource_types: [agent, workforce]
+  note: >-
+    The evals, observability and alarm families are addressed polymorphically by
+    resource_type + resource_id rather than by a typed path, which is why 42 operations share
+    the resource_type / resource_id parameter pair.
+id_conventions:
+  fields:
+    - field: display_id
+      detail: A human-shareable public identifier used alongside the internal id (23 schemas).
+    - field: _id
+      detail: Raw document identifier, exposed on document-store-backed entities.
+    - field: after_id
+      detail: Keyset pagination marker on some list surfaces.
+  prefixes: >-
+    No typed id prefixes (no "agent_...", "tool_..." style) are documented or visible in the
+    contract; identifiers are opaque.
+gaps:
+  - >-
+    The spec declares 1,132 component schemas but almost no cross-schema $ref linking between
+    entities — most operations declare inline input/output objects, so the graph above is
+    reconstructed from field names and path hierarchy rather than from $ref edges.
+  - No published object reference page enumerating entity fields.

@@ -1,0 +1,91 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://relevanceai.com/docs/build/agents/share-your-agent,
+  https://relevanceai.com/docs/build/workforces/share-your-workforce,
+  https://relevanceai.com/docs/sdk/authentication
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  Client-side embeddable surfaces Relevance AI publishes for putting an agent into someone
+  else's page. These are distinct from the SDK in packages/ — they are prebuilt UI, not a
+  client library. All three are gated on making the agent public, which the provider warns
+  makes the resulting URL indexable and runnable by anyone who has it, on the owner's credits.
+families:
+  - id: chat-ui
+    name: Chat UI
+    type: hosted / iframe
+    description: >-
+      A conversation-style interface for an agent, shared as a link or embedded as an iframe.
+      Usage bills to the agent owner's account.
+    integration: iframe
+    sizing_note: >-
+      The iframe inherits 100% of its parent container by default; the container must be sized
+      explicitly.
+  - id: chat-widget
+    name: Chat Widget
+    type: script-tag pop-up
+    description: >-
+      A pop-up support-style chat bubble embeddable on any site with a script tag.
+    integration: script tag
+    loader_url: null
+    loader_note: >-
+      The exact loader script URL is not published in the documentation text — the setup is
+      shown only in an embedded walkthrough video — so no URL is recorded here rather than
+      guessed.
+    styling_hook: '.relevanceai-chat-bubble-app (target this class; adjust z-index to layer it)'
+    configuration_params:
+      - name: primary_color
+        type: string
+        detail: Any valid CSS color.
+      - name: bubble_style
+        type: enum
+        values: [agent, icon]
+      - name: bubble_icon
+        type: enum
+        detail: One of a fixed icon set (pd/ai-agent, pd/chat, sparkles, star, pencil, and others).
+      - name: input_placeholder_text
+        type: string
+      - name: hide_file_uploads
+        type: boolean
+      - name: hide_conversation_list
+        type: boolean
+      - name: hide_tool_steps
+        type: boolean
+      - name: starting_message_prompts
+        type: string
+        detail: JSON array of prompt strings.
+      - name: hide_logo
+        type: boolean
+        detail: Toggles Relevance AI branding.
+      - name: hide_description
+        type: boolean
+    limitation: >-
+      User Level Authentication (the Enterprise per-user credential feature) is NOT supported
+      in embedded chat widgets; embedded agents must use a shared account for integrations.
+  - id: task-ui
+    name: Task UI
+    type: iframe
+    description: >-
+      A task-focused view of an agent — past runs, task selection, and interaction with
+      outputs — embedded as an iframe. Aimed at operational dashboards.
+    integration: iframe
+  - id: clonable-template
+    name: Clonable Template
+    type: share link
+    description: >-
+      Publishes the agent so another project can clone it wholesale, rather than run it.
+auth_model:
+  browser_credential: embed key
+  detail: >-
+    Embed keys are the only browser-safe credential. They are generated at runtime, scoped to
+    one public agent or one workforce, and should be persisted (localStorage or equivalent) so
+    a user's conversation history survives a page reload.
+  cross_link: authentication/relevance-ai-authentication.yml
+warning: >-
+  The provider states plainly that enabling any embed option makes the agent publicly
+  accessible at an indexable URL, that anyone holding the link can run it on the owner's
+  credits, and that the only revocation is disabling the option in share settings.
+gaps:
+  - No published npm package or pinned CDN URL for the chat widget loader.
+  - No versioning story for the embedded surfaces.

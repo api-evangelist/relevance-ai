@@ -1,0 +1,100 @@
+generated: '2026-08-29'
+method: probed
+source: >-
+  openapi/relevance-ai-openapi.json (derivation attempted) + live probes of
+  POST https://api-f1db6c.stack.tryrelevance.com/latest/agents/list
+provider: Relevance AI
+providerId: relevance-ai
+format: vendor-json
+rfc9457: false
+description: >-
+  Relevance AI's published OpenAPI documents a 200 response on every one of its 566 operations
+  and NOT ONE 4xx or 5xx. There is therefore nothing to derive from the spec. Everything below
+  was observed on live unauthenticated calls, or read from the provider's documentation.
+derivation:
+  attempted: true
+  operations_scanned: 566
+  operations_with_4xx_or_5xx: 0
+  result: >-
+    No error responses are declared anywhere in the contract. This is the single largest gap in
+    an otherwise complete spec — every operation carries an operationId, a summary and a
+    description, but a consumer cannot learn a single failure mode from it.
+envelope:
+  media_type: application/json
+  shape:
+    message:
+      type: string
+      description: Human-readable error string.
+    error_type:
+      type: string
+      description: Machine token. Observed value "unset_error_type".
+    error_audience:
+      type: string
+      description: Observed value "platform".
+  correlation_headers:
+    - name: x-request-id
+      description: Per-request correlation id. Quote it when contacting support.
+    - name: error_id
+      description: Mirrors x-request-id on error responses.
+    - name: x-trace-id
+      description: Present but returns the literal string "x-trace-id-deprecated".
+  exposed_via: 'access-control-expose-headers: x-trace-id,x-request-id,error_id'
+problem_types:
+  - status: 422
+    id: validation-error
+    title: Request failed validation
+    observed: true
+    evidence:
+      request: POST https://api-f1db6c.stack.tryrelevance.com/latest/agents/list with body {}
+      response: >-
+        {"message":"Public agent queries require an exact_match filter on a valid 'project' ID.",
+        "error_type":"unset_error_type","error_audience":"platform"}
+    remediation: Supply the required filters; the message names the missing constraint.
+  - status: 403
+    id: forbidden-prefix
+    title: Path prefix refused at the edge
+    observed: true
+    evidence:
+      request: GET https://api-f1db6c.stack.tryrelevance.com/.well-known/security.txt
+      response: application/json 403
+    remediation: Not a caller error; the API host refuses the /.well-known/ prefix outright.
+  - status: 401
+    id: invalid-token
+    title: Missing or invalid credential (MCP surface)
+    observed: true
+    surface: https://mcp.relevanceai.com/
+    evidence:
+      response: '{"error":"invalid_token","error_description":"Missing Authorization header"}'
+      www_authenticate: 'Bearer error="invalid_token", error_description="Missing Authorization header"'
+    remediation: Complete the OAuth authorization-code flow; see mcp/relevance-ai-mcp.yml.
+documented_failure_modes:
+  - id: mcp-sync-timeout
+    surface: MCP
+    description: >-
+      relevance_trigger_agent has a 120-second synchronous timeout. The provider documents
+      switching to relevance_trigger_agent_async + relevance_poll_agent_result for agents with
+      workforce nodes, multi-step chains, or external API calls.
+    source: https://relevanceai.com/docs/integrations/mcp/mcp-server
+  - id: tool-run-timeout
+    surface: REST / platform
+    description: >-
+      Documented maximum run times: tools 15 minutes (or 24 hours on the long-running variant),
+      agents 15 minutes after each user action, bulk runs 24 hours.
+    source: https://relevanceai.com/docs/admin/system-limits
+  - id: concurrency-queue
+    surface: REST / platform
+    description: >-
+      When an organization reaches its tier's concurrent-task ceiling, additional tasks are
+      QUEUED rather than rejected. There is no documented error code for this state.
+    source: https://relevanceai.com/docs/admin/system-limits
+  - id: empty-tool-output
+    surface: MCP
+    description: >-
+      The provider's own skill warns that a tool returning an empty {} indicates a broken
+      output configuration rather than an empty result.
+    source: https://github.com/RelevanceAI/agent-skills
+gaps:
+  - No RFC 9457 application/problem+json anywhere.
+  - No error code catalogue published in the documentation.
+  - error_type returned the placeholder "unset_error_type", so the machine token carries no signal.
+  - No 4xx/5xx responses declared in the OpenAPI, so codegen produces no error handling.

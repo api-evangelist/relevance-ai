@@ -1,0 +1,91 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://relevanceai.com/docs/changelog, https://status.relevanceai.com/,
+  https://relevanceai.com/docs/build/agents/build-your-agent/version-history,
+  https://relevanceai.com/docs/enterprise/data-retention,
+  https://relevanceai.com/enterprise, openapi/relevance-ai-openapi.json
+provider: Relevance AI
+providerId: relevance-ai
+versioning:
+  scheme: path-segment, single moving version
+  current: latest
+  detail: >-
+    Every REST path is served under /latest and the OpenAPI declares info.version "latest".
+    There is no dated or numbered API version, no version header, and no way for a caller to
+    pin an older revision of the contract. The platform changelog is dated, but the API surface
+    it describes is not versioned.
+  spec_version_field: latest
+  source: https://api-f1db6c.stack.tryrelevance.com/latest/openapi_schema.json
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations_in_spec: 0
+  detail: >-
+    No deprecation policy, no RFC 8594 Sunset/Deprecation headers, and not one operation in the
+    566-operation spec carries `deprecated: true`. Deprecation is visible only in prose: the
+    system-quotas page lists a "Tools (deprecated)" run-time class, the provider's own agent
+    skill states that sub-agents in an agent's actions array are deprecated in favour of
+    workforces, and the API returns an x-trace-id header whose value is the literal
+    "x-trace-id-deprecated". None of that is a policy a consumer can plan against.
+status_page:
+  url: https://status.relevanceai.com/
+  status: 200
+  verified: '2026-08-29'
+sla:
+  published: true
+  uptime: 99.9%
+  tier: Enterprise
+  source: https://relevanceai.com/enterprise
+  detail: >-
+    A 99.9% uptime SLA is advertised on the enterprise page as an enterprise-tier commitment.
+    No SLA document, credit schedule or measurement window is published publicly.
+changelog:
+  url: https://relevanceai.com/docs/changelog
+  dated: true
+  most_recent_entry: '2026-07-22'
+  detail: See changelog/relevance-ai-changelog.yml.
+retention:
+  versions:
+    default: indefinite
+    detail: >-
+      "Versions are kept indefinitely unless your organization has a data retention policy in
+      place." Where one applies, a version is deleted only when it is older than the retention
+      window AND is neither the active nor the draft version.
+    source: https://relevanceai.com/docs/build/agents/build-your-agent/version-history
+  data_retention:
+    self_serve: false
+    tier: Enterprise
+    configurable: true
+    categories:
+      - tool runs and sync items
+      - agent conversations
+      - workforce tasks
+      - asset versions
+    excluded:
+      - knowledge bases
+      - integrations
+      - API keys
+      - organization and project settings
+    detail: >-
+      Configurable retention period per organization, enabled by the Relevance AI team rather
+      than self-serve. Conversations are deleted only once both the conversation and every
+      message in it exceed the window.
+    source: https://relevanceai.com/docs/enterprise/data-retention
+  task_history_by_plan:
+    free: 30d
+    pro: 90d
+    team: 90d
+    enterprise: custom
+    source: https://relevanceai.com/docs/get-started/pricing
+telemetry_staging:
+  detail: >-
+    OTEL telemetry passes through a Relevance-side staging bucket that is automatically purged
+    after 30 days, independent of the organization's data-retention policy.
+  source: https://relevanceai.com/docs/enterprise/streaming-events
+gaps:
+  - No published deprecation or sunset policy.
+  - No API versioning: /latest is the only version, so a breaking change has no opt-out.
+  - No public SLA document behind the advertised 99.9% figure.

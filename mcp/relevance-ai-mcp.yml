@@ -1,0 +1,291 @@
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://relevanceai.com/docs/integrations/mcp/mcp-server,
+  https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/.mcp.json,
+  https://github.com/RelevanceAI/agent-skills/blob/main/SKILL.md,
+  live probe of https://mcp.relevanceai.com/
+provider: Relevance AI
+providerId: relevance-ai
+name: Relevance AI MCP Server
+description: >-
+  Relevance AI runs a first-party remote MCP server that exposes a project's agents, tools,
+  workforces, knowledge tables, evals, analytics and triggers to any MCP-compatible client.
+  It is a hosted HTTP (Streamable HTTP) endpoint with OAuth — not a local stdio package —
+  so an agent can reach it directly once a human has consented.
+status: published
+deployment:
+  mode: remote
+  endpoint: https://mcp.relevanceai.com/
+  auth: oauth
+  verified: probed
+  note: >-
+    The provider also documents `npx -y mcp-remote https://mcp.relevanceai.com/` for clients
+    that cannot speak HTTP MCP directly. That is a generic proxy shim in front of the SAME
+    remote endpoint, not a Relevance-published stdio server, so mode stays `remote`. There is
+    no relevance-ai MCP package on npm or PyPI.
+transport: streamable-http
+x-evidence:
+  - url: https://mcp.relevanceai.com/
+    method: 'POST {"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+    http_status: 401
+    body: '{"error":"invalid_token","error_description":"Missing Authorization header"}'
+    www_authenticate: 'Bearer error="invalid_token", error_description="Missing Authorization header"'
+    note: >-
+      The endpoint is live and speaks MCP, but tools/list is auth-gated. The tool inventory
+      below is therefore read from the provider's own published skill documentation, not from
+      a live introspection; input schemas need an authenticated tools/list call.
+  - url: https://mcp.relevanceai.com/.well-known/oauth-authorization-server
+    http_status: 200
+    file: well-known/relevance-ai-mcp-oauth-authorization-server.json
+  - url: https://mcp.relevanceai.com/.well-known/oauth-protected-resource
+    http_status: 200
+    file: well-known/relevance-ai-mcp-oauth-protected-resource.json
+authentication:
+  type: oauth2
+  flow: authorization_code
+  pkce: S256
+  dynamic_client_registration: true
+  registration_endpoint: https://mcp.relevanceai.com/register
+  authorization_endpoint: https://mcp.relevanceai.com/authorize
+  token_endpoint: https://mcp.relevanceai.com/token
+  revocation_endpoint: https://mcp.relevanceai.com/revoke
+  scopes_supported:
+    - claudeai
+  scope: per-project
+  note: >-
+    OAuth consent binds the session to a single Relevance AI project. The consent screen also
+    carries a Run-Only toggle for Member/Editor/Admin roles; Viewer and Chat roles are forced
+    into restricted modes. Write and destructive tools are removed server-side in Run-Only
+    mode, not merely hidden client-side.
+access_control:
+  enforcement: server-side, bounded by the caller's project role
+  modes:
+    - role: Admin
+      mode: full access
+      configurable: true
+    - role: Editor
+      mode: full access
+      configurable: true
+    - role: Member
+      mode: full access
+      configurable: true
+    - role: Viewer
+      mode: run-only
+      configurable: false
+    - role: Chat
+      mode: chat
+      configurable: false
+execution_modes:
+  - name: synchronous
+    tool: relevance_trigger_agent
+    timeout_seconds: 120
+    note: Returns the agent result directly; documented for single-step agents only.
+  - name: asynchronous
+    tools:
+      - relevance_trigger_agent_async
+      - relevance_poll_agent_result
+    timeout_seconds: null
+    note: >-
+      Trigger returns a conversation_id immediately; poll every 3-5 seconds until status is
+      complete or failed. Documented as required for workforce nodes and multi-step chains.
+clients_documented:
+  - Claude Desktop
+  - Claude Web
+  - Claude Code
+  - ChatGPT (Developer Mode)
+  - Cursor
+  - VS Code / Copilot
+  - Windsurf
+  - Codex
+  - Zed
+  - v0 by Vercel
+plugin:
+  name: relevance-ai
+  version: 1.5.0
+  marketplace: https://github.com/RelevanceAI/cc-plugin
+  install: claude plugin marketplace add RelevanceAI/cc-plugin && claude plugin install relevance-ai@cc-plugin
+  note: >-
+    The official Claude Code plugin bundles this same remote MCP server (.mcp.json declares
+    type http, url https://mcp.relevanceai.com) together with ten packaged Agent Skills.
+tool_inventory:
+  method: searched
+  source: >-
+    Tool names harvested from the provider's own published Agent Skills
+    (RelevanceAI/cc-plugin plugins/relevance-ai/skills/*/SKILL.md and RelevanceAI/agent-skills).
+  observed_tool_count: 125
+  provider_stated_tool_count: 46
+  discrepancy_note: >-
+    RelevanceAI/agent-skills SKILL.md states "The MCP server provides 46 tools organized across
+    six domains". The plugin skills at version 1.5.0 name 125 distinct relevance_* tools. Both
+    figures are the provider's own; the 46 almost certainly predates the evals, analytics,
+    folders and task-ops skills added since. Neither number was verified against a live
+    tools/list, which is auth-gated.
+  schemas: >-
+    Not captured. inputSchema for each tool requires an authenticated tools/list against
+    https://mcp.relevanceai.com/. Nothing was inferred.
+  groups:
+    - domain: agents
+      tool_count: 27
+      tools:
+        - relevance_attach_tools_to_agent
+        - relevance_create_agent
+        - relevance_detach_tools_from_agent
+        - relevance_edit_agent_system_prompt
+        - relevance_get_agent
+        - relevance_get_agent_task_metadata
+        - relevance_get_agent_task_summary
+        - relevance_get_agent_tools
+        - relevance_get_agent_version
+        - relevance_list_agent_task_messages
+        - relevance_list_agent_tasks
+        - relevance_list_agent_triggers
+        - relevance_list_agent_versions
+        - relevance_list_agents
+        - relevance_list_tasks
+        - relevance_meeting_bot
+        - relevance_poll_agent_result
+        - relevance_publish_agent
+        - relevance_read_agent_system_prompt
+        - relevance_restore_agent_version
+        - relevance_save_agent_draft
+        - relevance_search_agent_system_prompt
+        - relevance_trigger_agent
+        - relevance_trigger_agent_sync
+        - relevance_update_agent
+        - relevance_update_agent_action
+        - relevance_upsert_agent
+    - domain: analytics
+      tool_count: 14
+      tools:
+        - relevance_add_performance_dashboard_rule
+        - relevance_create_performance_dashboard
+        - relevance_delete_performance_dashboard
+        - relevance_get_analytics_agent_activity_timeseries
+        - relevance_get_analytics_errors
+        - relevance_get_analytics_resource_breakdown
+        - relevance_get_analytics_task_status_counts
+        - relevance_get_analytics_usage_breakdown
+        - relevance_get_analytics_usage_timeseries
+        - relevance_get_performance_dashboard_timeseries
+        - relevance_list_performance_dashboard_runs
+        - relevance_list_performance_dashboards
+        - relevance_remove_performance_dashboard_rule
+        - relevance_update_performance_dashboard
+    - domain: auth
+      tool_count: 1
+      tools:
+        - relevance_list_oauth_accounts
+    - domain: evals
+      tool_count: 24
+      tools:
+        - relevance_add_eval_test_case_rule
+        - relevance_cancel_eval_batch
+        - relevance_create_eval_check
+        - relevance_create_eval_test_case
+        - relevance_create_eval_test_set
+        - relevance_delete_eval_batch
+        - relevance_delete_eval_check
+        - relevance_delete_eval_test_case
+        - relevance_delete_eval_test_set
+        - relevance_get_eval_batch_summary
+        - relevance_get_eval_test_case
+        - relevance_get_eval_test_set
+        - relevance_list_eval_batches
+        - relevance_list_eval_checks
+        - relevance_list_eval_runs
+        - relevance_list_eval_test_cases
+        - relevance_list_eval_test_sets
+        - relevance_poll_eval_batch_result
+        - relevance_remove_eval_test_case_rule
+        - relevance_run_evaluation
+        - relevance_set_eval_test_case_simulation_config
+        - relevance_update_eval_check
+        - relevance_update_eval_test_case
+        - relevance_update_eval_test_set
+    - domain: folders
+      tool_count: 3
+      tools:
+        - relevance_delete_folder
+        - relevance_list_folders
+        - relevance_upsert_folder
+    - domain: knowledge
+      tool_count: 11
+      tools:
+        - relevance_add_knowledge_rows
+        - relevance_create_knowledge_set
+        - relevance_delete_knowledge_rows
+        - relevance_delete_knowledge_set
+        - relevance_export_knowledge
+        - relevance_get_knowledge_row
+        - relevance_get_knowledge_set
+        - relevance_list_knowledge_rows
+        - relevance_list_knowledge_sets
+        - relevance_update_knowledge_rows
+        - relevance_update_knowledge_set
+    - domain: marketplace
+      tool_count: 1
+      tools:
+        - relevance_search_marketplace_listings
+    - domain: projects
+      tool_count: 1
+      tools:
+        - relevance_get_project_info
+    - domain: raw
+      tool_count: 2
+      tools:
+        - relevance_api_request
+        - relevance_raw_api
+    - domain: support
+      tool_count: 1
+      tools:
+        - relevance_submit_feedback
+    - domain: tools
+      tool_count: 26
+      tools:
+        - relevance_add_tool_step
+        - relevance_bulk_delete_tools
+        - relevance_clone_public_tool
+        - relevance_create_tool
+        - relevance_create_tool_from_transformation
+        - relevance_get_latest_tool_run
+        - relevance_get_tool
+        - relevance_get_tool_version
+        - relevance_list_tool_versions
+        - relevance_list_tools
+        - relevance_list_transformations
+        - relevance_move_tool_step
+        - relevance_poll_tool_result
+        - relevance_publish_tool
+        - relevance_remove_tool_step
+        - relevance_restore_tool_version
+        - relevance_run_tool
+        - relevance_search_public_tools
+        - relevance_search_tools
+        - relevance_search_transformations
+        - relevance_set_tool_output
+        - relevance_trigger_tool
+        - relevance_trigger_tool_async
+        - relevance_update_tool
+        - relevance_update_tool_step
+        - relevance_upsert_tool
+    - domain: triggers
+      tool_count: 2
+      tools:
+        - relevance_create_trigger
+        - relevance_delete_trigger
+    - domain: workforces
+      tool_count: 12
+      tools:
+        - relevance_create_workforce
+        - relevance_delete_workforce
+        - relevance_get_workforce
+        - relevance_get_workforce_task_messages
+        - relevance_get_workforce_task_metadata
+        - relevance_list_workforce_tasks
+        - relevance_list_workforce_versions
+        - relevance_list_workforces
+        - relevance_poll_workforce_task_result
+        - relevance_publish_workforce
+        - relevance_trigger_workforce
+        - relevance_update_workforce

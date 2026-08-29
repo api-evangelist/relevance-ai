@@ -1,0 +1,118 @@
+generated: '2026-08-29'
+method: probed
+source: live GET of /.well-known/* on every Relevance AI host named in apis.yml, the SDK region base, and the docs/MCP hosts
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  /.well-known/ probe across relevanceai.com, docs.relevanceai.com, app.relevanceai.com,
+  mcp.relevanceai.com and the regional API host api-f1db6c.stack.tryrelevance.com.
+  Two real documents are served: the MCP server publishes RFC 8414 OAuth authorization-server
+  metadata and RFC 9728 OAuth protected-resource metadata, and the docs host serves an A2A
+  agent card. Every other path is absent.
+hosts:
+  - host: relevanceai.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+    note: >-
+      Webflow-hosted marketing site. Every /.well-known/ path returns the site's HTTP 404 page.
+  - host: mcp.relevanceai.com
+    documents:
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        file: relevance-ai-mcp-oauth-authorization-server.json
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        file: relevance-ai-mcp-oauth-protected-resource.json
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+    note: >-
+      The remote MCP server. Authorization-server metadata declares authorization_code + PKCE
+      (S256), refresh_token, a dynamic client registration endpoint, and a single supported
+      scope "claudeai". Protected-resource metadata names the MCP endpoint itself as the
+      resource and the same host as its authorization server.
+  - host: docs.relevanceai.com
+    documents:
+      - path: /.well-known/agent-card.json
+        status: 200
+        file: relevance-ai-docs-agent-card.json
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+    note: >-
+      Serves a real A2A AgentCard JSON object (see a2a/). All other paths 404.
+  - host: app.relevanceai.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+      - path: /.well-known/openid-configuration
+        status: 200
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+      - path: /.well-known/api-catalog
+        status: 200
+      - path: /.well-known/ai-plugin.json
+        status: 200
+      - path: /.well-known/agent-card.json
+        status: 200
+      - path: /.well-known/agent.json
+        status: 200
+    note: >-
+      NOT DOCUMENTS. The application SPA answers 200 with text/html for every /.well-known/
+      path, including nonsense ones — a catch-all route, not a served document. No file saved
+      and no pointer emitted for this host.
+  - host: api-f1db6c.stack.tryrelevance.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 403
+      - path: /.well-known/openid-configuration
+        status: 403
+      - path: /.well-known/oauth-authorization-server
+        status: 403
+      - path: /.well-known/api-catalog
+        status: 403
+      - path: /.well-known/ai-plugin.json
+        status: 403
+      - path: /.well-known/agent-card.json
+        status: 403
+      - path: /.well-known/agent.json
+        status: 403
+    note: >-
+      The regional REST API host (AU region). The edge returns 403 application/json for the
+      whole /.well-known/ prefix — refused, not served.
+summary:
+  documents_served: 3
+  security_txt: false
+  api_catalog: false
+  openid_configuration: false
+  oauth_metadata: true
+  agent_card: true

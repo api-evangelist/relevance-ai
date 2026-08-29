@@ -1,62 +1,208 @@
 aid: relevance-ai
 name: Relevance AI
 description: >-
-  Relevance AI is a platform for building and deploying AI agents and AI-powered workflows.
+  Relevance AI is an agent platform for building, testing and running specialist AI agents and
+  multi-agent "workforces" — teams of agents that coordinate on a shared goal. Domain experts
+  build agents in a no-code visual builder, hold them to pass/fail quality bars with a built-in
+  evals system, and connect them to 1,000+ integrations across sales, marketing, customer
+  success, operations and HR. Developers reach the same platform three ways: a 566-operation
+  REST API served from regional hosts in the US, EU and Australia; a first-party
+  JavaScript/TypeScript SDK on npm and JSR; and a hosted, OAuth-protected MCP server at
+  mcp.relevanceai.com that exposes agents, tools, workforces, knowledge tables, evals and
+  analytics to any MCP client. Enterprise governance covers RBAC, human-in-the-loop approvals,
+  SSO/SAML, PII masking, version control with rollback, multi-region data residency, and
+  OpenTelemetry audit-log and trace streaming to the customer's own S3 bucket. Operated by
+  OnSearch Pty Ltd T/A Relevance AI; SOC 2 Type II and GDPR compliant.
 type: Index
 deliveryModel:
-  model: unknown
+  model: saas
   open_source: false
-  commercial: false
-  callable_host: false
-  label: Delivery model not determined — needs a product licence on record
-  confidence: low
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
   source:
-  - none
-  generated: '2026-08-28'
+  - openapi
+  - pricing
+  - mcp
+  generated: '2026-08-29'
   method: derived
 accessModel:
   pricing: freemium
-  onboarding: unknown
-  trial: false
+  onboarding: self-serve
+  trial: true
   try_now: false
   public: false
-  label: Freemium
-  confidence: medium
+  label: Freemium with self-serve signup
+  confidence: high
   source:
   - plans
-  generated: '2026-07-22'
+  - authentication
+  generated: '2026-08-29'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/relevance-ai.png
 tags:
   - AI Agents
   - AI Automation
+  - Multi-Agent Systems
+  - Agent Platform
+  - MCP
+  - agent-native
+  - Workflow Automation
+  - LLM Orchestration
+  - Knowledge Management
+  - Observability
+  - Sales Automation
+  - GTM Engineering
 url: >-
   https://raw.githubusercontent.com/api-evangelist/relevance-ai/refs/heads/main/apis.yml
 created: '2026-03-27'
-modified: '2026-03-27'
+modified: '2026-08-29'
 specificationVersion: '0.23'
 apis:
   - aid: relevance-ai:relevance-ai
-    name: Relevance AI
+    name: Relevance AI API
     description: >-
-      Relevance AI is a platform for building and deploying AI agents and AI-powered workflows.
-    humanURL: https://relevanceai.com
+      REST API for the Relevance AI agent platform — 521 paths and 566 operations covering
+      agents, tools (called "studios" in the API), multi-agent workforces, knowledge tables,
+      conversations, triggers, evals, analytics, the template marketplace, projects,
+      organizations and billing. Authenticated with an `Authorization: project:api_key`
+      header. Served from a regional host chosen at client construction:
+      api-bcbe5a (US), api-d7b62b (EU) or api-f1db6c (AU).
+    humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+    baseURL: https://api-{region}.stack.tryrelevance.com/latest
     tags:
+      - AI Agents
       - AI Automation
+      - Multi-Agent Systems
+      - Workflow Automation
     properties:
+      - type: OpenAPI
+        url: openapi/relevance-ai-openapi.json
       - type: Documentation
-        url: https://docs.relevanceai.com
+        url: https://relevanceai.com/docs
+      - type: APIReference
+        url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+      - type: Authentication
+        url: authentication/relevance-ai-authentication.yml
+      - type: ErrorCatalog
+        url: errors/relevance-ai-problem-types.yml
+      - type: Overlay
+        url: overlays/relevance-ai-openapi-overlay.yaml
+      - type: DataModel
+        url: data-model/relevance-ai-data-model.yml
+  - aid: relevance-ai:relevance-ai-mcp
+    name: Relevance AI MCP Server
+    description: >-
+      First-party hosted MCP server exposing a Relevance AI project's agents, tools,
+      workforces, knowledge tables, evals, analytics, folders and triggers to any
+      MCP-compatible client (Claude, ChatGPT, Cursor, VS Code, Codex, Windsurf, Zed and
+      others). Streamable HTTP transport behind OAuth 2.0 with PKCE and dynamic client
+      registration; a session binds to one project and is bounded server-side by the caller's
+      project role, with an opt-in Run-Only mode that strips write and destructive tools.
+    humanURL: https://relevanceai.com/docs/integrations/mcp/mcp-server
+    baseURL: https://mcp.relevanceai.com/
+    tags:
+      - MCP
+      - agent-native
+      - AI Agents
+    properties:
+      - type: MCPServer
+        url: mcp/relevance-ai-mcp.yml
+      - type: ToolCrosswalk
+        url: mcp/relevance-ai-tool-crosswalk.yml
+      - type: Documentation
+        url: https://relevanceai.com/docs/integrations/mcp/mcp-server
+      - type: OAuthScopes
+        url: scopes/relevance-ai-scopes.yml
 common:
-  - type: DomainSecurity
-    url: security/relevance-ai-domain-security.yml
+  - type: Website
+    url: https://relevanceai.com
+  - type: DeveloperPortal
+    url: https://relevanceai.com/docs
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: GettingStarted
+    url: https://relevanceai.com/docs/get-started/quick-start-guide
+  - type: Support
+    url: https://relevanceai.com/docs/get-started/support
+  - type: Blog
+    url: https://relevanceai.com/blog
   - type: GitHubOrganization
     url: https://github.com/RelevanceAI
   - type: LinkedIn
     url: https://www.linkedin.com/company/relevanceai
-  - type: Website
-    url: https://relevanceai.com
-  - type: Documentation
-    url: https://docs.relevanceai.com
+  - type: Pricing
+    url: https://relevanceai.com/pricing
+  - type: SignUp
+    url: https://relevanceai.com/signup
+  - type: Login
+    url: https://app.relevanceai.com/
+  - type: TermsOfService
+    url: https://relevanceai.com/terms-and-conditions
+  - type: PrivacyPolicy
+    url: https://relevanceai.com/privacy-policy
+  - type: StatusPage
+    url: https://status.relevanceai.com/
+  - type: TrustCenter
+    url: https://trust.relevanceai.com/
+  - type: Compliance
+    url: security/relevance-ai-trust-center.yml
+  - type: Conformance
+    url: conformance/relevance-ai-conformance.yml
+  - type: ChangeLog
+    url: changelog/relevance-ai-changelog.yml
+  - type: Lifecycle
+    url: lifecycle/relevance-ai-lifecycle.yml
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: OAuthScopes
+    url: scopes/relevance-ai-scopes.yml
+  - type: Conventions
+    url: conventions/relevance-ai-conventions.yml
+  - type: Idempotency
+    url: conventions/relevance-ai-conventions.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: Packages
+    url: packages/relevance-ai-packages.yml
+  - type: SDKs
+    url: packages/relevance-ai-packages.yml
+  - type: Components
+    url: components/relevance-ai-components.yml
+  - type: MCPServer
+    url: mcp/relevance-ai-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/relevance-ai-tool-crosswalk.yml
+  - type: AgentCard
+    url: a2a/relevance-ai-a2a.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: LLMsTxt
+    url: llms/relevance-ai-llms.txt
+  - type: WellKnown
+    url: well-known/relevance-ai-well-known.yml
+  - type: Webhooks
+    url: asyncapi/relevance-ai-events.yml
+  - type: Overlay
+    url: overlays/relevance-ai-openapi-overlay.yaml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+  - type: Plans
+    url: plans/relevance-ai-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/relevance-ai-rate-limits.yml
+  - type: FinOps
+    url: finops/relevance-ai-finops.yml
+  - type: DomainSecurity
+    url: security/relevance-ai-domain-security.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-29'
+  status: enriched
+  artifacts_added: 35
+  pass: local-v1

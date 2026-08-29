@@ -1,0 +1,115 @@
+generated: '2026-08-29'
+method: searched
+source: https://github.com/RelevanceAI/cc-plugin and https://github.com/RelevanceAI/agent-skills
+provider: Relevance AI
+providerId: relevance-ai
+description: Agent Skills PUBLISHED BY RELEVANCE AI, saved verbatim. Nothing here was authored by API
+  Evangelist. Ten skills come from the official Claude Code plugin (RelevanceAI/cc-plugin v1.5.0, MIT)
+  and one is the top-level skill from RelevanceAI/agent-skills. Every skill operates through the remote
+  MCP server rather than the REST API directly, so the operations they name are MCP tool names; mcp/relevance-ai-tool-crosswalk.yml
+  binds those to the backing REST operationIds.
+plugin:
+  name: relevance-ai
+  version: 1.5.0
+  license: MIT
+  marketplace: https://github.com/RelevanceAI/cc-plugin
+  install: claude plugin marketplace add RelevanceAI/cc-plugin && claude plugin install relevance-ai@cc-plugin
+skill_count: 11
+skills:
+- id: managing-relevance-agents
+  file: relevance-ai-managing-relevance-agents.md
+  description: Manages Relevance AI agents - creating, configuring tools, writing system prompts, setting
+    up triggers, and running tasks. Use when building agents, attaching tools, debugging execution, or
+    viewing agent results.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/managing-relevance-agents/SKILL.md
+  mcp_tools_referenced: 26
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: managing-relevance-folders
+  file: relevance-ai-managing-relevance-folders.md
+  description: Organize Relevance AI agents and tools into folders — create, list, rename, move items
+    between folders, and delete folders. Use when the user wants to tidy a project, group related items,
+    or bulk-organize agents/tools after creating them.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/managing-relevance-folders/SKILL.md
+  mcp_tools_referenced: 7
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: managing-relevance-knowledge
+  file: relevance-ai-managing-relevance-knowledge.md
+  description: Use whenever the user asks an agent to seed or update a structured-row store (CRM contacts,
+    leads, support tickets) or to inspect knowledge-base metadata. Covers knowledge-base CRUD and row
+    CRUD. File / document-URL ingestion is not available via the tools — direct the user to the Knowledge
+    tab in the Relevance app UI. For Q&A over knowledge, attach the base to an agent and let the built-in
+    `agent_knowledge` tool answer.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/managing-relevance-knowledge/SKILL.md
+  mcp_tools_referenced: 13
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: managing-relevance-tools
+  file: relevance-ai-managing-relevance-tools.md
+  description: Manages Relevance AI tools (studios) - creating transformation workflows, configuring OAuth,
+    setting vendor/brand tool icons, running tools, and recovering versions. Use when building tools,
+    adding steps, setting a tool's icon for a provider, debugging transformations, or restoring previous
+    versions.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/managing-relevance-tools/SKILL.md
+  mcp_tools_referenced: 24
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: managing-relevance-workforces
+  file: relevance-ai-managing-relevance-workforces.md
+  description: Manages Relevance AI workforces (multi-agent systems) - creating workflows, configuring
+    nodes/edges, triggering execution, and debugging runs. Use when building multi-agent pipelines, connecting
+    agents together, or debugging workforce execution.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/managing-relevance-workforces/SKILL.md
+  mcp_tools_referenced: 18
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: relevance-ai
+  file: relevance-ai-relevance-ai.md
+  description: Manage AI agents, tools & multi-agent workforces on Relevance AI. Use when the user wants
+    to create agents, build tool workflows, orchestrate multi-agent systems, or manage knowledge tables
+    via the Relevance AI API.
+  source: https://github.com/RelevanceAI/agent-skills/blob/main/SKILL.md
+  mcp_tools_referenced: 16
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: relevance-analytics
+  file: relevance-ai-relevance-analytics.md
+  description: Retrieves usage analytics for Relevance AI agents and projects. Use when asked about agent/workforce/tool
+    usage, credit spend, error rates, breakdowns, task-status counts, most active agents, execution counts,
+    or usage trends over time.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/relevance-analytics/SKILL.md
+  mcp_tools_referenced: 7
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: relevance-diagnostics
+  file: relevance-ai-relevance-diagnostics.md
+  description: Diagnose what is wrong in a Relevance AI project and recommend fixes. Use when the user
+    asks to "analyse my project", "diagnose this agent/workforce", "why is X failing?", "what's wrong
+    / what should I fix?", "what's failing?", or "any regressions?". Finds root causes and recommends
+    fixes by consuming the analytics, eval, and error read tools.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/relevance-diagnostics/SKILL.md
+  mcp_tools_referenced: 24
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: relevance-evals
+  file: relevance-ai-relevance-evals.md
+  description: Manages evaluations and monitoring for agents and workforces (multi-agent systems) in Relevance
+    AI — creating test cases, defining checks, configuring tool simulations, running evaluations, analysing
+    results, and setting up performance dashboards that monitor production traffic. Use when testing agent
+    or workforce behaviour, setting up automated testing, reviewing eval results, or monitoring production
+    agents for failures.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/relevance-evals/SKILL.md
+  mcp_tools_referenced: 37
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: relevance-slide-builder
+  file: relevance-ai-relevance-slide-builder.md
+  description: Manages slideshows, slideshow templates, slideshow versions, and brand kits in Relevance
+    AI. Use when creating presentations, managing brand assets, exporting slides, or working with slide
+    templates.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/relevance-slide-builder/SKILL.md
+  mcp_tools_referenced: 1
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+- id: relevance-task-ops
+  file: relevance-ai-relevance-task-ops.md
+  description: Read the Task Ops (monitor) page for a project — the operator surface that lists every
+    agent task. Use when the user asks to see their tasks, how many are errored / escalated / awaiting
+    approval, to list the failing tasks, or to open a specific task and read its error.
+  source: https://github.com/RelevanceAI/cc-plugin/blob/main/plugins/relevance-ai/skills/relevance-task-ops/SKILL.md
+  mcp_tools_referenced: 5
+  api: Relevance AI MCP Server (https://mcp.relevanceai.com/)
+note: The cc-plugin skills carry supporting reference files (creating.md, troubleshooting.md, transformations.md
+  and others) alongside each SKILL.md. Only the SKILL.md entry point is mirrored here; the full trees
+  live in the provider repositories linked above.

@@ -1,0 +1,229 @@
+generated: '2026-08-29'
+method: derived
+source: >-
+  openapi/relevance-ai-openapi.json (566 operations) + https://relevanceai.com/docs
+  + live probes of https://api-f1db6c.stack.tryrelevance.com/latest
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  Cross-cutting runtime semantics for the Relevance AI REST API and its MCP surface: how you
+  authenticate, page, trace, retry, and — critically — how you take an action back.
+auth_style:
+  scheme: apiKey in header
+  header: Authorization
+  format: 'project:api_key'
+  key_prefix: 'sk-'
+  variants:
+    - name: API key
+      scope: full project access
+      environment: server-side only
+    - name: Embed key
+      scope: a single public agent or a single workforce
+      environment: browser-safe, generated at runtime, persistable via key.toJSON()
+  oauth:
+    surface: MCP only
+    endpoint: https://mcp.relevanceai.com/
+    flow: authorization_code + PKCE (S256), dynamic client registration
+    scopes: [claudeai]
+  expiry: >-
+    "Existing keys do not auto-expire and must be manually decommissioned via the dashboard."
+  cross_link: authentication/relevance-ai-authentication.yml
+regions:
+  style: region is part of the hostname, chosen at client construction
+  base: https://api-{region}.stack.tryrelevance.com/latest
+  values:
+    bcbe5a: United States
+    d7b62b: Europe
+    f1db6c: Australia
+  streaming_base: https://{region}.streaming.tryrelevance.com/v1/stream
+  note: >-
+    A project lives in exactly one region. Calling the wrong regional host is a silent
+    integration failure — the spec's own servers[] is the relative "/latest" and names no host.
+pagination:
+  styles:
+    - style: offset
+      params: [page, page_size]
+      detail: 'page is 1-indexed; page_size is a number. Used on 39 (page_size) / 33 (page) operations.'
+    - style: cursor
+      params: [cursor]
+      detail: >-
+        "Opaque pagination cursor from the previous response." Used on 10 operations. Which
+        family gets cursors and which gets offsets is not documented.
+  response_fields: >-
+    Not consistently declared. Because the spec documents only 200 responses with generated
+    output schemas, there is no single documented envelope naming next-cursor / total.
+  consistency: mixed
+  note: Two pagination styles coexist with no stated rule for which applies where.
+filtering:
+  params: [filters, sort, select_fields, query, search]
+  filters: >-
+    A structured array; each entry carries a field, a match type (exact_match and others) and
+    a case_insensitive flag. Several list endpoints REQUIRE a filter — POST /agents/list with
+    an empty body returns 422 demanding an exact_match filter on a project ID.
+  sparse_fields:
+    param: select_fields
+    detail: 'Fields to include in results; an empty array means all fields.'
+metadata:
+  supported: true
+  detail: >-
+    Agents carry arbitrary custom metadata (ListAgentsCustomMetadata,
+    relevance_ai.agent.metadata on the OTEL invoke_agent span).
+request_tracing:
+  headers:
+    - name: x-request-id
+      direction: response
+      detail: Per-request correlation id, observed on a live call.
+    - name: error_id
+      direction: response
+      detail: Mirrors x-request-id on error responses.
+    - name: x-trace-id
+      direction: response
+      detail: 'Present but deprecated — returns the literal "x-trace-id-deprecated".'
+  exposed_via: 'access-control-expose-headers: x-trace-id,x-request-id,error_id'
+  client_supplied: >-
+    No documented client-supplied request-id header. The API assigns the id; a caller cannot
+    propagate its own.
+  deep_tracing:
+    standard: OpenTelemetry
+    detail: >-
+      Enterprise organizations can stream OTEL traces and audit logs to their own S3 bucket,
+      with GenAI semantic-convention span attributes (gen_ai.operation.name, gen_ai.agent.id,
+      gen_ai.conversation.id). See asyncapi/relevance-ai-events.yml.
+versioning:
+  scheme: single moving version at /latest
+  pinning: not possible
+  cross_link: lifecycle/relevance-ai-lifecycle.yml
+error_envelope:
+  rfc9457: false
+  shape: '{ message, error_type, error_audience }'
+  cross_link: errors/relevance-ai-problem-types.yml
+rate_limit_signaling:
+  headers: none
+  detail: >-
+    No X-RateLimit-*, RateLimit-* or Retry-After header was returned on a live call, and none
+    is documented. Capacity is enforced as per-tier Action / Vendor Credit quotas and a
+    per-tier concurrent-task ceiling, and exceeding concurrency QUEUES rather than rejects —
+    so an agent gets no runtime backpressure signal at all.
+  cross_link: rate-limits/relevance-ai-rate-limits.yml
+idempotency:
+  supported: partial
+  mechanism: body field
+  field: idempotency_key
+  header: none
+  scope: billing and subscription operations only
+  retention: not documented
+  required_on:
+    - BuyCredits
+    - CancelDowngrade
+    - ChangeBillingSubscription
+    - DowngradeSubscription
+  optional_on:
+    - CancelSubscription
+    - TriggerOrganizationPlanTrial
+    - UpdateOrganizationBilling
+  detail: >-
+    Idempotency is real but narrow: 7 of 566 operations accept an idempotency_key in the
+    request body, and 4 of those require it. They are exactly the money-moving operations
+    (buying credits, changing/downgrading/cancelling a subscription). NOTHING on the agent,
+    tool, workforce, knowledge or trigger surface — the operations an agent actually calls in
+    a loop — accepts an idempotency key. Retrying a TriggerAgent or TriggerStudio call after a
+    timeout will run it again and bill it again.
+  source: openapi/relevance-ai-openapi.json components.schemas.*Input
+dry_run_mode:
+  supported: false
+  detail: >-
+    No dry_run / preview / simulate parameter anywhere in the 566 operations. The nearest
+    equivalents are test-before-attach workflows the provider documents in prose
+    (relevance_trigger_tool before attaching a tool, TestWorkforceNode for a single workforce
+    node, and the Evals system for pre-publish checks) — all of which really execute.
+reversibility:
+  grade: verified
+  applies: true
+  detail: >-
+    The platform is version-controlled: agents, tools and workforces all publish from drafts,
+    and every published version can be restored. The provider states the retention window for
+    those versions explicitly, which is what lifts this from documented to verified.
+  reversal_paths:
+    - action: publish an agent version
+      forward_operation: PublishAgent
+      reversal_operation: RestoreAgentVersion
+      window: >-
+        Indefinite by default — "Versions are kept indefinitely unless your organization has a
+        data retention policy in place." Where one applies, a version is deleted only when it
+        is older than the retention window AND is neither the active nor the draft version.
+      docs: https://relevanceai.com/docs/build/agents/build-your-agent/version-history
+      note: >-
+        A restore lands in DRAFT with "(restored)" appended, not live; the running version
+        keeps serving until you publish. The rollback is therefore reviewable before it applies.
+    - action: publish a tool version
+      forward_operation: PublishTool
+      reversal_operation: RestoreToolVersion
+      window: same version-retention rule as agents
+      docs: https://relevanceai.com/docs/build/agents/build-your-agent/version-history
+    - action: publish a workforce version
+      forward_operation: UpsertWorkforceVersion
+      reversal_operation: RestoreWorkforceVersion
+      window: same version-retention rule as agents
+      docs: https://relevanceai.com/docs/build/agents/build-your-agent/version-history
+    - action: run an agent
+      forward_operation: TriggerAgent
+      reversal_operation: CancelAgent
+      window: >-
+        While the run is in flight only. Documented run ceilings are 15 minutes for an agent
+        after each user action and 24 hours for a bulk run; the docs state no separate cancel
+        deadline.
+      docs: https://relevanceai.com/docs/admin/system-limits
+      note: >-
+        Cancel stops further work. It does NOT undo side effects an agent has already taken in
+        an external system (an email sent, a CRM record written), and the docs do not claim it
+        does.
+    - action: run a tool (studio)
+      forward_operation: TriggerStudio
+      reversal_operation: CancelStudio
+      window: while the job is running; no deadline stated
+      docs: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+    - action: schedule a batch of agent tasks
+      forward_operation: CreateBatchScheduleAgentTasks
+      reversal_operation: CancelBatchScheduleAgentTasksGroup
+      window: before the scheduled tasks execute; also PauseBatchScheduleAgentTasksGroup / ResumeBatchScheduleAgentTasksGroup
+      docs: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+    - action: start an eval run or batch
+      forward_operation: EvaluateResource
+      reversal_operation: CancelEvalRunForResource
+      window: while running
+      docs: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+    - action: downgrade or cancel a subscription
+      forward_operation: DowngradeSubscription
+      reversal_operation: CancelDowngrade
+      window: >-
+        Before the downgrade takes effect at the renewal boundary. The exact deadline is not
+        stated in the public docs, so it is NOT asserted here.
+      docs: https://relevanceai.com/docs/admin/subscriptions/plans
+  irreversible:
+    - action: delete an agent / tool / workforce
+      operations: [DeleteAgent, BulkDeleteStudios, DeleteWorkforce]
+      detail: >-
+        No restore-from-trash operation exists for a deleted asset — only version restore
+        within a surviving asset. Treat deletion as permanent.
+    - action: delete knowledge rows or a knowledge set
+      operations: [DeleteKnowledge, DeleteKnowledgeSet]
+      detail: No undelete operation in the spec.
+    - action: purchase Actions or Vendor Credits
+      operations: [BuyCredits]
+      detail: >-
+        No refund or void operation. The docs describe rollover, not reversal. An agent that
+        can call this can spend real money with no undo.
+    - action: external side effects taken by an agent
+      detail: >-
+        Emails sent, CRM records written and messages posted through the 1,000+ integrations
+        are outside Relevance AI's transaction boundary and cannot be reversed from this API.
+  warnings:
+    - >-
+      NEVER infer a reversal window here that the docs do not state. The version-retention rule
+      is quoted verbatim; the subscription-downgrade deadline is deliberately left unstated.
+cross_links:
+  authentication: authentication/relevance-ai-authentication.yml
+  errors: errors/relevance-ai-problem-types.yml
+  lifecycle: lifecycle/relevance-ai-lifecycle.yml
+  rate_limits: rate-limits/relevance-ai-rate-limits.yml
+  events: asyncapi/relevance-ai-events.yml

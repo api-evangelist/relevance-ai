@@ -1,0 +1,67 @@
+generated: '2026-08-29'
+method: probed
+source: https://docs.relevanceai.com/.well-known/agent-card.json
+provider: Relevance AI
+providerId: relevance-ai
+description: >-
+  Relevance AI serves an A2A Agent Card from its documentation host. It was found by probing
+  /.well-known/agent-card.json across every Relevance AI host; relevanceai.com,
+  mcp.relevanceai.com and the regional API host do not serve one, and app.relevanceai.com
+  answers 200 HTML for every /.well-known/ path (an SPA catch-all, not a document).
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: docs.relevanceai.com
+x-evidence:
+  fetched: '2026-08-29'
+  url: https://docs.relevanceai.com/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json
+  bytes: 1038
+card:
+  name: Relevance AI Documentation
+  url: https://relevanceai.com/docs/
+  version: 1.0.0
+  protocolVersion: '0.3'
+  preferredTransport: HTTP+JSON
+  provider_organization: Relevance AI Documentation
+  documentationUrl: https://relevanceai.com/docs/
+  capabilities:
+    streaming: false
+    pushNotifications: false
+  skills_count: 1
+  skills:
+    - id: relevanceai
+      name: Relevanceai
+      url: https://relevanceai.com/docs/.well-known/agent-skills/relevanceai/skill.md
+grade: conformant
+grade_basis: >-
+  A2A 1.0.0 hard checks all pass — capabilities is an object, protocolVersion is present, and
+  skills is an array. The optional fields the grade also looks for (preferredTransport,
+  defaultInputModes, defaultOutputModes) are all present.
+deviations:
+  - field: description
+    issue: >-
+      The A2A AgentCard object requires a top-level `description`; this card omits it. The only
+      human description lives inside skills[0].description.
+  - field: protocolVersion
+    issue: >-
+      Declares "0.3" rather than "1.0.0", so the card is published against a pre-1.0 revision
+      of the protocol even though its own `version` is 1.0.0.
+  - field: url
+    issue: >-
+      `url` and every entry in `supportedInterfaces` point at the documentation site
+      (https://relevanceai.com/docs/), not at an A2A JSON-RPC endpoint. The card advertises a
+      documentation surface an agent can read, not an agent endpoint it can call. This is a
+      docs-platform-generated card, and it is scoped accordingly.
+  - field: skills[].tags
+    issue: The single skill declares an empty tags array, so it is not routable by tag.
+notes:
+  - >-
+    The card is NOT the provider's agent-platform surface. Relevance AI's callable agent
+    surface is the remote MCP server at https://mcp.relevanceai.com/ (see mcp/), plus the REST
+    API. The agent card is recorded because the provider genuinely serves it from its own host,
+    which is the property the artifact asserts.
+  - >-
+    Nothing here was authored on the provider's behalf. The JSON in
+    a2a/relevance-ai-agent-card.json is the verbatim response body.

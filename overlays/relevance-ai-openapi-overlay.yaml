@@ -1,0 +1,96 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay for the Relevance AI API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-29'
+  method: generated
+  source: openapi/relevance-ai-openapi.json
+  extends: openapi/relevance-ai-openapi.json
+  note: >-
+    Non-destructive. Captures what API Evangelist established about this contract from the
+    provider's own documentation and from live probes; the harvested spec itself is never
+    mutated. Applying this overlay adds the absolute regional server the spec omits, the
+    licence and contact metadata, and the runtime response headers observed on a live call.
+actions:
+  - target: $.info
+    description: >-
+      The published spec carries only title, description, version "latest" and a contact
+      email. Add the documentation and terms links the provider publishes.
+    update:
+      termsOfService: https://relevanceai.com/terms-and-conditions
+      contact:
+        name: Relevance AI
+        email: dev@tryrelevance.com
+        url: https://relevanceai.com/docs/get-started/support
+      x-documentation: https://relevanceai.com/docs
+      x-api-reference: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+      x-changelog: https://relevanceai.com/docs/changelog
+      x-provider: Relevance AI (OnSearch Pty Ltd T/A Relevance AI)
+  - target: $
+    description: >-
+      servers[] in the published spec is the relative path "/latest", which names no host. The
+      SDK's own regionBaseURL() resolves it to https://api-{region}.stack.tryrelevance.com,
+      with region one of bcbe5a (US), d7b62b (EU) or f1db6c (AU). Add the templated absolute
+      form plus the three concrete regional servers, so a client can resolve a callable base.
+    update:
+      x-servers-resolved:
+        - url: https://api-{region}.stack.tryrelevance.com/latest
+          description: Regional REST API base, templated as the SDK constructs it.
+          variables:
+            region:
+              default: bcbe5a
+              enum: [bcbe5a, d7b62b, f1db6c]
+              description: bcbe5a = United States, d7b62b = Europe, f1db6c = Australia
+        - url: https://api-bcbe5a.stack.tryrelevance.com/latest
+          description: United States region
+        - url: https://api-d7b62b.stack.tryrelevance.com/latest
+          description: Europe region
+        - url: https://api-f1db6c.stack.tryrelevance.com/latest
+          description: Australia region
+      x-streaming-servers:
+        - url: https://{region}.streaming.tryrelevance.com/v1/stream
+          description: >-
+            Server-sent-events stream, as constructed by the SDK's regionStreamingURL(). Not
+            described anywhere in the OpenAPI.
+  - target: $.components.securitySchemes.AuthorizationHeader
+    description: >-
+      The scheme's description states the header format but the spec gives no example and no
+      key format. Add both from the provider's authentication documentation.
+    update:
+      x-key-format: 'project_id:sk-...  (API key), or a runtime-generated embed key'
+      x-docs: https://relevanceai.com/docs/sdk/authentication
+      x-key-scopes: >-
+        API keys grant unrestricted access to every resource in the project. Embed keys are
+        generated at runtime and scoped to a single public agent or a single workforce.
+  - target: $
+    description: >-
+      Runtime response headers observed on a live unauthenticated request to
+      POST /latest/agents/list. None of these appear in the published spec.
+    update:
+      x-response-headers:
+        x-request-id: Per-request correlation id, also echoed as the error_id header.
+        error_id: Mirrors x-request-id on error responses; quote it to support.
+        x-trace-id: Present but returns the literal "x-trace-id-deprecated".
+        access-control-expose-headers: 'x-trace-id, x-request-id, error_id'
+      x-rate-limit-headers: >-
+        NONE observed. The API returned no X-RateLimit-*, RateLimit-* or Retry-After header on
+        a live call, and the docs publish no HTTP rate limits — capacity is governed by
+        per-tier Action / Vendor Credit quotas and a per-tier concurrent-task ceiling instead.
+  - target: $
+    description: >-
+      The spec documents a 200 response on every one of its 566 operations and no 4xx or 5xx
+      at all. Record the real error envelope observed live, so a consumer is not left to guess.
+    update:
+      x-error-envelope:
+        media_type: application/json
+        rfc9457: false
+        fields:
+          message: Human-readable error string.
+          error_type: 'Machine token; observed value "unset_error_type".'
+          error_audience: 'Observed value "platform".'
+        observed_status_codes: [403, 422]
+        note: >-
+          Derived from live probes only: 422 from POST /latest/agents/list with an empty
+          body, 403 from the /.well-known/ prefix on the same host. See
+          errors/relevance-ai-problem-types.yml.

@@ -1,0 +1,45 @@
+# Relevance AI
+
+> Relevance AI is a platform for building, testing, and managing specialist AI agents and multi-agent systems. Domain experts build agents without code, hold them to quality standards with evals, and run millions of tasks across sales, marketing, customer success, operations, and HR. GTM engineers can also build agents programmatically via MCP-compatible copilots such as Claude Code.
+
+Key facts:
+- No-code visual agent builder plus programmatic access (Programmatic GTM via MCP, APIs, webhooks)
+- Evals system: define pass/fail quality criteria; agents can't ship until they meet the bar, and are monitored continuously in production
+- 1,000+ native integrations (HubSpot, Salesforce, Gmail, Slack, Google Drive, Notion, and more)
+- Enterprise governance: RBAC, human-in-the-loop approvals, audit logs, SSO/SAML, PII masking, multi-region data residency, version control with rollback
+- SOC 2 Type II compliant
+- Workforce: multi-agent systems that coordinate teams of agents on shared goals
+
+## Product
+
+- [Product overview](https://relevanceai.com/product): Platform capabilities and comparison with alternatives
+- [Features](https://relevanceai.com/features): Agent building, tools, triggers, knowledge, and monitoring
+- [Workforce](https://relevanceai.com/workforce): Build and run multi-agent systems (MAS) with a no-code builder
+- [Agents](https://relevanceai.com/agents): Specialist AI agents built and managed by domain experts
+- [Multi-agents](https://relevanceai.com/multi-agents): Multi-agent system concepts and capabilities
+- [Integrations](https://relevanceai.com/integrations): 1,000+ connectors for CRMs, email, messaging, and databases
+- [Enterprise](https://relevanceai.com/enterprise): Security, governance, and deployment for large organizations
+- [Pricing](https://relevanceai.com/pricing): Plans and tiers, including free tier
+
+## Docs
+
+- [Documentation](https://relevanceai.com/docs/get-started/introduction): Getting started, core concepts, and API reference
+- [Quick start guide](https://relevanceai.com/docs/get-started/quick-start-guide): Build your first agent
+- [Core concepts: Agents](https://relevanceai.com/docs/get-started/core-concepts/agents): What agents are and how they work
+- [Core concepts: Workforces](https://relevanceai.com/docs/get-started/core-concepts/workforces): How multi-agent workforces coordinate
+
+## Use cases
+
+- [Sales](https://relevanceai.com/use-cases/sales): Specialist agents for outbound and pipeline
+- [Marketing](https://relevanceai.com/use-cases/marketing): Specialist agents for content and campaigns
+- [Customer support](https://relevanceai.com/use-cases/customer-support): Specialist agents for support teams
+- [Research](https://relevanceai.com/use-cases/research): Research and enrichment agents
+- [Bosh, the sales agent](https://relevanceai.com/bosh-sales-agent): AI BDR for outbound and inbound sales
+- [Customer stories](https://relevanceai.com/customers): Results from teams running AI workforces
+
+## Resources
+
+- [Blog](https://relevanceai.com/blog): Guides and thinking on building the AI workforce
+- [Changelog](https://relevanceai.com/changelog): Product updates
+- [Templates](https://relevanceai.com/templates): Pre-built agent and tool templates
+- [Book a demo](https://relevanceai.com/book-a-demo): Talk to the team

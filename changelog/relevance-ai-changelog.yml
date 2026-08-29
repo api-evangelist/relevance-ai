@@ -1,0 +1,87 @@
+generated: '2026-08-29'
+method: searched
+source: https://relevanceai.com/docs/changelog
+provider: Relevance AI
+providerId: relevance-ai
+scheme: dated product changelog (no API version numbers)
+current_version: latest
+cadence: irregular, roughly monthly
+scope: >-
+  Platform and product changes. The changelog does not distinguish API-affecting changes from
+  UI changes, and no entry declares a breaking change or a migration path.
+url: https://relevanceai.com/docs/changelog
+entries:
+  - date: '2026-07-22'
+    title: Concurrency visibility for project and organization admins
+    breaking: false
+    additions: true
+    highlights: >-
+      Queued runs, live slot counts and a per-project capacity breakdown added to the
+      concurrency chart on Analytics and Plan & Billing.
+  - date: '2026-06-29'
+    title: Eval cost breakdowns and Workforce evaluations
+    breaking: false
+    additions: true
+    highlights: >-
+      Eval runs itemize credit and action consumption per component; workforce runs including
+      sub-agent and tool calls are now evaluated.
+  - date: '2026-06-12'
+    title: Gemini 3.5 Flash now available
+    breaking: false
+    additions: true
+  - date: '2026-05-29'
+    title: Timeline view added to Tasks page
+    breaking: false
+    additions: true
+  - date: '2026-05-21'
+    title: Outreach-only reply mode for Microsoft Teams agents
+    breaking: false
+    additions: true
+  - date: '2026-05-13'
+    title: MCP access for the Member role
+    breaking: false
+    additions: true
+    highlights: Extends MCP session access from Admin/Editor to the Member project role.
+  - date: '2026-05-01'
+    title: 'Confluence Knowledge Sync, project-level public agent controls, Android app'
+    breaking: false
+    additions: true
+  - date: '2026-03-13'
+    title: 'Agent performance observability; pause/cancel/resume agent triggers; people search in Chat'
+    breaking: false
+    additions: true
+  - date: '2026-03-10'
+    title: Organization concurrency usage analytics and timeseries
+    breaking: false
+    additions: true
+  - date: '2026-03-09'
+    title: Microsoft Teams integration and project invitation email tracking
+    breaking: false
+    additions: true
+  - date: '2026-03-06'
+    title: New Relevance AI documentation site
+    breaking: false
+    additions: true
+  - date: '2026-02-24'
+    title: Trigger agents from Microsoft Teams calendar events
+    breaking: false
+    additions: true
+  - date: '2026-02-09'
+    title: 'Evals: enterprise-grade agent testing, and editable bulk runs'
+    breaking: false
+    additions: true
+notable_pricing_change:
+  date: '2025-09'
+  title: Credits split into Actions and Vendor Credits
+  breaking: true
+  scope: billing, not API
+  detail: >-
+    "In September 2025 we moved to a new pricing model that splits Credits into Actions (what
+    your agents do) and Vendor Credits (AI model costs). All customers have now been
+    transitioned." Recorded because it changes what a metered API call costs, though the
+    provider does not file it as a changelog entry.
+  source: https://relevanceai.com/docs/admin/subscriptions/plans
+gaps:
+  - No breaking-change flag or migration guidance on any entry.
+  - No RSS/Atom or JSON feed found for the changelog.
+  - No separate API changelog; REST and MCP changes are not called out from product changes.

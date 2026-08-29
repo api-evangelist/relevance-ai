@@ -1,89 +1,150 @@
 specification: API Commons Rate Limits
 specificationVersion: '0.1'
-schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+generated: '2026-08-29'
+method: searched
+source: >-
+  https://relevanceai.com/docs/admin/system-limits,
+  https://relevanceai.com/docs/get-started/pricing,
+  https://relevanceai.com/docs/admin/subscriptions/plans,
+  https://relevanceai.com/docs/integrations/mcp/mcp-server,
+  live probe of POST https://api-f1db6c.stack.tryrelevance.com/latest/agents/list
 provider: Relevance AI
 providerId: relevance-ai
-created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
 tags:
   - AI Agents
-  - AI Automation
-  - Rate Limiting
   - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Relevance AI API surface. Captures per-tier
-  quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to
-  be replaced with published provider limits.
+  - Concurrency
+description: >-
+  Relevance AI publishes NO HTTP rate limit. There is no requests-per-second or
+  requests-per-minute figure anywhere in the documentation, and a live call returned no
+  rate-limit header of any kind. What the provider does publish, and what actually constrains
+  a caller, is a set of hard system quotas plus per-tier consumption quotas and a per-tier
+  concurrency ceiling. Exceeding concurrency QUEUES work rather than rejecting it, so there is
+  no 429 to back off from. This file REPLACES a 2026-05-04 scaffold that invented
+  requests-per-minute figures and X-RateLimit-* headers the API does not send.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  limit: null
+  remaining: null
+  reset: null
+  retryAfter: null
+  policy: null
+  observed: >-
+    A live unauthenticated POST to /latest/agents/list returned no X-RateLimit-*, no
+    RateLimit-*, and no Retry-After. Response headers it DID return: x-request-id, error_id,
+    x-trace-id (value "x-trace-id-deprecated").
 responseCodes:
-  throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  throttled: null
+  quotaExceeded: null
+  observed:
+    422: Validation failure (missing required filter).
+    403: Refused path prefix at the edge.
+  note: >-
+    No throttling status code is documented and none was observed. On concurrency exhaustion
+    the documented behaviour is queueing, not an error.
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Relevance AI
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Relevance AI
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Relevance AI
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Relevance AI
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Relevance AI
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+  - id: concurrent-agent-tasks
+    scope: per-organization
+    metric: concurrent_tasks
+    limit: null
+    tier_relative:
+      free: Less
+      pro: Standard
+      team: More
+      enterprise: Custom
+    window: instantaneous
+    behavior_on_exhaustion: queued until capacity frees up
+    detail: >-
+      "The number of concurrent tasks you are allowed is determined by your subscription tier,
+      NOT the type of trigger (webhook, API, or scheduled)." No absolute number is published
+      for any tier, so limit is recorded as null rather than guessed. Usage is visible in
+      Settings > Plan & Billing and on the Analytics page.
+    source: https://relevanceai.com/docs/admin/system-limits#concurrent-tasks
+  - id: actions-quota
+    scope: per-organization
+    metric: actions
+    window: month
+    limits_by_tier:
+      free: 200
+      pro: 2500
+      team: 7000
+      enterprise: custom
+    behavior_on_exhaustion: >-
+      Hard stop if a usage limit is configured; otherwise upgrade or buy a top-up
+      ($80 per 1,000 Actions, paid plans only).
+    reset: Plan Actions reset at renewal; purchased top-ups roll over.
+    source: https://relevanceai.com/docs/get-started/pricing
+  - id: vendor-credits-quota
+    scope: per-organization
+    metric: vendor_credits
+    window: month
+    limits_by_tier:
+      free: 1000
+      pro: 10000
+      team: 35000
+      enterprise: custom
+    free_note: The Free allocation is a one-time 1,000 at signup and does not renew.
+    reset: Roll over indefinitely while subscribed.
+    source: https://relevanceai.com/docs/get-started/pricing
+  - id: tool-run-duration
+    scope: per-run
+    metric: seconds
+    limit: 900
+    variant_limit: 86400
+    detail: 'Tools: 15 minutes on the standard class, 24 hours on the long-running class.'
+    source: https://relevanceai.com/docs/admin/system-limits
+  - id: agent-run-duration
+    scope: per-run
+    metric: seconds
+    limit: 900
+    detail: 15 minutes for an agent after each user action.
+    source: https://relevanceai.com/docs/admin/system-limits
+  - id: bulk-run-duration
+    scope: per-run
+    metric: seconds
+    limit: 86400
+    detail: 24 hours for a bulk run.
+    source: https://relevanceai.com/docs/admin/system-limits
+  - id: mcp-sync-trigger-timeout
+    scope: per-call
+    surface: MCP
+    metric: seconds
+    limit: 120
+    detail: >-
+      relevance_trigger_agent times out at 120 seconds. The provider documents switching to
+      relevance_trigger_agent_async + relevance_poll_agent_result (poll every 3-5s, no ceiling)
+      for anything longer.
+    source: https://relevanceai.com/docs/integrations/mcp/mcp-server
+  - id: upload-file-size
+    scope: per-upload
+    metric: bytes
+    limit: 104857600
+    detail: 100 MB maximum upload size.
+    source: https://relevanceai.com/docs/admin/system-limits
+  - id: upload-csv-rows
+    scope: per-upload
+    metric: rows
+    limit: 50000
+    detail: 50K rows maximum for a CSV upload.
+    source: https://relevanceai.com/docs/admin/system-limits
+  - id: knowledge-raw-text-size
+    scope: per-upload
+    metric: bytes
+    limit: 10485760
+    detail: 10 MB maximum raw text size as knowledge.
+    source: https://relevanceai.com/docs/admin/system-limits
+limit_count: 10
+customer_controls:
+  - name: Usage limits
+    scope: organization and project
+    detail: >-
+      Admins can set hard-stop limits on Credits and Actions per calendar month, with email
+      notification. Available on all plans, reset at the start of each month.
+    source: https://relevanceai.com/docs/admin/project-management/usage-limits
+  - name: Usage alerts
+    detail: Email notification only, no hard stop.
+    source: https://relevanceai.com/docs/admin/project-management/usage-alerts
+gaps:
+  - No HTTP rate limit published and none observed.
+  - No rate-limit response headers, so an agent has no runtime backpressure signal.
+  - No absolute concurrent-task number for any tier.
+  - No documented status code for throttling; concurrency exhaustion queues silently.
