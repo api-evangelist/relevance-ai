@@ -48,6 +48,19 @@ tags:
   - Agent Platform
   - MCP
   - agent-native
+  - Workflow-Automation
+  - LLM Orchestration
+  - Knowledge-Management
+  - Observability
+  - Sales Automation
+  - GTM Engineering
+tags_raw:
+  - AI Agents
+  - AI Automation
+  - Multi-Agent Systems
+  - Agent Platform
+  - MCP
+  - agent-native
   - Workflow Automation
   - LLM Orchestration
   - Knowledge Management
@@ -72,6 +85,11 @@ apis:
     humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
     baseURL: https://api-{region}.stack.tryrelevance.com/latest
     tags:
+      - AI Agents
+      - AI Automation
+      - Multi-Agent Systems
+      - Workflow-Automation
+    tags_raw:
       - AI Agents
       - AI Automation
       - Multi-Agent Systems
