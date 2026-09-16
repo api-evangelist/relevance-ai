@@ -216,6 +216,8 @@ common:
     url: finops/relevance-ai-finops.yml
   - type: DomainSecurity
     url: security/relevance-ai-domain-security.yml
+  - type: Contact
+    url: mailto:support@relevanceai.com
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
