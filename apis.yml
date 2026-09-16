@@ -73,66 +73,650 @@ created: '2026-03-27'
 modified: '2026-08-29'
 specificationVersion: '0.23'
 apis:
-  - aid: relevance-ai:relevance-ai
-    name: Relevance AI API
-    description: >-
-      REST API for the Relevance AI agent platform — 521 paths and 566 operations covering
-      agents, tools (called "studios" in the API), multi-agent workforces, knowledge tables,
-      conversations, triggers, evals, analytics, the template marketplace, projects,
-      organizations and billing. Authenticated with an `Authorization: project:api_key`
-      header. Served from a regional host chosen at client construction:
-      api-bcbe5a (US), api-d7b62b (EU) or api-f1db6c (AU).
-    humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
-    baseURL: https://api-{region}.stack.tryrelevance.com/latest
-    tags:
-      - AI Agents
-      - AI Automation
-      - Multi-Agent Systems
-      - Workflow-Automation
-    tags_raw:
-      - AI Agents
-      - AI Automation
-      - Multi-Agent Systems
-      - Workflow Automation
-    properties:
-      - type: OpenAPI
-        url: openapi/relevance-ai-openapi.json
-      - type: Documentation
-        url: https://relevanceai.com/docs
-      - type: APIReference
-        url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
-      - type: Authentication
-        url: authentication/relevance-ai-authentication.yml
-      - type: ErrorCatalog
-        url: errors/relevance-ai-problem-types.yml
-      - type: Overlay
-        url: overlays/relevance-ai-openapi-overlay.yaml
-      - type: DataModel
-        url: data-model/relevance-ai-data-model.yml
-  - aid: relevance-ai:relevance-ai-mcp
-    name: Relevance AI MCP Server
-    description: >-
-      First-party hosted MCP server exposing a Relevance AI project's agents, tools,
-      workforces, knowledge tables, evals, analytics, folders and triggers to any
-      MCP-compatible client (Claude, ChatGPT, Cursor, VS Code, Codex, Windsurf, Zed and
-      others). Streamable HTTP transport behind OAuth 2.0 with PKCE and dynamic client
-      registration; a session binds to one project and is bounded server-side by the caller's
-      project role, with an opt-in Run-Only mode that strips write and destructive tools.
-    humanURL: https://relevanceai.com/docs/integrations/mcp/mcp-server
-    baseURL: https://mcp.relevanceai.com/
-    tags:
-      - MCP
-      - agent-native
-      - AI Agents
-    properties:
-      - type: MCPServer
-        url: mcp/relevance-ai-mcp.yml
-      - type: ToolCrosswalk
-        url: mcp/relevance-ai-tool-crosswalk.yml
-      - type: Documentation
-        url: https://relevanceai.com/docs/integrations/mcp/mcp-server
-      - type: OAuthScopes
-        url: scopes/relevance-ai-scopes.yml
+- aid: relevance-ai:relevance-ai-mcp
+  name: Relevance AI MCP Server
+  description: >-
+    First-party hosted MCP server exposing a Relevance AI project's agents, tools, workforces, knowledge
+    tables, evals, analytics, folders and triggers to any MCP-compatible client (Claude, ChatGPT, Cursor,
+    VS Code, Codex, Windsurf, Zed and others). Streamable HTTP transport behind OAuth 2.0 with PKCE and
+    dynamic client registration; a session binds to one project and is bounded server-side by the caller's
+    project role, with an opt-in Run-Only mode that strips write and destructive tools.
+  humanURL: https://relevanceai.com/docs/integrations/mcp/mcp-server
+  baseURL: https://mcp.relevanceai.com/
+  tags:
+  - MCP
+  - agent-native
+  - AI Agents
+  properties:
+  - type: MCPServer
+    url: mcp/relevance-ai-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/relevance-ai-tool-crosswalk.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs/integrations/mcp/mcp-server
+  - type: OAuthScopes
+    url: scopes/relevance-ai-scopes.yml
+- aid: relevance-ai:relevance-ai-agent-debug-configs-api
+  name: Relevance AI Agent Debug Configs API
+  description: The Agent Debug Configs API from Relevance AI — 4 operation(s) for agent debug configs.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Agent Debug Configs
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-agent-debug-configs-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-agent-runtime-events-api
+  name: Relevance AI Agent Runtime Events API
+  description: >-
+    The Agent Runtime Events API from Relevance AI — 4 operation(s) for agent runtime events.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Agent Runtime Events
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-agent-runtime-events-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-agents-api
+  name: Relevance AI Agents API
+  description: The Agents API from Relevance AI — 7 operation(s) for agents.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Agents
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-agents-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-alarms-api
+  name: Relevance AI Alarms API
+  description: The alarms API from Relevance AI — 3 operation(s) for alarms.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - alarms
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-alarms-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-analytics-api
+  name: Relevance AI Analytics API
+  description: The analytics API from Relevance AI — 23 operation(s) for analytics.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - analytics
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-analytics-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-apify-api
+  name: Relevance AI Apify API
+  description: The apify API from Relevance AI — 2 operation(s) for apify.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - apify
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-apify-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-auth-api
+  name: Relevance AI Auth API
+  description: The auth API from Relevance AI — 52 operation(s) for auth.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - auth
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-auth-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-billing-api
+  name: Relevance AI Billing API
+  description: The billing API from Relevance AI — 19 operation(s) for billing.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - billing
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-billing-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-branding-kit-api
+  name: Relevance AI Branding Kit API
+  description: The Branding Kit API from Relevance AI — 1 operation(s) for branding kit.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Branding Kit
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-branding-kit-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-branding-kits-api
+  name: Relevance AI Branding Kits API
+  description: The Branding Kits API from Relevance AI — 3 operation(s) for branding kits.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Branding Kits
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-branding-kits-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-chat-api
+  name: Relevance AI Chat API
+  description: The chat API from Relevance AI — 161 operation(s) for chat.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - chat
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-chat-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-evals-api
+  name: Relevance AI Evals API
+  description: The evals API from Relevance AI — 22 operation(s) for evals.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - evals
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-evals-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-fal-ai-api
+  name: Relevance AI Fal AI API
+  description: The fal_ai API from Relevance AI — 3 operation(s) for fal_ai.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - fal_ai
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-fal-ai-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-folders-api
+  name: Relevance AI Folders API
+  description: The Folders API from Relevance AI — 1 operation(s) for folders.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Folders
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-folders-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-integrations-api
+  name: Relevance AI Integrations API
+  description: The Integrations API from Relevance AI — 2 operation(s) for integrations.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-inventor-api
+  name: Relevance AI Inventor API
+  description: The inventor API from Relevance AI — 3 operation(s) for inventor.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - inventor
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-inventor-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-knowledge-api
+  name: Relevance AI Knowledge API
+  description: The knowledge API from Relevance AI — 20 operation(s) for knowledge.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - knowledge
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-knowledge-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-marketplace-api
+  name: Relevance AI Marketplace API
+  description: The marketplace API from Relevance AI — 28 operation(s) for marketplace.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - marketplace
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-marketplace-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-mas-api
+  name: Relevance AI Mas API
+  description: The Mas API from Relevance AI — 4 operation(s) for mas.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Mas
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-mas-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-mas-store-api
+  name: Relevance AI Mas Store API
+  description: The Mas Store API from Relevance AI — 4 operation(s) for mas store.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Mas Store
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-mas-store-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-mcp-api
+  name: Relevance AI MCP API
+  description: The Mcp API from Relevance AI — 3 operation(s) for mcp.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Mcp
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-mcp-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-organizations-api
+  name: Relevance AI Organizations API
+  description: The Organizations API from Relevance AI — 55 operation(s) for organizations.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-projects-api
+  name: Relevance AI Projects API
+  description: The projects API from Relevance AI — 30 operation(s) for projects.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - projects
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-projects-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-replicate-api
+  name: Relevance AI Replicate API
+  description: The replicate API from Relevance AI — 3 operation(s) for replicate.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - replicate
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-replicate-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-services-api
+  name: Relevance AI Services API
+  description: The services API from Relevance AI — 10 operation(s) for services.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - services
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-services-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-studios-api
+  name: Relevance AI Studios API
+  description: The studios API from Relevance AI — 45 operation(s) for studios.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - studios
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-studios-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-sync-api
+  name: Relevance AI Sync API
+  description: The Sync API from Relevance AI — 8 operation(s) for sync.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Sync
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-sync-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-sync-items-api
+  name: Relevance AI Sync Items API
+  description: The Sync Items API from Relevance AI — 8 operation(s) for sync items.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Sync Items
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-sync-items-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-syncs-api
+  name: Relevance AI Syncs API
+  description: The Syncs API from Relevance AI — 5 operation(s) for syncs.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Syncs
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-syncs-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-user-memory-api
+  name: Relevance AI User Memory API
+  description: The user-memory API from Relevance AI — 3 operation(s) for user-memory.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - user-memory
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-user-memory-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
+- aid: relevance-ai:relevance-ai-warmup-api
+  name: Relevance AI Warmup API
+  description: The Warmup API from Relevance AI — 4 operation(s) for warmup.
+  humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  baseURL: https://api-{region}.stack.tryrelevance.com/latest
+  tags:
+  - Warmup
+  properties:
+  - type: OpenAPI
+    url: openapi/relevance-ai-warmup-api-openapi.yml
+  - type: Documentation
+    url: https://relevanceai.com/docs
+  - type: APIReference
+    url: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
+  - type: Authentication
+    url: authentication/relevance-ai-authentication.yml
+  - type: ErrorCatalog
+    url: errors/relevance-ai-problem-types.yml
+  - type: DataModel
+    url: data-model/relevance-ai-data-model.yml
 common:
   - type: Website
     url: https://relevanceai.com
