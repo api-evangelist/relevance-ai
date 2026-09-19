@@ -163,6 +163,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Alarms
+  tags_raw:
   - alarms
   properties:
   - type: OpenAPI
@@ -183,6 +185,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Analytics
+  tags_raw:
   - analytics
   properties:
   - type: OpenAPI
@@ -203,6 +207,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Apify
+  tags_raw:
   - apify
   properties:
   - type: OpenAPI
@@ -223,6 +229,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Authentication
+  tags_raw:
   - auth
   properties:
   - type: OpenAPI
@@ -243,6 +251,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Billing
+  tags_raw:
   - billing
   properties:
   - type: OpenAPI
@@ -303,6 +313,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Chat
+  tags_raw:
   - chat
   properties:
   - type: OpenAPI
@@ -323,6 +335,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Evals
+  tags_raw:
   - evals
   properties:
   - type: OpenAPI
@@ -343,6 +357,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Fal Ai
+  tags_raw:
   - fal_ai
   properties:
   - type: OpenAPI
@@ -383,6 +399,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Integration
+  tags_raw:
   - Integrations
   properties:
   - type: OpenAPI
@@ -423,6 +441,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Knowledge
+  tags_raw:
   - knowledge
   properties:
   - type: OpenAPI
@@ -443,6 +463,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Marketplace
+  tags_raw:
   - marketplace
   properties:
   - type: OpenAPI
@@ -503,6 +525,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - MCP
+  tags_raw:
   - Mcp
   properties:
   - type: OpenAPI
@@ -523,6 +547,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Organization
+  tags_raw:
   - Organizations
   properties:
   - type: OpenAPI
@@ -543,6 +569,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Project
+  tags_raw:
   - projects
   properties:
   - type: OpenAPI
@@ -563,6 +591,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Replicate
+  tags_raw:
   - replicate
   properties:
   - type: OpenAPI
@@ -583,6 +613,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Services
+  tags_raw:
   - services
   properties:
   - type: OpenAPI
@@ -603,6 +635,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Studio
+  tags_raw:
   - studios
   properties:
   - type: OpenAPI
@@ -663,6 +697,8 @@ apis:
   humanURL: https://api-f1db6c.stack.tryrelevance.com/latest/documentation
   baseURL: https://api-{region}.stack.tryrelevance.com/latest
   tags:
+  - Sync
+  tags_raw:
   - Syncs
   properties:
   - type: OpenAPI
