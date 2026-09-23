@@ -1,0 +1,416 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Agents API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Agents
+paths:
+  /agents/{agent_id}/conversations:
+    delete:
+      summary: DeleteAgentConversations
+      tags:
+      - Agents
+      description: 'Delete conversations for a specific agent
+
+
+        ### Required permissions
+
+        > []'
+      operationId: DeleteAgentConversations
+      parameters:
+      - name: agent_id
+        in: path
+        description: ID of agent
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAgentConversationsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAgentConversationsOutput'
+  /agents/{agent_id}/conversations/{conversation_id}:
+    delete:
+      summary: DeleteAgentConversation
+      tags:
+      - Agents
+      description: 'Delete a specific conversation for a specific agent
+
+
+        ### Required permissions
+
+        > []'
+      operationId: DeleteAgentConversation
+      parameters:
+      - name: agent_id
+        in: path
+        description: ID of agent
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: conversation_id
+        in: path
+        description: ID of conversation
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAgentConversationInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAgentConversationOutput'
+  /agents/{agent_id}/tags/upsert:
+    post:
+      summary: UpsertUserAgentTag
+      tags:
+      - Agents
+      description: 'Upserts a tag to an agent
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:editor"
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpsertUserAgentTag
+      parameters:
+      - name: agent_id
+        in: path
+        description: ID of agent
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUserAgentTagInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertUserAgentTagOutput'
+  /agents/{agent_id}/tags/delete:
+    post:
+      summary: DeleteUserAgentTag
+      tags:
+      - Agents
+      description: 'Deletes a tag from an agent
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:editor"
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteUserAgentTag
+      parameters:
+      - name: agent_id
+        in: path
+        description: ID of agent
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUserAgentTagInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserAgentTagOutput'
+  /user_tags/list:
+    get:
+      summary: ListUserTags
+      tags:
+      - Agents
+      description: 'List all tags for the current project
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:reader"
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListUserTags
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserTagsOutput'
+  /user_tags/upsert:
+    post:
+      summary: UpsertUserTag
+      tags:
+      - Agents
+      description: 'Create or update a tag in the current project
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:editor"
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpsertUserTag
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUserTagInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertUserTagOutput'
+  /user_tags/delete:
+    post:
+      summary: DeleteUserTag
+      tags:
+      - Agents
+      description: 'Delete a tag from the current project
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:editor"
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteUserTag
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUserTagInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserTagOutput'
+components:
+  schemas:
+    DeleteAgentConversationInput:
+      type: object
+      additionalProperties: false
+    DeleteAgentConversationOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteAgentConversationsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteAgentConversationsInput:
+      type: object
+      properties:
+        conversation_ids:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 500
+      required:
+      - conversation_ids
+      additionalProperties: false
+    ListUserTagsOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              colour:
+                type: string
+                enum:
+                - gray
+                - red
+                - orange
+                - yellow
+                - green
+                - blue
+                - indigo
+                - purple
+                - violet
+            required:
+            - id
+            - name
+            - colour
+            additionalProperties: false
+      required:
+      - results
+      additionalProperties: false
+    UpsertUserTagOutput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    UpsertUserAgentTagOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserAgentTagOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteUserTagOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertUserTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+          description: If provided, updates an existing tag. If omitted, creates a new tag.
+        name:
+          type: string
+        colour:
+          type: string
+          enum:
+          - gray
+          - red
+          - orange
+          - yellow
+          - green
+          - blue
+          - indigo
+          - purple
+          - violet
+      required:
+      - name
+      - colour
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

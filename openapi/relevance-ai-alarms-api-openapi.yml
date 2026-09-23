@@ -1,0 +1,1011 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Alarms API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Alarms
+paths:
+  /alarms/{resource_type}/{resource_id}:
+    post:
+      summary: CreateAlarm
+      tags:
+      - Alarms
+      description: 'Create an alarm for a resource (agent or workforce)
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:write"
+
+        ]
+
+        }
+
+        ]'
+      operationId: CreateAlarm
+      parameters:
+      - name: resource_type
+        in: path
+        description: ID of resource_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: resource_id
+        in: path
+        description: ID of resource
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAlarmInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAlarmOutput'
+  /alarms/{resource_type}/{resource_id}/list:
+    post:
+      summary: ListAlarms
+      tags:
+      - Alarms
+      description: 'List alarms for a resource (agent or workforce)
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListAlarms
+      parameters:
+      - name: resource_type
+        in: path
+        description: ID of resource_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: resource_id
+        in: path
+        description: ID of resource
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListAlarmsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAlarmsOutput'
+  /alarms/{resource_type}/{resource_id}/{alarm_id}:
+    get:
+      summary: GetAlarm
+      tags:
+      - Alarms
+      description: 'Get a specific alarm by ID
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetAlarm
+      parameters:
+      - name: resource_type
+        in: path
+        description: ID of resource_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: resource_id
+        in: path
+        description: ID of resource
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: alarm_id
+        in: path
+        description: ID of alarm
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAlarmOutput'
+    put:
+      summary: UpdateAlarm
+      tags:
+      - Alarms
+      description: 'Update an alarm
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:write"
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateAlarm
+      parameters:
+      - name: resource_type
+        in: path
+        description: ID of resource_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: resource_id
+        in: path
+        description: ID of resource
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: alarm_id
+        in: path
+        description: ID of alarm
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAlarmInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateAlarmOutput'
+    delete:
+      summary: DeleteAlarm
+      tags:
+      - Alarms
+      description: 'Delete an alarm
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:write"
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteAlarm
+      parameters:
+      - name: resource_type
+        in: path
+        description: ID of resource_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: resource_id
+        in: path
+        description: ID of resource
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: alarm_id
+        in: path
+        description: ID of alarm
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAlarmInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAlarmOutput'
+components:
+  schemas:
+    DeleteAlarmOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    CreateAlarmInput:
+      type: object
+      properties:
+        name:
+          type: string
+        source_config:
+          oneOf:
+          - type: object
+            properties:
+              source_type:
+                type: string
+              rule_id:
+                type: string
+              config_id:
+                type: string
+            required:
+            - source_type
+            - rule_id
+            - config_id
+            additionalProperties: false
+          - type: object
+            properties:
+              source_type:
+                type: string
+              config_id:
+                type: string
+            required:
+            - source_type
+            - config_id
+            additionalProperties: false
+        condition_config:
+          type: object
+          properties:
+            comparison:
+              type: string
+              enum:
+              - lt
+              - gt
+              - lte
+              - gte
+            threshold:
+              type: number
+              minimum: 0
+              maximum: 1
+            period:
+              type: object
+              properties:
+                value:
+                  type: integer
+                  minimum: 1
+                unit:
+                  type: string
+                  enum:
+                  - hours
+                  - days
+              required:
+              - value
+              - unit
+              additionalProperties: false
+            evaluation_periods:
+              type: integer
+              minimum: 1
+            datapoints_to_alarm:
+              type: integer
+              minimum: 1
+            min_sample_size:
+              type: integer
+              minimum: 1
+          required:
+          - comparison
+          - threshold
+          - period
+          - evaluation_periods
+          - datapoints_to_alarm
+          - min_sample_size
+          additionalProperties: false
+        channels:
+          type: array
+          items:
+            oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                emails:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+              required:
+              - type
+              - emails
+              additionalProperties: false
+            - type: object
+              properties:
+                type:
+                  type: string
+                oauth_account_id:
+                  type: string
+                channel_id:
+                  type: string
+              required:
+              - type
+              - oauth_account_id
+              - channel_id
+              additionalProperties: false
+            - type: object
+              properties:
+                type:
+                  type: string
+                oauth_account_id:
+                  type: string
+                team_id:
+                  type: string
+                channel_id:
+                  type: string
+              required:
+              - type
+              - oauth_account_id
+              - team_id
+              - channel_id
+              additionalProperties: false
+          minItems: 1
+        cooldown_minutes:
+          type: number
+        enabled:
+          type: boolean
+        auto_diagnose:
+          type: boolean
+      required:
+      - source_config
+      - condition_config
+      - channels
+      - cooldown_minutes
+      - enabled
+      additionalProperties: false
+    UpdateAlarmOutput:
+      type: object
+      properties:
+        alarm_id:
+          type: string
+      required:
+      - alarm_id
+      additionalProperties: false
+    ListAlarmsInput:
+      type: object
+      properties:
+        page:
+          type: number
+          minimum: 1
+          description: Page number (1-based)
+        page_size:
+          type: number
+          minimum: 1
+          maximum: 100
+          description: Number of alarms per page
+      additionalProperties: false
+    DeleteAlarmInput: {}
+    GetAlarmOutput:
+      type: object
+      properties:
+        config:
+          type: object
+          properties:
+            alarm_id:
+              type: string
+            name:
+              type:
+              - string
+              - 'null'
+            resource_type:
+              type: string
+            resource_id:
+              type: string
+            source_config:
+              oneOf:
+              - type: object
+                properties:
+                  source_type:
+                    type: string
+                  rule_id:
+                    type: string
+                  config_id:
+                    type: string
+                required:
+                - source_type
+                - rule_id
+                - config_id
+                additionalProperties: false
+              - type: object
+                properties:
+                  source_type:
+                    type: string
+                  config_id:
+                    type: string
+                required:
+                - source_type
+                - config_id
+                additionalProperties: false
+            condition_config:
+              type: object
+              properties:
+                comparison:
+                  type: string
+                  enum:
+                  - lt
+                  - gt
+                  - lte
+                  - gte
+                threshold:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                period:
+                  type: object
+                  properties:
+                    value:
+                      type: integer
+                      minimum: 1
+                    unit:
+                      type: string
+                      enum:
+                      - hours
+                      - days
+                  required:
+                  - value
+                  - unit
+                  additionalProperties: false
+                evaluation_periods:
+                  type: integer
+                  minimum: 1
+                datapoints_to_alarm:
+                  type: integer
+                  minimum: 1
+                min_sample_size:
+                  type: integer
+                  minimum: 1
+              required:
+              - comparison
+              - threshold
+              - period
+              - evaluation_periods
+              - datapoints_to_alarm
+              - min_sample_size
+              additionalProperties: false
+            channels:
+              type: array
+              items:
+                oneOf:
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                    emails:
+                      type: array
+                      items:
+                        type: string
+                      minItems: 1
+                  required:
+                  - type
+                  - emails
+                  additionalProperties: false
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                    oauth_account_id:
+                      type: string
+                    channel_id:
+                      type: string
+                  required:
+                  - type
+                  - oauth_account_id
+                  - channel_id
+                  additionalProperties: false
+                - type: object
+                  properties:
+                    type:
+                      type: string
+                    oauth_account_id:
+                      type: string
+                    team_id:
+                      type: string
+                    channel_id:
+                      type: string
+                  required:
+                  - type
+                  - oauth_account_id
+                  - team_id
+                  - channel_id
+                  additionalProperties: false
+              minItems: 1
+            cooldown_minutes:
+              type: number
+            enabled:
+              type: boolean
+            auto_diagnose:
+              type: boolean
+            created_at:
+              type: string
+            updated_at:
+              type: string
+          required:
+          - alarm_id
+          - name
+          - resource_type
+          - resource_id
+          - source_config
+          - condition_config
+          - channels
+          - cooldown_minutes
+          - enabled
+          - auto_diagnose
+          - created_at
+          - updated_at
+          additionalProperties: false
+        state:
+          type: object
+          properties:
+            state:
+              type: string
+              enum:
+              - insufficient_data
+              - ok
+              - alarm
+            state_changed_at:
+              type:
+              - string
+              - 'null'
+            last_checked_at:
+              type:
+              - string
+              - 'null'
+            last_alerted_at:
+              type:
+              - string
+              - 'null'
+          required:
+          - state
+          - state_changed_at
+          - last_checked_at
+          - last_alerted_at
+          additionalProperties: false
+      required:
+      - config
+      - state
+      additionalProperties: false
+    CreateAlarmOutput:
+      type: object
+      properties:
+        alarm_id:
+          type: string
+      required:
+      - alarm_id
+      additionalProperties: false
+    UpdateAlarmInput:
+      type: object
+      properties:
+        name:
+          type: string
+        source_config:
+          oneOf:
+          - type: object
+            properties:
+              source_type:
+                type: string
+              rule_id:
+                type: string
+              config_id:
+                type: string
+            required:
+            - source_type
+            - rule_id
+            - config_id
+            additionalProperties: false
+          - type: object
+            properties:
+              source_type:
+                type: string
+              config_id:
+                type: string
+            required:
+            - source_type
+            - config_id
+            additionalProperties: false
+        condition_config:
+          type: object
+          properties:
+            comparison:
+              type: string
+              enum:
+              - lt
+              - gt
+              - lte
+              - gte
+            threshold:
+              type: number
+              minimum: 0
+              maximum: 1
+            period:
+              type: object
+              properties:
+                value:
+                  type: integer
+                  minimum: 1
+                unit:
+                  type: string
+                  enum:
+                  - hours
+                  - days
+              required:
+              - value
+              - unit
+              additionalProperties: false
+            evaluation_periods:
+              type: integer
+              minimum: 1
+            datapoints_to_alarm:
+              type: integer
+              minimum: 1
+            min_sample_size:
+              type: integer
+              minimum: 1
+          required:
+          - comparison
+          - threshold
+          - period
+          - evaluation_periods
+          - datapoints_to_alarm
+          - min_sample_size
+          additionalProperties: false
+        channels:
+          type: array
+          items:
+            oneOf:
+            - type: object
+              properties:
+                type:
+                  type: string
+                emails:
+                  type: array
+                  items:
+                    type: string
+                  minItems: 1
+              required:
+              - type
+              - emails
+              additionalProperties: false
+            - type: object
+              properties:
+                type:
+                  type: string
+                oauth_account_id:
+                  type: string
+                channel_id:
+                  type: string
+              required:
+              - type
+              - oauth_account_id
+              - channel_id
+              additionalProperties: false
+            - type: object
+              properties:
+                type:
+                  type: string
+                oauth_account_id:
+                  type: string
+                team_id:
+                  type: string
+                channel_id:
+                  type: string
+              required:
+              - type
+              - oauth_account_id
+              - team_id
+              - channel_id
+              additionalProperties: false
+          minItems: 1
+        cooldown_minutes:
+          type: number
+        enabled:
+          type: boolean
+        auto_diagnose:
+          type: boolean
+      required:
+      - source_config
+      - condition_config
+      - channels
+      - cooldown_minutes
+      - enabled
+      additionalProperties: false
+    ListAlarmsOutput:
+      type: object
+      properties:
+        alarms:
+          type: array
+          items:
+            type: object
+            properties:
+              config:
+                type: object
+                properties:
+                  alarm_id:
+                    type: string
+                  name:
+                    type:
+                    - string
+                    - 'null'
+                  resource_type:
+                    type: string
+                  resource_id:
+                    type: string
+                  source_config:
+                    oneOf:
+                    - type: object
+                      properties:
+                        source_type:
+                          type: string
+                        rule_id:
+                          type: string
+                        config_id:
+                          type: string
+                      required:
+                      - source_type
+                      - rule_id
+                      - config_id
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        source_type:
+                          type: string
+                        config_id:
+                          type: string
+                      required:
+                      - source_type
+                      - config_id
+                      additionalProperties: false
+                  condition_config:
+                    type: object
+                    properties:
+                      comparison:
+                        type: string
+                        enum:
+                        - lt
+                        - gt
+                        - lte
+                        - gte
+                      threshold:
+                        type: number
+                        minimum: 0
+                        maximum: 1
+                      period:
+                        type: object
+                        properties:
+                          value:
+                            type: integer
+                            minimum: 1
+                          unit:
+                            type: string
+                            enum:
+                            - hours
+                            - days
+                        required:
+                        - value
+                        - unit
+                        additionalProperties: false
+                      evaluation_periods:
+                        type: integer
+                        minimum: 1
+                      datapoints_to_alarm:
+                        type: integer
+                        minimum: 1
+                      min_sample_size:
+                        type: integer
+                        minimum: 1
+                    required:
+                    - comparison
+                    - threshold
+                    - period
+                    - evaluation_periods
+                    - datapoints_to_alarm
+                    - min_sample_size
+                    additionalProperties: false
+                  channels:
+                    type: array
+                    items:
+                      oneOf:
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                          emails:
+                            type: array
+                            items:
+                              type: string
+                            minItems: 1
+                        required:
+                        - type
+                        - emails
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                          oauth_account_id:
+                            type: string
+                          channel_id:
+                            type: string
+                        required:
+                        - type
+                        - oauth_account_id
+                        - channel_id
+                        additionalProperties: false
+                      - type: object
+                        properties:
+                          type:
+                            type: string
+                          oauth_account_id:
+                            type: string
+                          team_id:
+                            type: string
+                          channel_id:
+                            type: string
+                        required:
+                        - type
+                        - oauth_account_id
+                        - team_id
+                        - channel_id
+                        additionalProperties: false
+                    minItems: 1
+                  cooldown_minutes:
+                    type: number
+                  enabled:
+                    type: boolean
+                  auto_diagnose:
+                    type: boolean
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                required:
+                - alarm_id
+                - name
+                - resource_type
+                - resource_id
+                - source_config
+                - condition_config
+                - channels
+                - cooldown_minutes
+                - enabled
+                - auto_diagnose
+                - created_at
+                - updated_at
+                additionalProperties: false
+              state:
+                type: object
+                properties:
+                  state:
+                    type: string
+                    enum:
+                    - insufficient_data
+                    - ok
+                    - alarm
+                  state_changed_at:
+                    type:
+                    - string
+                    - 'null'
+                  last_checked_at:
+                    type:
+                    - string
+                    - 'null'
+                  last_alerted_at:
+                    type:
+                    - string
+                    - 'null'
+                required:
+                - state
+                - state_changed_at
+                - last_checked_at
+                - last_alerted_at
+                additionalProperties: false
+            required:
+            - config
+            - state
+            additionalProperties: false
+        total_count:
+          type: number
+          description: Total number of alarms (for pagination)
+        page:
+          type: number
+        page_size:
+          type: number
+      required:
+      - alarms
+      - total_count
+      - page
+      - page_size
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

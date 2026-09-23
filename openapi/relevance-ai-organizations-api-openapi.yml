@@ -1,0 +1,6498 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Organizations API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Organizations
+paths:
+  /organizations/{organization_id}/integrations/overrides/bulk/upsert:
+    post:
+      summary: BulkUpsertOrganizationIntegrationPermissionOverrides
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: BulkUpsertOrganizationIntegrationPermissionOverrides
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BulkUpsertOrganizationIntegrationPermissionOverridesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BulkUpsertOrganizationIntegrationPermissionOverridesOutput'
+  /organizations/{organization_id}/integrations/default:
+    post:
+      summary: UpdateOrganizationDefaultIntegrationPermission
+      tags:
+      - Organizations
+      description: 'Edit default integration permission status for an organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateOrganizationDefaultIntegrationPermission
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationDefaultIntegrationPermissionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOrganizationDefaultIntegrationPermissionOutput'
+    get:
+      summary: GetOrganizationDefaultIntegrationPermission
+      tags:
+      - Organizations
+      description: 'Get the default integration permission status for an organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOrganizationDefaultIntegrationPermission
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationDefaultIntegrationPermissionOutput'
+  /organizations/{organization_id}/integrations/list:
+    post:
+      summary: ListOrganizationIntegrationProviders
+      tags:
+      - Organizations
+      description: 'Lists all integration providers from api key and oauth providers
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListOrganizationIntegrationProviders
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOrganizationIntegrationProvidersInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationIntegrationProvidersOutput'
+  /organizations/{organization_id}/keys/set:
+    post:
+      summary: SetOrganizationNativeApiKey
+      tags:
+      - Organizations
+      description: 'Set a native api key for an organization. These will be used as the default or fallback api key when no project level api key is set
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: SetOrganizationNativeApiKey
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetOrganizationNativeApiKeyInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetOrganizationNativeApiKeyOutput'
+  /organizations/{organization_id}/keys/delete:
+    post:
+      summary: DeleteOrganizationNativeApiKey
+      tags:
+      - Organizations
+      description: 'Delete a native api key for an organization. This will remove the key from the organization.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteOrganizationNativeApiKey
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteOrganizationNativeApiKeyInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationNativeApiKeyOutput'
+  /organizations/{organization_id}/keys/list:
+    post:
+      summary: ListOrganizationNativeApiKeys
+      tags:
+      - Organizations
+      description: 'List all native api keys for an organization.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListOrganizationNativeApiKeys
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListOrganizationNativeApiKeysInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationNativeApiKeysOutput'
+  /organizations/create:
+    post:
+      summary: CreateOrganization
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > []'
+      operationId: CreateOrganization
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrganizationInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrganizationOutput'
+  /organizations/{organization_id}/update:
+    post:
+      summary: UpdateOrganization
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateOrganization
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOrganizationOutput'
+  /organizations/list:
+    get:
+      summary: ListOrganizations
+      tags:
+      - Organizations
+      description: 'List all organizations and their metadata
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListOrganizations
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationsOutput'
+  /organizations/{organization_id}/delete:
+    post:
+      summary: DeleteOrganization
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteOrganization
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteOrganizationInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationOutput'
+  /organizations/{organization_id}/get:
+    get:
+      summary: GetOrganization
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOrganization
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationOutput'
+  /organizations/{organization_id}/usage/get:
+    get:
+      summary: GetOrganizationUsage
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOrganizationUsage
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationUsageOutput'
+  /organizations/plans:
+    get:
+      summary: ListOrganizationPlans
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > []'
+      operationId: ListOrganizationPlans
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationPlansOutput'
+  /organizations/{organization_id}/users/list:
+    get:
+      summary: ListUsersInOrganization
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListUsersInOrganization
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: page
+        schema:
+          type: number
+        description: ''
+      - in: query
+        name: page_size
+        schema:
+          type: number
+        description: ''
+      - in: query
+        name: filter_by_email
+        schema:
+          type: string
+        description: ''
+      - in: query
+        name: filter_by_search
+        schema:
+          type: string
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsersInOrganizationOutput'
+  /organizations/{organization_id}/projects/list:
+    get:
+      summary: ListProjectsInOrganization
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListProjectsInOrganization
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectsInOrganizationOutput'
+  /organizations/{organization_id}/invites/list:
+    get:
+      summary: ListInvitesInOrganization
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListInvitesInOrganization
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListInvitesInOrganizationOutput'
+  /organizations/{organization_id}/billing/events/list:
+    post:
+      summary: ListBillingEvents
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListBillingEvents
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListBillingEventsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBillingEventsOutput'
+  /organizations/{organization_id}/billing/totals:
+    get:
+      summary: GetBillingTotals
+      tags:
+      - Organizations
+      description: 'Gets total cost over a date range from billing events
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetBillingTotals
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: date_range
+        schema:
+          type: string
+          enum:
+          - week
+          - month
+          - three_months
+          - six_months
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingTotalsOutput'
+  /organizations/{organization_id}/billing/get_billing_frontend_link:
+    get:
+      summary: GetBillingFrontendLink
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetBillingFrontendLink
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: referral
+        schema:
+          type: string
+        description: ''
+      - in: query
+        name: flow
+        schema:
+          type: string
+          enum:
+          - update-payment-method
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingFrontendLinkOutput'
+  /organizations/{organization_id}/billing/checkout:
+    get:
+      summary: GetBillingCheckoutSession
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetBillingCheckoutSession
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - credit_top_up
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingCheckoutSessionOutput'
+  /organizations/{organization_id}/billing/update:
+    post:
+      summary: UpdateOrganizationBilling
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateOrganizationBilling
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationBillingInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOrganizationBillingOutput'
+  /organizations/{organization_id}/subscription/sync:
+    post:
+      summary: SyncSubscription
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: SyncSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncSubscriptionOutput'
+  /organizations/get_credit_cost:
+    post:
+      summary: GetCreditCost
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > []'
+      operationId: GetCreditCost
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetCreditCostInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCreditCostOutput'
+  /organizations/{organization_id}/subscription/downgrade:
+    post:
+      summary: DowngradeSubscription
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DowngradeSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DowngradeSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DowngradeSubscriptionOutput'
+  /organizations/{organization_id}/billing/subscription/change:
+    post:
+      summary: ChangeBillingSubscription
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ChangeBillingSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeBillingSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeBillingSubscriptionOutput'
+  /organizations/{organization_id}/downgrade/cancel:
+    post:
+      summary: CancelDowngrade
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: CancelDowngrade
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelDowngradeInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelDowngradeOutput'
+  /organizations/{organization_id}/subscription/cancel:
+    post:
+      summary: CancelSubscription
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: CancelSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelSubscriptionOutput'
+  /organizations/{organization_id}/credits/buy:
+    post:
+      summary: BuyCredits
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: BuyCredits
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyCreditsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyCreditsOutput'
+  /organizations/{organization_id}/credits/checkout:
+    post:
+      summary: CreditPurchaseCheckoutSession
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: CreditPurchaseCheckoutSession
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditPurchaseCheckoutSessionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditPurchaseCheckoutSessionOutput'
+  /organizations/{organization_id}/checkout/status:
+    get:
+      summary: GetCheckoutCompletionStatus
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetCheckoutCompletionStatus
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: checkout_session_id
+        schema:
+          type: string
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCheckoutCompletionStatusOutput'
+  /organizations/{organization_id}/trial/trigger:
+    post:
+      summary: TriggerOrganizationPlanTrial
+      tags:
+      - Organizations
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: TriggerOrganizationPlanTrial
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerOrganizationPlanTrialInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerOrganizationPlanTrialOutput'
+  /organizations/{organization_id}/roles/list:
+    post:
+      summary: ListAvailableRolesByScope
+      tags:
+      - Organizations
+      description: 'Lists available roles for the specified entity type during the migration from legacy permissions to OpenFGA. Provides centralized and organization-aware role definitions.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: ListAvailableRolesByScope
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListAvailableRolesByScopeInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAvailableRolesByScopeOutput'
+  /organizations/{organization_id}/usage-alarms/list:
+    get:
+      summary: ListOrganizationUsageAlarms
+      tags:
+      - Organizations
+      description: 'List all usage alarms for an organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListOrganizationUsageAlarms
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationUsageAlarmsOutput'
+  /organizations/{organization_id}/usage-alarms/upsert:
+    post:
+      summary: UpsertOrganizationUsageAlarm
+      tags:
+      - Organizations
+      description: 'Create or update a usage alarm for an organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpsertOrganizationUsageAlarm
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertOrganizationUsageAlarmInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertOrganizationUsageAlarmOutput'
+  /organizations/{organization_id}/usage-alarms/delete:
+    post:
+      summary: DeleteOrganizationUsageAlarm
+      tags:
+      - Organizations
+      description: 'Delete a usage alarm for an organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteOrganizationUsageAlarm
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteOrganizationUsageAlarmInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationUsageAlarmOutput'
+  /organizations/{organization_id}/update_features:
+    put:
+      summary: UpdateOrganizationEnabledFeatures
+      tags:
+      - Organizations
+      description: 'Update enabled features for an organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateOrganizationEnabledFeatures
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationEnabledFeaturesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOrganizationEnabledFeaturesOutput'
+  /organizations/{organization_id}/features:
+    get:
+      summary: GetOrganizationEnabledFeatures
+      tags:
+      - Organizations
+      description: 'Get enabled features for an organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOrganizationEnabledFeatures
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationEnabledFeaturesOutput'
+  /organizations/domain-enterprise-check:
+    post:
+      summary: CheckDomainEnterpriseStatus
+      tags:
+      - Organizations
+      description: 'Check if the authenticated user''s email domain belongs to an enterprise organization
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "users:write"
+
+        ]
+
+        }
+
+        ]'
+      operationId: CheckDomainEnterpriseStatus
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckDomainEnterpriseStatusInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckDomainEnterpriseStatusOutput'
+  /organizations/check-sso-enforcement:
+    post:
+      summary: CheckSSOEnforcement
+      tags:
+      - Organizations
+      description: 'Check if an email domain requires SSO authentication due to enterprise enforcement
+
+
+        ### Required permissions
+
+        > []'
+      operationId: CheckSSOEnforcement
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckSSOEnforcementInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckSSOEnforcementOutput'
+  /organizations/usage-based-billing-enabled:
+    get:
+      summary: IsUsageBasedBillingEnabled
+      tags:
+      - Organizations
+      description: 'Check if the authenticated user''s organization is using usage based billing
+
+
+        ### Required permissions
+
+        > []'
+      operationId: IsUsageBasedBillingEnabled
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IsUsageBasedBillingEnabledOutput'
+  /organizations/entitlements/limits/check:
+    post:
+      summary: CheckOrganizationEntitlementLimits
+      tags:
+      - Organizations
+      description: 'Check if the authenticated user''s organization entitlements usage has reached their limits
+
+
+        ### Required permissions
+
+        > []'
+      operationId: CheckOrganizationEntitlementLimits
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckOrganizationEntitlementLimitsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckOrganizationEntitlementLimitsOutput'
+  /organizations/{organization_id}/configuration/{key}:
+    get:
+      summary: GetOrganizationConfigurationValue
+      tags:
+      - Organizations
+      description: 'Get a configuration value for an organization by key
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOrganizationConfigurationValue
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: key
+        in: path
+        description: ID of key
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationConfigurationValueOutput'
+  /organizations/{organization_id}/data_retention:
+    get:
+      summary: GetOrganizationDataRetentionConfig
+      tags:
+      - Organizations
+      description: 'Get an organization''s data retention configuration
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOrganizationDataRetentionConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrganizationDataRetentionConfigOutput'
+    put:
+      summary: UpsertOrganizationDataRetentionConfig
+      tags:
+      - Organizations
+      description: 'Upsert an organization''s data retention configuration
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpsertOrganizationDataRetentionConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertOrganizationDataRetentionConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertOrganizationDataRetentionConfigOutput'
+    delete:
+      summary: DeleteOrganizationDataRetentionConfig
+      tags:
+      - Organizations
+      description: 'Delete an organization''s data retention configuration
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteOrganizationDataRetentionConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteOrganizationDataRetentionConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteOrganizationDataRetentionConfigOutput'
+  /organizations/{organization_id}/retention-offer/eligibility:
+    get:
+      summary: GetRetentionOfferEligibility
+      tags:
+      - Organizations
+      description: 'Check if organization is eligible for retention discount offer
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetRetentionOfferEligibility
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRetentionOfferEligibilityOutput'
+  /organizations/{organization_id}/retention-offer/accept:
+    post:
+      summary: AcceptRetentionOffer
+      tags:
+      - Organizations
+      description: 'Accept retention discount offer and apply 30% or 50% coupon to subscription
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: AcceptRetentionOffer
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptRetentionOfferInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptRetentionOfferOutput'
+  /organizations/{organization_id}/groups:
+    get:
+      summary: ListOrganizationGroups
+      tags:
+      - Organizations
+      description: 'List all groups in an organization with their project permissions and user counts. Projects is an empty array if the caller is not an Org admin.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListOrganizationGroups
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrganizationGroupsOutput'
+  /organizations/{organization_id}/groups/{group_id}/members:
+    get:
+      summary: ListUsersInGroup
+      tags:
+      - Organizations
+      description: 'List all users in a specific group
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListUsersInGroup
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: group_id
+        in: path
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: page
+        schema:
+          type: number
+          minimum: 0
+          maximum: 100
+        description: ''
+      - in: query
+        name: page_size
+        schema:
+          type: number
+          minimum: 0
+          maximum: 1000
+        description: ''
+      - in: query
+        name: filter_by_email
+        schema:
+          type: string
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUsersInGroupOutput'
+  /organizations/{organization_id}/groups/{group_id}/members/pending:
+    get:
+      summary: ListPendingUsersInGroup
+      tags:
+      - Organizations
+      description: 'List all pending users in a specific group
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListPendingUsersInGroup
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: group_id
+        in: path
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: page
+        schema:
+          type: number
+          minimum: 1
+          maximum: 1000
+        description: ''
+      - in: query
+        name: page_size
+        schema:
+          type: number
+          minimum: 1
+          maximum: 1000
+        description: ''
+      - in: query
+        name: filter_by_email
+        schema:
+          type: string
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListPendingUsersInGroupOutput'
+  /organizations/{organization_id}/groups/{group_id}/assign_to_project:
+    post:
+      summary: AssignGroupToProject
+      tags:
+      - Organizations
+      description: 'Assign a group to a project with a specific permission level. This is an upsert operation - if the group is already assigned to the project, the permission will be updated.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: AssignGroupToProject
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: group_id
+        in: path
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignGroupToProjectInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignGroupToProjectOutput'
+  /projects/{project_display_id}/group_permissions:
+    get:
+      summary: ListProjectGroupPermissions
+      tags:
+      - Organizations
+      description: 'List all groups that have permissions on a specific project. Only project admins can view this information.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListProjectGroupPermissions
+      parameters:
+      - name: project_display_id
+        in: path
+        description: ID of project_display
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProjectGroupPermissionsOutput'
+  /organizations/{organization_id}/groups/{group_id}/projects/{project_id}:
+    delete:
+      summary: RemoveGroupFromProject
+      tags:
+      - Organizations
+      description: 'Remove a group''s permissions from a project. This will revoke all project permissions for the group.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: RemoveGroupFromProject
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: group_id
+        in: path
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: project_id
+        in: path
+        description: ID of project
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveGroupFromProjectInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveGroupFromProjectOutput'
+  /assets/{asset_type}/{asset_id}/group_permissions:
+    get:
+      summary: ListAssetGroupPermissions
+      tags:
+      - Organizations
+      description: 'List all groups that have permissions on a specific asset (supports agents, tools, workforces, and tables). Only asset admins can view this information. Legacy permissions are not supported.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListAssetGroupPermissions
+      parameters:
+      - name: asset_type
+        in: path
+        description: ID of asset_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: asset_id
+        in: path
+        description: ID of asset
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAssetGroupPermissionsOutput'
+    post:
+      summary: AddGroupAssetPermission
+      tags:
+      - Organizations
+      description: 'Add group permissions for a given asset (supports agents, tools, workforces, and tables). Requires admin rights on the asset.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: AddGroupAssetPermission
+      parameters:
+      - name: asset_type
+        in: path
+        description: ID of asset_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: asset_id
+        in: path
+        description: ID of asset
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddGroupAssetPermissionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddGroupAssetPermissionOutput'
+  /assets/{asset_type}/{asset_id}/group_permissions/{group_id}:
+    delete:
+      summary: RemoveGroupAssetPermission
+      tags:
+      - Organizations
+      description: 'Remove a group''s permissions from an asset (supports agents, tools, workforces, and tables). This will revoke all asset permissions for the group. Requires admin rights on the asset. FGA permissions only (does not support legacy permissions).
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: RemoveGroupAssetPermission
+      parameters:
+      - name: asset_type
+        in: path
+        description: ID of asset_type
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: asset_id
+        in: path
+        description: ID of asset
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: group_id
+        in: path
+        description: ID of group
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RemoveGroupAssetPermissionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RemoveGroupAssetPermissionOutput'
+  /billing/{organization_id}/overage:
+    get:
+      summary: GetOverageConfig
+      tags:
+      - Organizations
+      description: 'Returns overage configuration for credits, actions, and concurrency
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOverageConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOverageConfigOutput'
+    put:
+      summary: UpdateOverageConfig
+      tags:
+      - Organizations
+      description: 'Updates overage configuration for credits, actions, and/or concurrency. Only provided fields are changed.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateOverageConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOverageConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOverageConfigOutput'
+  /billing/{organization_id}/auto-recharge/{currency}:
+    get:
+      summary: GetAutoRechargeConfig
+      tags:
+      - Organizations
+      description: 'Returns auto-recharge configuration for the specified currency
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetAutoRechargeConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: currency
+        in: path
+        description: ID of currency
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAutoRechargeConfigOutput'
+    put:
+      summary: UpsertAutoRechargeConfig
+      tags:
+      - Organizations
+      description: 'Creates or updates an auto-recharge configuration
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpsertAutoRechargeConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: currency
+        in: path
+        description: ID of currency
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAutoRechargeConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertAutoRechargeConfigOutput'
+    delete:
+      summary: DeleteAutoRechargeConfig
+      tags:
+      - Organizations
+      description: 'Deletes an auto-recharge configuration for the specified currency
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteAutoRechargeConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: currency
+        in: path
+        description: ID of currency
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAutoRechargeConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAutoRechargeConfigOutput'
+components:
+  schemas:
+    UpdateOrganizationDefaultIntegrationPermissionOutput: {}
+    BulkUpsertOrganizationIntegrationPermissionOverridesOutput: {}
+    SetOrganizationNativeApiKeyOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListOrganizationNativeApiKeysOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              is_shared:
+                type: boolean
+            required:
+            - key
+            - is_shared
+            additionalProperties: false
+      additionalProperties: false
+    DeleteOrganizationNativeApiKeyOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpdateOrganizationDefaultIntegrationPermissionInput:
+      type: object
+      properties:
+        integrations_permission_status:
+          type: string
+          enum:
+          - enable_all
+          - disable_all
+      required:
+      - integrations_permission_status
+      additionalProperties: false
+    ListOrganizationNativeApiKeysInput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListOrganizationIntegrationProvidersOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            oneOf:
+            - oneOf:
+              - type: object
+                properties:
+                  type:
+                    type: string
+                  label:
+                    type: string
+                  value:
+                    type: string
+                  img_src:
+                    type: string
+                  api_onboarding:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                      description:
+                        type: string
+                    required:
+                    - url
+                    additionalProperties: false
+                  api_key_provided:
+                    type: boolean
+                  is_shared_across_entity:
+                    type: boolean
+                  organization_permission_override_status:
+                    type: string
+                    enum:
+                    - enabled
+                    - disabled
+                  dependent_tool_steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transformation_id:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - transformation_id
+                      - name
+                      additionalProperties: false
+                additionalProperties: false
+                required:
+                - type
+                - label
+                - value
+              - type: object
+                properties:
+                  type:
+                    type: string
+                  label:
+                    type: string
+                  value:
+                    type: string
+                  img_src:
+                    type: string
+                  api_onboarding:
+                    type: object
+                    properties:
+                      url:
+                        type: string
+                      description:
+                        type: string
+                    required:
+                    - url
+                    additionalProperties: false
+                  organization_permission_override_status:
+                    type: string
+                    enum:
+                    - enabled
+                    - disabled
+                  dependent_tool_steps:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        transformation_id:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                      - transformation_id
+                      - name
+                      additionalProperties: false
+                additionalProperties: false
+                required:
+                - type
+                - label
+                - value
+            - type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - api_key
+                  - oauth
+                label:
+                  type: string
+                value:
+                  type: string
+                img_src:
+                  type: string
+                api_onboarding:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                    description:
+                      type: string
+                  required:
+                  - url
+                  additionalProperties: false
+                is_group:
+                  type: boolean
+                providers:
+                  type: array
+                  items:
+                    oneOf:
+                    - type: object
+                      properties:
+                        type:
+                          type: string
+                        label:
+                          type: string
+                        value:
+                          type: string
+                        img_src:
+                          type: string
+                        api_onboarding:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                            description:
+                              type: string
+                          required:
+                          - url
+                          additionalProperties: false
+                        api_key_provided:
+                          type: boolean
+                        is_shared_across_entity:
+                          type: boolean
+                        organization_permission_override_status:
+                          type: string
+                          enum:
+                          - enabled
+                          - disabled
+                        dependent_tool_steps:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              transformation_id:
+                                type: string
+                              name:
+                                type: string
+                            required:
+                            - transformation_id
+                            - name
+                            additionalProperties: false
+                      additionalProperties: false
+                      required:
+                      - type
+                      - label
+                      - value
+                    - type: object
+                      properties:
+                        type:
+                          type: string
+                        label:
+                          type: string
+                        value:
+                          type: string
+                        img_src:
+                          type: string
+                        api_onboarding:
+                          type: object
+                          properties:
+                            url:
+                              type: string
+                            description:
+                              type: string
+                          required:
+                          - url
+                          additionalProperties: false
+                        organization_permission_override_status:
+                          type: string
+                          enum:
+                          - enabled
+                          - disabled
+                        dependent_tool_steps:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              transformation_id:
+                                type: string
+                              name:
+                                type: string
+                            required:
+                            - transformation_id
+                            - name
+                            additionalProperties: false
+                      additionalProperties: false
+                      required:
+                      - type
+                      - label
+                      - value
+              additionalProperties: false
+              required:
+              - type
+              - label
+              - value
+              - is_group
+              - providers
+      additionalProperties: false
+      required:
+      - results
+    BulkUpsertOrganizationIntegrationPermissionOverridesInput:
+      type: object
+      properties:
+        overrides:
+          type: array
+          items:
+            type: object
+            properties:
+              provider_value:
+                type: string
+              permission_status:
+                type: string
+                enum:
+                - enabled
+                - disabled
+            required:
+            - provider_value
+            - permission_status
+            additionalProperties: false
+      required:
+      - overrides
+      additionalProperties: false
+    GetOrganizationDefaultIntegrationPermissionOutput:
+      type: object
+      properties:
+        integrations_permission_status:
+          type: string
+          enum:
+          - enable_all
+          - disable_all
+      required:
+      - integrations_permission_status
+      additionalProperties: false
+    DeleteOrganizationNativeApiKeyInput:
+      type: object
+      properties:
+        key:
+          type: string
+      additionalProperties: false
+      required:
+      - key
+    ListOrganizationIntegrationProvidersInput:
+      type: object
+      properties:
+        query:
+          type: string
+        sort_by:
+          type: string
+          enum:
+          - label_alphabetical
+        page_size:
+          type: number
+        page:
+          type: number
+        include_organization_permission_overrides:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              default: false
+          required:
+          - enabled
+          additionalProperties: false
+        include_credentials:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              default: false
+          required:
+          - enabled
+          additionalProperties: false
+        include_dependent_tool_steps:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              default: false
+          required:
+          - enabled
+          additionalProperties: false
+      additionalProperties: false
+    SetOrganizationNativeApiKeyInput:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+        is_shared:
+          type: boolean
+          description: Whether the key is shared with all projects in the organization. If not provided and key is being created for the first time, it will be set to true
+      additionalProperties: false
+      required:
+      - key
+      - value
+    ChangeBillingSubscriptionOutput:
+      type: object
+      properties:
+        client_secret:
+          type: string
+        checkout_session_id:
+          type: string
+      required:
+      - client_secret
+      - checkout_session_id
+    AssignGroupToProjectOutput: {}
+    SyncSubscriptionInput: {}
+    IsUsageBasedBillingEnabledOutput:
+      type: object
+      properties:
+        is_usage_based_billing_enabled:
+          type: boolean
+      required:
+      - is_usage_based_billing_enabled
+      additionalProperties: false
+    ListPendingUsersInGroupOutput:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                description: The user's email address
+            required:
+            - email
+            additionalProperties: false
+          description: List of users who are pending members of the group
+      required:
+      - members
+      additionalProperties: false
+    ListAssetGroupPermissionsOutput:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              group_id:
+                type: string
+                description: The group's unique identifier
+              group_name:
+                type: string
+                description: The group's name
+              source:
+                type: string
+                enum:
+                - directory_sync
+                - relevance
+                description: The source of the group (directory sync or relevance)
+              user_count:
+                type: number
+                description: The number of users in the group
+              permission:
+                type: string
+                enum:
+                - admin
+                - operator
+                - viewer
+                description: The permission/role the group has on the asset
+            required:
+            - group_id
+            - group_name
+            - source
+            - user_count
+            - permission
+            additionalProperties: false
+          description: List of groups with their permissions on the asset
+      required:
+      - groups
+      additionalProperties: false
+    DeleteOrganizationDataRetentionConfigOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    CancelDowngradeOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpdateOverageConfigInput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+      additionalProperties: false
+    ListOrganizationPlansOutput:
+      type: object
+      properties:
+        plans:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                enum:
+                - free
+                - basic
+                - starter
+                - team
+                - business
+                - enterprise
+                - custom
+              name:
+                type: string
+              description:
+                type: string
+              custom_price:
+                type: boolean
+                enum:
+                - true
+                default: false
+              actions:
+                type: number
+              credits:
+                type: number
+              refill_interval:
+                type: string
+                enum:
+                - month
+                - day
+                - year
+              price_interval:
+                type: string
+                enum:
+                - day
+                - month
+                - year
+              price_usd:
+                type: number
+              entitlements:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    tooltip:
+                      type: string
+                  additionalProperties: false
+                  required:
+                  - name
+            required:
+            - id
+            - name
+            - description
+            - credits
+            - refill_interval
+            - price_usd
+            - entitlements
+      required:
+      - plans
+      additionalProperties: false
+    CreateOrganizationOutput:
+      type: object
+      properties:
+        organization_id:
+          type: string
+      additionalProperties: false
+      required:
+      - organization_id
+    GetCreditCostOutput:
+      type: object
+      properties:
+        credits:
+          type: number
+      required:
+      - credits
+    UpdateOrganizationBillingInput:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+      required:
+      - plan
+      - billing_cycle
+      additionalProperties: false
+    ListUsersInOrganizationOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              profile_picture_url:
+                type: string
+              onboarded:
+                type: boolean
+              first_name:
+                type: string
+              last_name:
+                type: string
+              role:
+                type: string
+              company:
+                type: string
+              label:
+                type: string
+              notes:
+                type: string
+              tags:
+                type: object
+              permissions:
+                type: object
+                properties:
+                  projects:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        items:
+                          type: object
+                          additionalProperties:
+                            type: object
+                            properties:
+                              resources:
+                                type: object
+                                properties:
+                                  datasets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  deployables:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  users:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  agents:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  knowledge_sets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  chains:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  syncs:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  workforces:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                              actions:
+                                type: object
+                                additionalProperties:
+                                  type: boolean
+                            additionalProperties: false
+                        role_context:
+                          oneOf:
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - organization
+                              role:
+                                type: string
+                                enum:
+                                - owner
+                                - admin
+                                - operator
+                                - viewer
+                                description: User's effective (actual) FGA role for this organization.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - project
+                              is_inherited:
+                                type: boolean
+                                description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                              most_permissive_inherited_role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                              role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                      required:
+                      - items
+                      additionalProperties: false
+                  organizations:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        items:
+                          type: object
+                          additionalProperties:
+                            type: object
+                            properties:
+                              resources:
+                                type: object
+                                properties:
+                                  datasets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  deployables:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  users:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  agents:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  knowledge_sets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  chains:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  syncs:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  workforces:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                              actions:
+                                type: object
+                                additionalProperties:
+                                  type: boolean
+                            additionalProperties: false
+                        role_context:
+                          oneOf:
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - organization
+                              role:
+                                type: string
+                                enum:
+                                - owner
+                                - admin
+                                - operator
+                                - viewer
+                                description: User's effective (actual) FGA role for this organization.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - project
+                              is_inherited:
+                                type: boolean
+                                description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                              most_permissive_inherited_role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                              role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                      required:
+                      - items
+                      additionalProperties: false
+                  administrator:
+                    type: object
+                    properties:
+                      items:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            resources:
+                              type: object
+                              properties:
+                                datasets:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                deployables:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                users:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                agents:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                knowledge_sets:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                chains:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                syncs:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                workforces:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                            actions:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                          additionalProperties: false
+                      role_context:
+                        oneOf:
+                        - type: object
+                          properties:
+                            entity_type:
+                              type: string
+                              enum:
+                              - organization
+                            role:
+                              type: string
+                              enum:
+                              - owner
+                              - admin
+                              - operator
+                              - viewer
+                              description: User's effective (actual) FGA role for this organization.
+                          required:
+                          - entity_type
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            entity_type:
+                              type: string
+                              enum:
+                              - project
+                            is_inherited:
+                              type: boolean
+                              description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                            most_permissive_inherited_role:
+                              type: string
+                              enum:
+                              - admin
+                              - editor
+                              - operator
+                              - viewer
+                              - chat
+                              description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                            role:
+                              type: string
+                              enum:
+                              - admin
+                              - editor
+                              - operator
+                              - viewer
+                              - chat
+                              description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                          required:
+                          - entity_type
+                          additionalProperties: false
+                    required:
+                    - items
+                    additionalProperties: false
+                required:
+                - projects
+                additionalProperties: false
+              type:
+                type: string
+                enum:
+                - user
+                - machine
+                - agent-embed
+                - workforce-embed
+              _id:
+                type: string
+              email:
+                type: string
+              creator_user_id:
+                type: string
+            required:
+            - permissions
+            - type
+            - _id
+      additionalProperties: false
+      required:
+      - results
+    DeleteOrganizationDataRetentionConfigInput: {}
+    GetOrganizationConfigurationValueOutput:
+      oneOf:
+      - type: object
+        properties:
+          fga_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - fga_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          prompt_injection_mode:
+            anyOf:
+            - type: string
+              enum:
+              - 'off'
+              - detect
+              - warn
+              - block
+            - type: 'null'
+        required:
+        - prompt_injection_mode
+        additionalProperties: false
+      - type: object
+        properties:
+          fga_groups_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - fga_groups_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          data_retention_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - data_retention_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          chat_only_role_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - chat_only_role_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          mcp_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - mcp_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          integration_mounts_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - integration_mounts_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          customer_otel:
+            anyOf:
+            - type: object
+              properties:
+                enabled:
+                  type: boolean
+              required:
+              - enabled
+              additionalProperties: false
+            - type: 'null'
+        required:
+        - customer_otel
+        additionalProperties: false
+      - type: object
+        properties:
+          user_deprovisioning_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - user_deprovisioning_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          dynamic_auth:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - dynamic_auth
+        additionalProperties: false
+      - type: object
+        properties:
+          dynamic_auth_associations:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - dynamic_auth_associations
+        additionalProperties: false
+      - type: object
+        properties:
+          chat_subagent_missing_inputs:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - chat_subagent_missing_inputs
+        additionalProperties: false
+      - type: object
+        properties:
+          disable_subagent_output_compaction:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - disable_subagent_output_compaction
+        additionalProperties: false
+      - type: object
+        properties:
+          subagents_in_super_gtm_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - subagents_in_super_gtm_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          pii_scrubbing:
+            anyOf:
+            - type: object
+              properties:
+                enabled:
+                  type: boolean
+                action:
+                  default: replace
+                  type: string
+                  enum:
+                  - mask
+                  - redact
+                  - replace
+                  - hash
+                entities:
+                  anyOf:
+                  - type: array
+                    items:
+                      type: string
+                  - type: 'null'
+                target_fields:
+                  anyOf:
+                  - type: array
+                    items:
+                      type: string
+                  - type: 'null'
+                score_threshold:
+                  anyOf:
+                  - type: number
+                    minimum: 0
+                    maximum: 1
+                  - type: 'null'
+              required:
+              - enabled
+              - action
+              additionalProperties: false
+            - type: 'null'
+        required:
+        - pii_scrubbing
+        additionalProperties: false
+      - type: object
+        properties:
+          override_concurrency:
+            anyOf:
+            - type: integer
+              minimum: 1
+              maximum: 9007199254740991
+            - type: 'null'
+        required:
+        - override_concurrency
+        additionalProperties: false
+      - type: object
+        properties:
+          max_subagents_per_chat:
+            anyOf:
+            - type: integer
+              minimum: 1
+              maximum: 9007199254740991
+            - type: 'null'
+        required:
+        - max_subagents_per_chat
+        additionalProperties: false
+      - type: object
+        properties:
+          studio_job_priority_tiers_offset_seconds:
+            anyOf:
+            - type: integer
+              minimum: 0
+              maximum: 86400
+            - type: 'null'
+        required:
+        - studio_job_priority_tiers_offset_seconds
+        additionalProperties: false
+      - type: object
+        properties:
+          workforce_slack_approve_reject:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - workforce_slack_approve_reject
+        additionalProperties: false
+      - type: object
+        properties:
+          slack_agent_initiated_dms:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - slack_agent_initiated_dms
+        additionalProperties: false
+      - type: object
+        properties:
+          slack_custom_buttons:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - slack_custom_buttons
+        additionalProperties: false
+      - type: object
+        properties:
+          slack_modals:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - slack_modals
+        additionalProperties: false
+      - type: object
+        properties:
+          slack_resolved_channel_mint:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - slack_resolved_channel_mint
+        additionalProperties: false
+      - type: object
+        properties:
+          slack_strip_agent_scaffolding:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - slack_strip_agent_scaffolding
+        additionalProperties: false
+      - type: object
+        properties:
+          slack_ux_safety_fixes:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - slack_ux_safety_fixes
+        additionalProperties: false
+      - type: object
+        properties:
+          slack_send_path_fixes:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - slack_send_path_fixes
+        additionalProperties: false
+      - type: object
+        properties:
+          sso_only_enforcement:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - sso_only_enforcement
+        additionalProperties: false
+      - type: object
+        properties:
+          disable_session_recording:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - disable_session_recording
+        additionalProperties: false
+      - type: object
+        properties:
+          preset_tool_action_billing_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - preset_tool_action_billing_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          sgtm_optimization_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - sgtm_optimization_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          compaction_rollout:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - compaction_rollout
+        additionalProperties: false
+      - type: object
+        properties:
+          tabular_review_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - tabular_review_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          block_data_collection_models:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - block_data_collection_models
+        additionalProperties: false
+      - type: object
+        properties:
+          disabled_chat_models:
+            anyOf:
+            - maxItems: 50
+              type: array
+              items:
+                type: string
+                minLength: 3
+                maxLength: 200
+                pattern: ^[\x21-\x7E]+$
+            - type: 'null'
+        required:
+        - disabled_chat_models
+        additionalProperties: false
+      - type: object
+        properties:
+          overage_credits_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - overage_credits_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          overage_actions_enabled:
+            anyOf:
+            - type: boolean
+            - type: 'null'
+        required:
+        - overage_actions_enabled
+        additionalProperties: false
+      - type: object
+        properties:
+          overage_concurrency:
+            anyOf:
+            - type: object
+              properties:
+                enabled:
+                  type: boolean
+                allocation:
+                  default: 0
+                  type: integer
+                  minimum: 0
+                  maximum: 9007199254740991
+                limit:
+                  default: 0
+                  type: integer
+                  minimum: 0
+                  maximum: 9007199254740991
+              required:
+              - enabled
+              - allocation
+              - limit
+              additionalProperties: false
+            - type: 'null'
+        required:
+        - overage_concurrency
+        additionalProperties: false
+    AcceptRetentionOfferOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+      - success
+      - message
+      additionalProperties: false
+    GetOrganizationDataRetentionConfigOutput:
+      type: object
+      properties:
+        config:
+          type: object
+          properties:
+            settings:
+              type: object
+              properties:
+                delete_agent_versions:
+                  type: boolean
+                delete_conversations:
+                  type: boolean
+                delete_files:
+                  type: boolean
+                delete_meeting_transcripts:
+                  type: boolean
+                delete_tool_runs:
+                  type: boolean
+                delete_tool_versions:
+                  type: boolean
+                delete_workforce_versions:
+                  type: boolean
+              required:
+              - delete_agent_versions
+              - delete_conversations
+              - delete_files
+              - delete_meeting_transcripts
+              - delete_tool_runs
+              - delete_tool_versions
+              - delete_workforce_versions
+              additionalProperties: false
+            retention_period_days:
+              type: number
+          required:
+          - settings
+          - retention_period_days
+          additionalProperties: false
+      additionalProperties: false
+    CheckOrganizationEntitlementLimitsInput:
+      type: object
+      properties:
+        entitlements:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - workflows_gpu
+            - negative_credits
+            - negative_actions
+            - workflows_seconds_per_year
+            - documents
+            - documents_per_dataset
+            - premium_llm_generation
+            - sandbox_gpu_usage
+            - max_rows_at_once
+            - knowledge_bytes
+            - file_storage_bytes
+            - organization_credit_alarm_breach
+            - organization_action_alarm_breach
+            - project_credit_alarm_breach
+            - project_action_alarm_breach
+      required:
+      - entitlements
+      additionalProperties: false
+    CreditPurchaseCheckoutSessionOutput:
+      type: object
+      properties:
+        client_secret:
+          type: string
+        checkout_session_id:
+          type: string
+      required:
+      - client_secret
+      - checkout_session_id
+    AssignGroupToProjectInput:
+      type: object
+      properties:
+        project_display_id:
+          type: string
+          description: The display ID of the project to assign the group to
+        permission:
+          type: string
+          enum:
+          - admin
+          - editor
+          - operator
+          - viewer
+          - chat
+          description: The permission/role the group should have on the project
+      required:
+      - project_display_id
+      - permission
+      additionalProperties: false
+    UpdateOverageConfigOutput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+      additionalProperties: false
+    ListAvailableRolesByScopeOutput:
+      type: object
+      properties:
+        entity_type:
+          type: string
+          enum:
+          - organization
+          - project
+          description: The type of entity to list roles for.
+        is_fga_enabled:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - roles
+    AcceptRetentionOfferInput:
+      type: object
+      properties:
+        cancellation_reason:
+          type: string
+        experiment_variant:
+          type: string
+          enum:
+          - test_30
+          - test_50
+      additionalProperties: false
+    CheckSSOEnforcementInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address to check SSO enforcement for
+      required:
+      - email
+      additionalProperties: false
+    CancelSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListProjectGroupPermissionsOutput:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              group_id:
+                type: string
+                description: The group's unique identifier
+              group_name:
+                type: string
+                description: The group's name
+              source:
+                type: string
+                enum:
+                - directory_sync
+                - relevance
+                description: The source of the group (directory sync or relevance)
+              user_count:
+                type: number
+                description: The number of users in the group
+              permission:
+                type: string
+                enum:
+                - admin
+                - editor
+                - operator
+                - viewer
+                - chat
+                description: The permission/role the group has on the project
+            required:
+            - group_id
+            - group_name
+            - source
+            - user_count
+            - permission
+            additionalProperties: false
+          description: List of groups with their permissions on the project
+      required:
+      - groups
+      additionalProperties: false
+    UpsertAutoRechargeConfigOutput:
+      type: object
+      properties:
+        threshold:
+          type: number
+        amount:
+          type: number
+      required:
+      - threshold
+      - amount
+      additionalProperties: false
+    CheckDomainEnterpriseStatusInput:
+      type: object
+      properties:
+        id_token:
+          type: string
+          description: The id token for a signed in account containing the user's email
+      required:
+      - id_token
+      additionalProperties: false
+    UpsertOrganizationDataRetentionConfigInput:
+      type: object
+      properties:
+        settings:
+          type: object
+          properties:
+            delete_agent_versions:
+              type: boolean
+            delete_conversations:
+              type: boolean
+            delete_files:
+              type: boolean
+            delete_meeting_transcripts:
+              type: boolean
+            delete_tool_runs:
+              type: boolean
+            delete_tool_versions:
+              type: boolean
+            delete_workforce_versions:
+              type: boolean
+          additionalProperties: false
+        retention_period_days:
+          type: number
+      required:
+      - settings
+      - retention_period_days
+      additionalProperties: false
+    UpsertOrganizationUsageAlarmInput:
+      type: object
+      properties:
+        usage_type:
+          type: string
+          enum:
+          - credit
+          - action
+          description: Type of usage to monitor
+        usage_threshold:
+          type: number
+          minimum: 0
+          description: Threshold value to trigger the alarm
+        alarm_action:
+          type: string
+          enum:
+          - warn
+          - block
+          description: Action to take when threshold is exceeded
+        alarm_action_config:
+          type: object
+          properties:
+            emails:
+              type: array
+              items:
+                type: string
+              description: Email addresses to notify when alarm is triggered
+          additionalProperties: false
+      required:
+      - usage_type
+      - usage_threshold
+      - alarm_action
+      additionalProperties: false
+    ListOrganizationUsageAlarmsOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              usage_type:
+                type: string
+                enum:
+                - credit
+                - action
+                description: Type of usage to monitor
+              usage_threshold:
+                type: number
+                minimum: 0
+                description: Threshold value to trigger the alarm
+              alarm_action:
+                type: string
+                enum:
+                - warn
+                - block
+                description: Action to take when threshold is exceeded
+              alarm_action_config:
+                type: object
+                properties:
+                  emails:
+                    type: array
+                    items:
+                      type: string
+                    description: Email addresses to notify when alarm is triggered
+                additionalProperties: false
+              alarm_status:
+                type: string
+                enum:
+                - ok
+                - alarm
+                description: Current status of the alarm
+              created_at:
+                type: string
+              updated_at:
+                type: string
+            required:
+            - usage_type
+            - usage_threshold
+            - alarm_action
+            - alarm_action_config
+            - alarm_status
+            - created_at
+            additionalProperties: false
+      required:
+      - results
+      additionalProperties: false
+    DowngradeSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    GetBillingTotalsOutput:
+      type: object
+      properties:
+        total_cost:
+          type: number
+      required:
+      - total_cost
+      additionalProperties: false
+    GetAutoRechargeConfigOutput:
+      type: object
+      properties:
+        config:
+          oneOf:
+          - type: object
+            properties:
+              threshold:
+                type: number
+              amount:
+                type: number
+            required:
+            - threshold
+            - amount
+            additionalProperties: false
+          - type: 'null'
+      required:
+      - config
+      additionalProperties: false
+    AddGroupAssetPermissionOutput: {}
+    GetBillingFrontendLinkOutput:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+      - link
+      additionalProperties: false
+    DeleteOrganizationInput: {}
+    CheckSSOEnforcementOutput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SSO_REQUIRED
+          - SSO_REQUIRED_ORG_SETUP_INCOMPLETE
+          - SSO_NOT_REQUIRED
+          description: The SSO enforcement status for this email domain
+      required:
+      - status
+      additionalProperties: false
+    ChangeBillingSubscriptionInput:
+      type: object
+      properties:
+        new_plan_name:
+          type: string
+          enum:
+          - free
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+        feedback:
+          type: object
+          properties:
+            reason:
+              type: string
+              enum:
+              - too-expensive
+              - price-increase
+              - low-usage
+              - missing-features
+              - integration-issues
+              - switching-tool
+              - support-issues
+              - no-longer-needed
+              - other
+              description: The reason for the billing change
+            explanation:
+              type: string
+              description: Additional explanation for the billing change
+          required:
+          - reason
+          additionalProperties: false
+        coupon_code:
+          type: string
+      required:
+      - idempotency_key
+      - new_plan_name
+      - billing_cycle
+      additionalProperties: false
+    UpdateOrganizationEnabledFeaturesInput:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              feature:
+                type: string
+                enum:
+                - natural_language_errors
+                description: The identifier of an organization feature
+              enabled:
+                type: boolean
+                description: Whether this feature should be enabled for this organization
+            required:
+            - feature
+            - enabled
+            additionalProperties: false
+          description: List of features to update with their enabled status
+      required:
+      - features
+      additionalProperties: false
+    ListUsersInGroupOutput:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The user's display_id
+              email:
+                type:
+                - string
+                - 'null'
+                description: The user's email address
+              first_name:
+                type:
+                - string
+                - 'null'
+                description: The user's first name
+              last_name:
+                type:
+                - string
+                - 'null'
+                description: The user's last name
+              profile_picture_url:
+                type:
+                - string
+                - 'null'
+                description: The user's profile picture
+            required:
+            - id
+            - email
+            - first_name
+            - last_name
+            - profile_picture_url
+            additionalProperties: false
+          description: List of users who are members of the group
+      required:
+      - members
+      additionalProperties: false
+    GetOverageConfigOutput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            allocation:
+              type: number
+            limit:
+              type: number
+          required:
+          - enabled
+          - allocation
+          - limit
+          additionalProperties: false
+      additionalProperties: false
+    UpdateOrganizationBillingOutput:
+      type: object
+      properties:
+        next_action:
+          type: object
+          properties:
+            type:
+              type: string
+            data:
+              type: object
+              properties:
+                payment_intent_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+              - client_secret
+              - payment_intent_id
+              additionalProperties: false
+          required:
+          - type
+          - data
+          additionalProperties: false
+      additionalProperties: false
+    UpsertOrganizationDataRetentionConfigOutput:
+      type: object
+      properties:
+        config:
+          type: object
+          properties:
+            settings:
+              type: object
+              properties:
+                delete_agent_versions:
+                  type: boolean
+                delete_conversations:
+                  type: boolean
+                delete_files:
+                  type: boolean
+                delete_meeting_transcripts:
+                  type: boolean
+                delete_tool_runs:
+                  type: boolean
+                delete_tool_versions:
+                  type: boolean
+                delete_workforce_versions:
+                  type: boolean
+              required:
+              - delete_agent_versions
+              - delete_conversations
+              - delete_files
+              - delete_meeting_transcripts
+              - delete_tool_runs
+              - delete_tool_versions
+              - delete_workforce_versions
+              additionalProperties: false
+            retention_period_days:
+              type: number
+          required:
+          - settings
+          - retention_period_days
+          additionalProperties: false
+      required:
+      - config
+      additionalProperties: false
+    CancelDowngradeInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+      required:
+      - idempotency_key
+      additionalProperties: false
+    CreditPurchaseCheckoutSessionInput:
+      type: object
+      properties:
+        credits_quantity:
+          type: number
+        actions_quantity:
+          type: number
+      required:
+      - credits_quantity
+      - actions_quantity
+      additionalProperties: false
+    UpsertAutoRechargeConfigInput:
+      type: object
+      properties:
+        threshold:
+          type: number
+          description: The auto-recharge threshold will be triggered when the balance drops below this amount.
+        amount:
+          type: number
+          description: This amount is NOT the amount that will be auto-recharged. The actual recharge amount is (threshold + amount) - (current balance), i.e. the amount required to bring the balance up.
+      required:
+      - threshold
+      - amount
+      additionalProperties: false
+    TriggerOrganizationPlanTrialInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+      additionalProperties: false
+    ListOrganizationsOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              organization_id:
+                type: string
+      additionalProperties: false
+      required:
+      - results
+    GetCheckoutCompletionStatusOutput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          - success
+          - fail
+      required:
+      - status
+      additionalProperties: false
+    AddGroupAssetPermissionInput:
+      type: object
+      properties:
+        group_id:
+          type: string
+          description: The ID of the group to grant permissions to
+        permission:
+          type: string
+          enum:
+          - admin
+          - operator
+          - viewer
+          description: The permission/role the group should have on the asset
+      required:
+      - group_id
+      - permission
+      additionalProperties: false
+    ListOrganizationGroupsOutput:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: The group's unique identifier
+              name:
+                type: string
+                description: The group's name
+              source:
+                type: string
+                enum:
+                - directory_sync
+                - relevance
+                description: The source of the group (directory sync or relevance)
+              user_count:
+                type: number
+                description: The number of users in the group
+              projects:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    project_id:
+                      type: string
+                      description: The project's display id
+                    project_name:
+                      type: string
+                      description: The project's name
+                    permission:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: The permission/role the group has on the project
+                  required:
+                  - project_id
+                  - project_name
+                  - permission
+                  additionalProperties: false
+                description: List of projects that the group belongs to with their permissions
+            required:
+            - id
+            - source
+            - name
+            - user_count
+            - projects
+            additionalProperties: false
+          description: List of groups in the organization
+      required:
+      - groups
+      additionalProperties: false
+    BuyCreditsInput:
+      type: object
+      properties:
+        quantity:
+          type: number
+          minimum: 10000
+        idempotency_key:
+          type: string
+      required:
+      - idempotency_key
+      - quantity
+      additionalProperties: false
+    UpdateOrganizationEnabledFeaturesOutput:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: The feature title
+              display_name:
+                type: string
+                description: The feature display name
+              description:
+                type: string
+                description: The feature description
+              feature:
+                type: string
+                enum:
+                - natural_language_errors
+                description: The identifier of an organization feature
+              enabled:
+                type: boolean
+                description: Whether this feature should be enabled for this organization
+            required:
+            - title
+            - display_name
+            - description
+            - feature
+            - enabled
+          description: List of all organization features with their status and metadata after the update
+      required:
+      - features
+      additionalProperties: false
+    DeleteOrganizationUsageAlarmOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertOrganizationUsageAlarmOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        id:
+          type: string
+      required:
+      - success
+      - id
+      additionalProperties: false
+    BuyCreditsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    GetOrganizationUsageOutput:
+      type: object
+      properties:
+        usage:
+          type: object
+          properties:
+            users:
+              type: object
+              properties:
+                limit:
+                  type: number
+            projects:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_gpu:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+            negative_credits:
+              type: object
+              properties:
+                limit:
+                  type: number
+            negative_actions:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_seconds_per_year:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents_per_dataset:
+              type: object
+              properties:
+                limit:
+                  type: number
+            premium_llm_generation:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            sandbox_gpu_usage:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            max_rows_at_once:
+              type: object
+              properties:
+                limit:
+                  type: number
+            knowledge_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+            file_storage_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+          additionalProperties: false
+        limit:
+          type: object
+          properties:
+            users:
+              type: object
+              properties:
+                limit:
+                  type: number
+            projects:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_gpu:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+            negative_credits:
+              type: object
+              properties:
+                limit:
+                  type: number
+            negative_actions:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_seconds_per_year:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents_per_dataset:
+              type: object
+              properties:
+                limit:
+                  type: number
+            premium_llm_generation:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            sandbox_gpu_usage:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            max_rows_at_once:
+              type: object
+              properties:
+                limit:
+                  type: number
+            knowledge_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+            file_storage_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+          additionalProperties: false
+      required:
+      - usage
+      - limit
+      additionalProperties: false
+    GetOrganizationOutput:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          description: Just `_id` but optional because why not
+        _id:
+          type: string
+        name:
+          type: string
+        entitlements:
+          type: object
+          properties:
+            users:
+              type: object
+              properties:
+                limit:
+                  type: number
+            projects:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_gpu:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+            negative_credits:
+              type: object
+              properties:
+                limit:
+                  type: number
+            negative_actions:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_seconds_per_year:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents_per_dataset:
+              type: object
+              properties:
+                limit:
+                  type: number
+            premium_llm_generation:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            sandbox_gpu_usage:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            max_rows_at_once:
+              type: object
+              properties:
+                limit:
+                  type: number
+            knowledge_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+            file_storage_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+          additionalProperties: false
+        entitlement_plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        credits:
+          type: number
+        actions:
+          type: number
+        external_billing_id:
+          type: string
+        billing_period_start_date:
+          type: string
+        billing_period_end_date: {}
+        billing_period:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        downgrading_to:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+          description: The plan the organization is downgrading to at the end of the current billing cycle (legacy)
+        scheduled_downgrade:
+          type: object
+          properties:
+            plan:
+              type: string
+              enum:
+              - free
+              - basic
+              - starter
+              - team
+              - business
+              - enterprise
+              - custom
+            billing_cycle:
+              type: string
+              enum:
+              - monthly
+              - yearly
+              description: The billing cycle of a Stripe subscription plan
+          description: The plan and billing cycle the organization is downgrading to at the end of the current billing cycle. Replaces `downgrading_to`.
+          additionalProperties: false
+        fixed_allocation:
+          type: object
+          properties:
+            credits:
+              type: number
+            actions:
+              type: number
+          additionalProperties: false
+        total_allocation:
+          type: object
+          properties:
+            credits:
+              type: number
+            actions:
+              type: number
+          additionalProperties: false
+        relevance_orb_customer:
+          type: object
+          properties:
+            id:
+              type: string
+            portal_url:
+              type:
+              - string
+              - 'null'
+            timezone:
+              type: string
+          description: Usage-based billing object that contains information about the customer set up in Orb billing.
+          additionalProperties: true
+      required:
+      - _id
+    TriggerOrganizationPlanTrialOutput:
+      type: object
+      properties:
+        next_action:
+          type: object
+          properties:
+            type:
+              type: string
+            data:
+              type: object
+              properties:
+                payment_intent_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+              - client_secret
+              - payment_intent_id
+              additionalProperties: false
+          required:
+          - type
+          - data
+          additionalProperties: false
+      additionalProperties: false
+    GetCreditCostInput:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        units:
+          type: number
+        type:
+          type: string
+          enum:
+          - openai-gpt35
+          - openai-gpt35-16k
+          - openai-gpt35-1106
+          - openai-gpt4
+          - openai-gpt4-turbo
+          - openai-gpt4-turbo-2024-04-09
+          - openai-gpt-4o
+          - openai-gpt-4o-mini
+          - openai-gpt-4o-realtime-preview
+          - openai-gpt-4o-mini-realtime-preview
+          - openai-gpt-realtime
+          - openai-gpt-4.5-preview
+          - openai-o1-latest
+          - openai-o1-2024-12-17
+          - openai-o1-mini
+          - openai-o3-mini
+          - openai-o3-2025-04-16
+          - openai-o4-mini-2025-04-16
+          - openai-o4-mini-deep-research
+          - openai-o3-deep-research
+          - openai-o-series-web-search-tool
+          - openai-o3-mini-2025-01-31
+          - openai-gpt-4.1
+          - openai-gpt-4.1-2025-04-14
+          - openai-gpt-4.1-mini
+          - openai-gpt-4.1-mini-2025-04-14
+          - openai-gpt-4.1-nano
+          - openai-gpt-4.1-nano-2025-04-14
+          - openai-gpt-oss-20b-bedrock-us-east-1
+          - openai-gpt-oss-20b-bedrock-eu-north-1
+          - openai-gpt-oss-20b-bedrock-eu-west-2
+          - openai-gpt-oss-20b-bedrock-ap-southeast-2
+          - openai-gpt-oss-120b-bedrock-us-east-1
+          - openai-gpt-oss-120b-bedrock-eu-north-1
+          - openai-gpt-oss-120b-bedrock-eu-west-2
+          - openai-gpt-oss-120b-bedrock-ap-southeast-2
+          - openai-gpt-5
+          - openai-gpt-5-mini
+          - openai-gpt-5-nano
+          - openai-gpt-5-pro
+          - openai-gpt-5.1
+          - openai-gpt-5.2
+          - openai-gpt-5.2-pro
+          - openai-gpt-5.4
+          - openai-gpt-5.5
+          - openai-gpt-5.5-pro
+          - openai-gpt-5.6
+          - openai-gpt-5.6-luna
+          - openai-gpt-5.6-terra
+          - openai-gpt-5.6-sol
+          - openai-gpt-5.4-pro
+          - openai-gpt-5.4-mini
+          - openai-gpt-5.4-nano
+          - openai-o3-pro-2025-06-10
+          - anthropic-claude-v2
+          - anthropic-claude-instant-v1
+          - meta-llama2-70b
+          - gemini-pro
+          - gemini-1.5-pro-latest
+          - gemini-1.5-flash
+          - google-gemini-2.0-flash
+          - google-gemini-2.0-flash-lite
+          - google-gemini-2.5-pro-preview
+          - google-gemini-2.5-flash-preview
+          - google-gemini-2.5-pro-short-context
+          - google-gemini-2.5-pro-long-context
+          - google-gemini-3-pro-short-context
+          - google-gemini-3-pro-long-context
+          - google-gemini-3.1-pro-preview-short-context
+          - google-gemini-3.1-pro-preview-long-context
+          - google-gemini-3.6-flash
+          - google-gemini-3.5-flash
+          - google-gemini-3.5-flash-lite
+          - google-gemini-3-flash
+          - google-gemini-2.5-flash
+          - google-gemini-2.5-flash-lite
+          - pplx-70b-chat
+          - chain-run-and-row-cost
+          - apify-scraper
+          - apollo-export
+          - serpapi-search
+          - perplexity-search
+          - tavily
+          - openai-gpt4v
+          - replicate-llava13b
+          - replicate-qwen
+          - gemini-vision
+          - claude-v3-vision
+          - anthropic-claude-v3-opus
+          - anthropic-claude-v3-sonnet
+          - anthropic-claude-v3-haiku
+          - anthropic-claude-v35-sonnet
+          - anthropic-claude-v35-haiku
+          - anthropic-claude-haiku-4-5
+          - anthropic-claude-haiku-4-5-bedrock
+          - anthropic-claude-3-7-sonnet
+          - anthropic-claude-sonnet-4
+          - anthropic-claude-sonnet-4-context-1m
+          - anthropic-claude-sonnet-4-5
+          - anthropic-claude-sonnet-4-5-context-1m
+          - anthropic-claude-sonnet-4-5-bedrock
+          - anthropic-claude-sonnet-4-5-context-1m-bedrock
+          - anthropic-claude-sonnet-4-6
+          - anthropic-claude-sonnet-4-6-bedrock
+          - anthropic-claude-sonnet-4-6-context-1m
+          - anthropic-claude-sonnet-4-6-context-1m-bedrock
+          - anthropic-claude-opus-4
+          - anthropic-claude-opus-4-1
+          - anthropic-claude-opus-4-1-20250805
+          - anthropic-claude-opus-4-5
+          - anthropic-claude-opus-4-5-bedrock
+          - anthropic-claude-opus-4-6
+          - anthropic-claude-opus-4-6-bedrock
+          - anthropic-claude-opus-4-6-context-1m
+          - anthropic-claude-opus-4-6-context-1m-bedrock
+          - anthropic-claude-opus-4-7
+          - anthropic-claude-opus-4-7-bedrock
+          - anthropic-claude-opus-4-8
+          - anthropic-claude-opus-4-8-bedrock
+          - anthropic-claude-opus-5
+          - anthropic-claude-opus-5-bedrock
+          - anthropic-claude-fable-5
+          - anthropic-claude-fable-5-bedrock
+          - anthropic-claude-sonnet-5
+          - anthropic-claude-sonnet-5-bedrock
+          - cohere-command-light
+          - cohere-command-light-nightly
+          - cohere-command
+          - cohere-command-nightly
+          - cohere-command-r
+          - cohere-command-r-plus
+          - cohere-command-a
+          - fast-gemma-7b-it
+          - fast-gemma-2-9b-it
+          - fast-kimi-k2
+          - fast-qwen-3-32b
+          - xai-grok-3-mini-latest
+          - xai-grok-3-latest
+          - xai-grok-4-latest
+          - xai-grok-4-1-fast-non-reasoning
+          - xai-grok-4-1-fast-non-reasoning-long-context
+          - xai-grok-4-1-fast-reasoning
+          - xai-grok-4-1-fast-reasoning-long-context
+          - xai-grok-4-fast-short-context
+          - xai-grok-4-fast-long-context
+          - xai-grok-code-fast-1
+          - openrouter-models
+          - clarifai-llama-3_2-3b-instruct
+          - pplx-llama-3-8b-instruct
+          - pplx-llama-3-70b-instruct
+          - pplx-mixtral-8x7b-instruct
+          - pplx-llama-3-sonar-small-32k-chat
+          - pplx-llama-3-sonar-small-32k-online
+          - pplx-llama-3-sonar-large-32k-chat
+          - pplx-llama-3-sonar-large-32k-online
+          - pplx-llama-3.1-sonar-small-128k-online
+          - pplx-llama-3.1-sonar-large-128k-online
+          - pplx-llama-3.1-sonar-huge-128k-online
+          - pplx-llama-3.1-sonar-small-128k-chat
+          - pplx-llama-3.1-sonar-large-128k-chat
+          - pplx-llama-3.1-8b-instruct
+          - pplx-llama-3.1-70b-instruct
+          - pplx-sonar-reasoning-pro
+          - pplx-sonar-reasoning
+          - pplx-sonar-pro
+          - pplx-sonar
+          - pplx-r1-1776
+          - firecrawl
+          - reducto_parse
+          - reducto_split
+          - reducto_extract
+          - reducto_edit
+          - modal-cpu
+          - dspy
+          - recallai
+          - rapidapi-linkedin
+          - crustdata-linkedin
+          - bettercontact-email
+          - bettercontact-phone
+          - vapi-call
+          - airtop
+          - daytona-sandbox-compute-hourly-1-vcpu-1gb-memory
+          - mistral-ocr
+          - openai-image-1-input-image-tokens
+          - openai-image-1-input-text-tokens
+          - openai-image-1-output-image-tokens
+          - openai-image-1.5-input-image-tokens
+          - openai-image-1.5-input-text-tokens
+          - openai-image-1.5-output-image-tokens
+          - openai-image-1.5-output-text-tokens
+          - google-gemini-2.5-flash-image-input-image-tokens
+          - google-gemini-2.5-flash-image-input-text-tokens
+          - google-gemini-2.5-flash-image-output-image-tokens
+          - google-gemini-2.5-flash-image-output-text-tokens
+          - google-gemini-3-pro-image-preview-input-text-tokens
+          - google-gemini-3-pro-image-preview-input-image-tokens
+          - google-gemini-3-pro-image-preview-output-image-tokens
+          - google-gemini-3-pro-image-preview-output-text-tokens
+          - google-gemini-3.1-flash-image-preview-input-image-tokens
+          - google-gemini-3.1-flash-image-preview-input-text-tokens
+          - google-gemini-3.1-flash-image-preview-output-image-tokens
+          - google-gemini-3.1-flash-image-preview-output-text-tokens
+          - brightdata-dataset
+      required:
+      - type
+      - units
+      additionalProperties: false
+    RemoveGroupAssetPermissionOutput: {}
+    DeleteAutoRechargeConfigOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    UpdateOrganizationOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListBillingEventsOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items: {}
+      additionalProperties: false
+    DeleteAutoRechargeConfigInput: {}
+    UpdateOrganizationInput:
+      type: object
+      properties:
+        name:
+          type: string
+      additionalProperties: false
+    CreateOrganizationInput:
+      type: object
+      properties:
+        name:
+          type: string
+      additionalProperties: false
+    RemoveGroupFromProjectOutput: {}
+    ListBillingEventsInput:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+        select_fields:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        page_size:
+          type: integer
+          description: Size of each page of results
+        page:
+          type: integer
+          description: Page of the results
+        sort:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: object
+              additionalProperties:
+                type: string
+                enum:
+                - asc
+                - desc
+          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
+        include_vector:
+          type: boolean
+          description: Include vectors in the search results.
+        after_id:
+          type: array
+          items: {}
+          description: Retrieve items after these sort values in the sort order.
+        query:
+          type: string
+    DowngradeSubscriptionInput:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+        feedback:
+          type: object
+          properties:
+            reason:
+              type: string
+              enum:
+              - too-expensive
+              - price-increase
+              - low-usage
+              - missing-features
+              - integration-issues
+              - switching-tool
+              - support-issues
+              - no-longer-needed
+              - other
+              description: The reason for the billing change
+            explanation:
+              type: string
+              description: Additional explanation for the billing change
+          required:
+          - reason
+          additionalProperties: false
+      required:
+      - idempotency_key
+      - plan
+      additionalProperties: false
+    RemoveGroupFromProjectInput: {}
+    CheckOrganizationEntitlementLimitsOutput:
+      type: object
+      properties: {}
+      additionalProperties:
+        type: string
+        enum:
+        - limit_reached
+        - limit_not_reached
+    CheckDomainEnterpriseStatusOutput:
+      type: object
+      properties:
+        domain:
+          type: string
+          description: Domain extracted from the authenticated user's email
+        is_enterprise:
+          type: boolean
+          description: Whether the domain belongs to an enterprise organization
+      required:
+      - domain
+      - is_enterprise
+      additionalProperties: false
+    ListAvailableRolesByScopeInput:
+      type: object
+      properties:
+        entity_type:
+          type: string
+          enum:
+          - organization
+          - project
+          description: The type of entity to list roles for.
+      required:
+      - entity_type
+      additionalProperties: false
+    CancelSubscriptionInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+    GetOrganizationEnabledFeaturesOutput:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: The feature title
+              display_name:
+                type: string
+                description: The feature display name
+              description:
+                type: string
+                description: The feature description
+              feature:
+                type: string
+                enum:
+                - natural_language_errors
+                description: The identifier of an organization feature
+              enabled:
+                type: boolean
+                description: Whether this feature should be enabled for this organization
+            required:
+            - title
+            - display_name
+            - description
+            - feature
+            - enabled
+          description: List of all organization features with their status and metadata
+      required:
+      - features
+      additionalProperties: false
+    ListInvitesInOrganizationOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              user_id:
+                type: string
+              permissions:
+                type: object
+                properties:
+                  items:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        resources:
+                          type: object
+                          properties:
+                            datasets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            deployables:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            users:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            agents:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            knowledge_sets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            chains:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            syncs:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            workforces:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                        actions:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                      additionalProperties: false
+                  role_context:
+                    oneOf:
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - organization
+                        role:
+                          type: string
+                          enum:
+                          - owner
+                          - admin
+                          - operator
+                          - viewer
+                          description: User's effective (actual) FGA role for this organization.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - project
+                        is_inherited:
+                          type: boolean
+                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                        most_permissive_inherited_role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                        role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                required:
+                - items
+                additionalProperties: false
+              email:
+                type: string
+              project:
+                type: string
+              email_status:
+                type: string
+                enum:
+                - pending
+                - sent
+                - failed
+                - delivered
+                - bounced
+                - spam_complaint
+              email_sent_at:
+                type: string
+              email_error:
+                type: string
+              email_attempts:
+                type: number
+              last_email_attempt_at:
+                type: string
+              delivered_at:
+                type: string
+              bounce_type:
+                type: string
+                enum:
+                - hard
+                - soft
+            required:
+            - _id
+            additionalProperties: false
+      additionalProperties: false
+      required:
+      - results
+    ListProjectsInOrganizationOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              project_id:
+                type: string
+              organization_name:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              permissions:
+                type: object
+                properties:
+                  items:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        resources:
+                          type: object
+                          properties:
+                            datasets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            deployables:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            users:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            agents:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            knowledge_sets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            chains:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            syncs:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            workforces:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                        actions:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                      additionalProperties: false
+                  role_context:
+                    oneOf:
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - organization
+                        role:
+                          type: string
+                          enum:
+                          - owner
+                          - admin
+                          - operator
+                          - viewer
+                          description: User's effective (actual) FGA role for this organization.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - project
+                        is_inherited:
+                          type: boolean
+                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                        most_permissive_inherited_role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                        role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                required:
+                - items
+                additionalProperties: false
+              organization_id:
+                type: string
+              updated_at:
+                type: string
+              created_by_user_id:
+                type: string
+              keys:
+                type: object
+              datastore:
+                type: string
+                enum:
+                - redis
+                description: If set to redis, it expects a redis connection string set using project keys under the name "redis".
+              language:
+                type: string
+                description: The language to convert cluster labels output to.
+            required:
+            - _id
+            - project_id
+            - permissions
+            - organization_name
+            - name
+            - description
+            - organization_id
+            - created_by_user_id
+      additionalProperties: false
+      required:
+      - results
+    GetRetentionOfferEligibilityOutput:
+      type: object
+      properties:
+        eligible:
+          type: boolean
+        reason:
+          type: string
+          enum:
+          - plan_not_eligible
+          - already_redeemed
+          - no_active_subscription
+        offer:
+          type: object
+          properties:
+            discount_percentage:
+              type: number
+            duration_months:
+              type: number
+            current_plan:
+              type: string
+          additionalProperties: false
+      required:
+      - eligible
+      additionalProperties: false
+    GetBillingCheckoutSessionOutput:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+      - link
+      additionalProperties: false
+    DeleteOrganizationUsageAlarmInput:
+      type: object
+      properties:
+        usage_type:
+          type: string
+          enum:
+          - credit
+          - action
+          description: Type of usage to monitor
+        alarm_action:
+          type: string
+          enum:
+          - warn
+          - block
+          description: Action to take when threshold is exceeded
+      required:
+      - usage_type
+      - alarm_action
+      additionalProperties: false
+    DeleteOrganizationOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    RemoveGroupAssetPermissionInput: {}
+    SyncSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

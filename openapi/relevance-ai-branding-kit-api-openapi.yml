@@ -1,0 +1,162 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Branding Kit API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Branding Kit
+paths:
+  /branding_kit/{branding_kit_id}:
+    get:
+      summary: GetBrandingKit
+      tags:
+      - Branding Kit
+      description: 'Get a single branding kit
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:reader"
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetBrandingKit
+      parameters:
+      - name: branding_kit_id
+        in: path
+        description: ID of branding_kit
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrandingKitOutput'
+components:
+  schemas:
+    GetBrandingKitOutput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+        name:
+          type: string
+        logos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        inspiration_photos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        colors:
+          type: array
+          items:
+            type: object
+            properties:
+              hexcode:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        heading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        title:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subtitle:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subheading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        section_header:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        body:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        brand_tone:
+          type: string
+        brand_voice:
+          type: string
+        slide_instructions:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

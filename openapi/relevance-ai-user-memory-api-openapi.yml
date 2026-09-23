@@ -1,0 +1,259 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints User Memory API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: user memory
+paths:
+  /user-memory/upsert:
+    post:
+      summary: UpsertUserMemory
+      tags:
+      - user memory
+      description: 'Create or update a user-level memory for an agent
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpsertUserMemory
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUserMemoryInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertUserMemoryOutput'
+  /user-memory/delete:
+    post:
+      summary: DeleteUserMemory
+      tags:
+      - user memory
+      description: 'Delete a user-level memory
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteUserMemory
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUserMemoryInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserMemoryOutput'
+  /user-memory/list:
+    post:
+      summary: ListUserMemories
+      tags:
+      - user memory
+      description: 'List user-level memories for an agent
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListUserMemories
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListUserMemoriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListUserMemoriesOutput'
+components:
+  schemas:
+    ListUserMemoriesInput:
+      type: object
+      properties:
+        agent_id:
+          type: string
+          description: Agent ID
+        page:
+          type: number
+          default: 1
+        page_size:
+          type: number
+          default: 50
+          maximum: 100
+      required:
+      - agent_id
+      additionalProperties: false
+    ListUserMemoriesOutput:
+      type: object
+      properties:
+        memories:
+          type: array
+          items:
+            type: object
+            properties:
+              memory_id:
+                type: string
+                description: Unique memory identifier
+              text:
+                type: string
+                description: Memory content
+              category:
+                type: string
+                enum:
+                - preference
+                - fact
+                - instruction
+              importance:
+                type: string
+                enum:
+                - high
+                - medium
+                - low
+              reasoning:
+                type: string
+                description: Why this memory was saved
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+            required:
+            - memory_id
+            - text
+            - category
+            - importance
+            additionalProperties: false
+        total:
+          type: number
+      required:
+      - memories
+      - total
+      additionalProperties: false
+    DeleteUserMemoryInput:
+      type: object
+      properties:
+        memory_id:
+          type: string
+          description: Memory ID to delete
+      required:
+      - memory_id
+      additionalProperties: false
+    UpsertUserMemoryOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        memory_id:
+          type: string
+      required:
+      - success
+      - memory_id
+      additionalProperties: false
+    DeleteUserMemoryOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    UpsertUserMemoryInput:
+      type: object
+      properties:
+        agent_id:
+          type: string
+          description: Agent ID
+        memory_id:
+          type: string
+          description: Memory ID (optional, will generate UUID if not provided)
+        text:
+          type: string
+          minLength: 1
+          description: Memory content
+        category:
+          type: string
+          enum:
+          - preference
+          - fact
+          - instruction
+          default: fact
+        importance:
+          type: string
+          enum:
+          - high
+          - medium
+          - low
+          default: medium
+        reasoning:
+          type: string
+          description: Why this memory is being saved
+      required:
+      - agent_id
+      - text
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

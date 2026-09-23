@@ -1,0 +1,220 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints MCP API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: MCP
+paths:
+  /mcp/auth/required:
+    get:
+      summary: AgentMCPAuthRequiredUserAccounts
+      tags:
+      - MCP
+      description: 'Check which MCP servers in an agent require user authentication (OAuth, API keys, or custom headers) and whether the current user has authentication configured for each.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: AgentMCPAuthRequiredUserAccounts
+      parameters:
+      - in: query
+        name: agent_id
+        schema:
+          type: string
+          description: The agent display_id to check MCP authentication requirements for
+        description: The agent display_id to check MCP authentication requirements for
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentMCPAuthRequiredUserAccountsOutput'
+  /mcp/user/auth/upsert:
+    post:
+      summary: UpsertUserMCPAuth
+      tags:
+      - MCP
+      description: 'Set or update the current user''s authentication credentials for an MCP server. Supports API key, custom headers, and OAuth account ID.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: UpsertUserMCPAuth
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertUserMCPAuthInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertUserMCPAuthOutput'
+  /mcp/user/auth/delete:
+    post:
+      summary: DeleteUserMCPAuth
+      tags:
+      - MCP
+      description: 'Remove the current user''s authentication credentials for an MCP server. Returns success: true if deleted, or false if no credentials were found.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: DeleteUserMCPAuth
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteUserMCPAuthInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteUserMCPAuthOutput'
+components:
+  schemas:
+    UpsertUserMCPAuthInput:
+      type: object
+      properties:
+        mcp_server_display_id:
+          type: string
+          description: The display_id (UUID) of the MCP server configuration to authenticate with
+        auth_details:
+          oneOf:
+          - type: object
+            properties:
+              api_key:
+                type: string
+                description: API key for authentication
+            required:
+            - api_key
+            additionalProperties: false
+          - type: object
+            properties:
+              headers:
+                type: object
+                additionalProperties:
+                  type: string
+                description: Custom headers for authentication
+            required:
+            - headers
+            additionalProperties: false
+          - type: object
+            properties:
+              oauth_account_id:
+                type: string
+                description: OAuth account ID to link to this MCP server.
+            required:
+            - oauth_account_id
+            additionalProperties: false
+      required:
+      - mcp_server_display_id
+      - auth_details
+      additionalProperties: false
+    DeleteUserMCPAuthInput:
+      type: object
+      properties:
+        mcp_server_display_id:
+          type: string
+          description: The display_id (UUID) of the MCP server to remove authentication for
+      required:
+      - mcp_server_display_id
+      additionalProperties: false
+    AgentMCPAuthRequiredUserAccountsOutput:
+      type: object
+      properties:
+        mcps_requiring_user_auth:
+          type: array
+          description: MCP servers requiring user-level authentication (OAuth, API keys, or custom headers)
+          items:
+            type: object
+            description: MCP server requiring user-level authentication (OAuth, API keys, or custom headers)
+            properties:
+              mcp_server_config_id:
+                type: string
+                description: MCP server display_id
+              label:
+                type: string
+                description: Human-readable MCP server name (e.g., 'Google Drive')
+              url:
+                type: string
+                description: MCP server URL
+              authentication_type:
+                type: string
+                description: Authentication type (oauth, api_key, custom_headers)
+              provider:
+                type: string
+                description: OAuth provider name (e.g., 'google', 'linear') - only present for OAuth
+              user_has_auth:
+                type: boolean
+                description: Whether the current user has authentication configured for this MCP
+            required:
+            - mcp_server_config_id
+            - label
+            - url
+            - authentication_type
+            - user_has_auth
+            additionalProperties: false
+      required:
+      - mcps_requiring_user_auth
+      additionalProperties: false
+    DeleteUserMCPAuthOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the user's authentication was successfully removed
+      required:
+      - success
+      additionalProperties: false
+    UpsertUserMCPAuthOutput:
+      type: object
+      properties:
+        mcp_server_display_id:
+          type: string
+          description: The display_id of the MCP server configuration
+        mcp_server_label:
+          type: string
+          description: Human-readable name of the MCP server
+        authentication_type:
+          type: string
+          description: Authentication type (api_key, custom_headers, or oauth)
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the auth was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the auth was last updated
+      required:
+      - mcp_server_display_id
+      - mcp_server_label
+      - authentication_type
+      - created_at
+      - updated_at
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

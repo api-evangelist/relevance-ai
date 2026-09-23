@@ -1,0 +1,1931 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Mas API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Mas
+paths:
+  /mas/items/{document_id}/get:
+    get:
+      summary: GetMAS
+      tags:
+      - Mas
+      description: '### Required permissions
+
+        > []'
+      operationId: GetMAS
+      parameters:
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: select_fields
+        schema:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        description: Fields to include in the search results, empty array/list means all fields.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMASOutput'
+  /mas/items/{document_id}:
+    delete:
+      summary: DeleteMAS
+      tags:
+      - Mas
+      description: '### Required permissions
+
+        > []'
+      operationId: DeleteMAS
+      parameters:
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteMASInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteMASOutput'
+  /mas/list:
+    post:
+      summary: ListMAS
+      tags:
+      - Mas
+      description: '### Required permissions
+
+        > []'
+      operationId: ListMAS
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListMASInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListMASOutput'
+  /mas/items/{document_id}/upsert:
+    post:
+      summary: UpsertMAS
+      tags:
+      - Mas
+      description: '### Required permissions
+
+        > []'
+      operationId: UpsertMAS
+      parameters:
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertMASInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertMASOutput'
+components:
+  schemas:
+    DeleteMASOutput: {}
+    UpsertMASInput:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            type:
+              type: string
+              enum:
+              - default
+              - chat
+              - workforce-test
+            thumbnail_url:
+              type: string
+              description: link to the thumbnail image of the workforce
+            title_prompt:
+              type: string
+              description: The prompt that the workforce uses to generate a title for the task
+            params_schema:
+              type: object
+              description: A jsonschema superset object that users parameters will be validated against upon execution.
+              properties:
+                metadata:
+                  type: object
+                  properties:
+                    field_order:
+                      type: array
+                      items:
+                        type: string
+                properties:
+                  type: object
+                  additionalProperties:
+                    type: object
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          is_frontend_required:
+                            type: boolean
+                            default: false
+                            description: If true, this param must be set to true as required on the frontend
+                          project_key_name:
+                            type: string
+                            description: The name of the project key to use for this param
+                          content_type:
+                            type: string
+                            enum:
+                            - json
+                            - json_list
+                            - long_text
+                            - short_text
+                            - file_url
+                            - file_urls
+                            - llm_prompt
+                            - speech
+                            - code
+                            - dataset_id
+                            - knowledge_set
+                            - markdown
+                            - chain_id
+                            - chain_params
+                            - replicate_model_params
+                            - apify_actor_params
+                            - fal_model_params
+                            - file_to_text
+                            - file_to_text_llm_friendly
+                            - memory_optimizer
+                            - memory
+                            - table
+                            - agent_id
+                            - api_key
+                            - key_value_input
+                            - knowledge_editor
+                            - oauth_account
+                            - datetime
+                            - api_selector
+                            - single_dependent_selector
+                            - dependent_api_selector
+                            - llm_model_selector
+                            - colour_picker
+                            - conditional
+                            - external_field
+                            - tool_approval
+                            - componentized_json_array
+                            - project_key_indicator
+                          allow_one_of_variable_mode:
+                            type: boolean
+                          possible_options_from:
+                            type: object
+                            additionalProperties: false
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - object_keys
+                              source:
+                                type: object
+                                additionalProperties: false
+                                properties:
+                                  variable:
+                                    type: string
+                          default_to_variable_selector:
+                            type: boolean
+                          api_selector_type:
+                            type: string
+                            enum:
+                            - elevenlabs_voice_selector
+                            - elevenlabs_model_selector
+                            - elevenlabs_agent_selector
+                            - elevenlabs_phone_number_selector
+                            - heygen_voice_selector
+                            - heygen_avatar_selector
+                            - llm_model_selector
+                            - blandai_voice_selector
+                            - d_id_voice_selector
+                            - d_id_avatar_selector
+                            - vapi_custom_phone_number_selector
+                            - vapi_custom_assistant_selector
+                            - webflow_collections
+                            - pipedream_action_selector
+                            - pipedream_dynamic_dropdown_selector
+                            - slack_channels_selector
+                            - slack_users_selector
+                            - replicate_collections_selector
+                            - replicate_models_selector
+                            - confluence_sites_selector
+                            - confluence_spaces_selector
+                            - confluence_pages_selector
+                            - confluence_posts_selector
+                            - jira_sites_selector
+                            - jira_projects_selector
+                            - jira_issue_types_selector
+                            - jira_issues_selector
+                            - bigquery_projects_selector
+                            - google_drive_drives_selector
+                            - google_drive_folders_selector
+                            - fal_ai_models_selector
+                          api_selector_placeholder:
+                            type: string
+                            default: Select Option...
+                          api_selector_depends_on:
+                            type: string
+                          variable_search_field:
+                            type: string
+                          accepted_file_types:
+                            type: array
+                            items:
+                              type: string
+                          hidden:
+                            type: boolean
+                            default: false
+                          relevance_only:
+                            type: boolean
+                            default: false
+                          minimum_plan:
+                            type: string
+                            enum:
+                            - free
+                            - basic
+                            - starter
+                            - team
+                            - business
+                            - enterprise
+                            - custom
+                          advanced:
+                            type: boolean
+                            default: false
+                          placeholder: {}
+                          title:
+                            type: string
+                          description:
+                            type: string
+                          icon_url:
+                            type: string
+                          require_toggle:
+                            type: boolean
+                          dont_substitute:
+                            type: boolean
+                            default: false
+                          min:
+                            type: number
+                          max:
+                            type: number
+                          value_suggestion_chain:
+                            type: object
+                            properties:
+                              url:
+                                type: string
+                              project_id:
+                                type: string
+                              output_key:
+                                type: string
+                                default: value
+                            required:
+                            - url
+                            - project_id
+                          enum:
+                            items:
+                              type: object
+                              properties:
+                                label:
+                                  type: string
+                                value:
+                                  oneOf:
+                                  - type: string
+                                  - type: number
+                                description:
+                                  type: string
+                              required:
+                              - description
+                              - value
+                              additionalProperties: false
+                            type: array
+                          bulk_run_input_source:
+                            type: string
+                            enum:
+                            - ''
+                            - $DOCUMENT
+                            - $FIELD_PARAM_MAPPING
+                          agent_input_source:
+                            type: string
+                            enum:
+                            - conversation_id
+                            - agent_id
+                            - user_id
+                            - user_email
+                            - user_name
+                          headers:
+                            type: array
+                            items:
+                              type: string
+                          rows:
+                            type: number
+                          can_add_or_remove_columns:
+                            type: boolean
+                          placeholders:
+                            type: object
+                            additionalProperties:
+                              type: string
+                          language:
+                            type: string
+                            enum:
+                            - python
+                            - javascript
+                            - html
+                          key_value_input_opts:
+                            type: object
+                            description: Props to pass to the KeyValueInput component.
+                            properties:
+                              header:
+                                type: object
+                                description: Set headers to display above the key and/or value columns.
+                                properties:
+                                  hide:
+                                    type: boolean
+                                    description: Whether to hide all headers.
+                                  key:
+                                    type: string
+                                    description: The header displayed above the key column.
+                                  value:
+                                    type: string
+                                    description: The header displayed above the value column.
+                              placeholder:
+                                type: object
+                                description: Set placeholder values to display in the key and/or value columns.
+                                properties:
+                                  hide:
+                                    type: boolean
+                                    description: Whether to hide all placeholders.
+                                  key:
+                                    type: string
+                                    description: The placeholder to display in each cell of the key column.
+                                  value:
+                                    type: string
+                                    description: The placeholder to display in each cell of the value column.
+                              addButtonText:
+                                type: string
+                                description: The text displayed in the 'Add' button that inserts a new pair.
+                          knowledge_set_field_name:
+                            type: string
+                            description: '[KnowledgeEditor] The name of the field in the transformation''s param schema containing the knowledge set ID.'
+                          filters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                condition:
+                                  type: string
+                                case_insensitive:
+                                  type: boolean
+                                field:
+                                  type: string
+                                filter_type:
+                                  type: string
+                                  enum:
+                                  - exact_match
+                                  - exists
+                                  - ilike
+                                  - regexp
+                                  - ids
+                                  - date
+                                  - numeric
+                                  - or
+                                  - and
+                                  - size
+                                  - array_object_match
+                                condition_value: {}
+                            description: General filters for the content_type
+                          oauth_permissions:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                provider:
+                                  type: string
+                                types:
+                                  type: array
+                                  items:
+                                    type: string
+                                is_deprecated:
+                                  type: boolean
+                                  description: Legacy permission that we are no longer allowing users to add accounts with.
+                                helpText:
+                                  type: string
+                                  description: Help text for the permission
+                              required:
+                              - provider
+                              - types
+                              additionalProperties: false
+                            description: (Optional) OAuth permissions required for a step. Only applicable for content_type `oauth_token`
+                          is_fixed_param:
+                            type: boolean
+                          is_history_excluded:
+                            type: boolean
+                          auto_stringify:
+                            type: boolean
+                          external_name:
+                            type: string
+                            description: Field name in external data source (e.g. 'agent_id' in agent conversation metadata)
+                          oauth_account_provider:
+                            type: string
+                            description: Filters the OAuth account selector based on the selected provider
+                          oauth_account_permission_type:
+                            type: string
+                            description: Filters the OAuth account selector based on the selected permission type
+                          model_subset:
+                            type: string
+                            enum:
+                            - VISION
+                            - TEXT
+                            - CAG
+                            - AGENT
+                            - FILES
+                            - PHONE_CALL
+                            - MEETING
+                            - CHAT
+                          scratchpad:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - dynamic
+                                - static
+                            required:
+                            - type
+                            additionalProperties: false
+                          remote_options:
+                            type: object
+                            properties:
+                              dependentField:
+                                type: string
+                          reload_props:
+                            type: boolean
+                          omit_as_tool_input:
+                            type: boolean
+                            description: 'If true, the frontend will not create a tool input for this param when turning a toolstep into a tool.
+
+
+                              Set true for inputs which do not make sense for an LLM to fill
+
+
+                              (e.g. the LLM model selector input needs to be filled with internal Relevance model IDs which LLMs have no way of knowing outside of consuming thousands of tokens with an enum).
+
+
+                              Only respected if thie field is not marked as required.'
+                          is_dynamic_auth:
+                            type: boolean
+                            description: If true, prompts the user to use their own oauth account rather than the oauth account set on the tool config
+                        additionalProperties: false
+                      order:
+                        type: number
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+            entities:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - chain
+                    - agent
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  emoji:
+                    type: string
+                  project:
+                    type: string
+                    description: Defaults to project agent is being ran from.
+                  region:
+                    type: string
+                    description: Defaults to region agent is being ran from.
+                  scratchpad:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - agent-param
+                            - trigger-type
+                            - tool-input
+                            - agent-input
+                            - agent-output
+                            - tool-output
+                          id:
+                            type: string
+                          field:
+                            type: string
+                          agent_id:
+                            type: string
+                          chain_id:
+                            type: string
+                          source:
+                            type: string
+                            enum:
+                            - input
+                            - output
+                            - setting
+                        required:
+                        - field
+                required:
+                - type
+                - id
+            last_run_date: {}
+            active_version_id:
+              type: string
+            draft_version_id:
+              type: string
+            origin:
+              description: If set, records where the workforce was cloned from.
+              type: object
+              properties:
+                workforce_id:
+                  type: string
+                region:
+                  type: string
+                  enum:
+                  - 1e3042
+                  - f1db6c
+                  - d7b62b
+                  - bcbe5a
+                  - cd726b
+                  - c1a3d0
+                  - 6c24a5
+                  - 0e489e
+                  - 7a43a2
+                project:
+                  type: string
+              additionalProperties: false
+              required:
+              - workforce_id
+            clone_count:
+              type: number
+            public:
+              type: boolean
+              description: Whether the workforce is publicly cloneable
+            embeddable:
+              type: boolean
+              description: Whether the workforce can be embedded via embed keys
+            source_marketplace_listing:
+              type: object
+              properties:
+                entity_display_id:
+                  type: string
+                entity_version_display_id:
+                  type: string
+                entity_type:
+                  type: string
+                  enum:
+                  - agent
+                  - tool
+                  - workforce
+                can_clone:
+                  type: boolean
+                  description: Whether the listing can be cloned via clone/sharing link
+                can_republish:
+                  type: boolean
+                  description: Whether the listing can be republished to the marketplace
+                author_user_display_id:
+                  type: string
+                author_org_display_id:
+                  type: string
+                author_project_display_id:
+                  type: string
+                display_id:
+                  type: string
+                entity_project_display_id:
+                  type: string
+                entity_region:
+                  type: string
+              additionalProperties: true
+              required:
+              - entity_display_id
+              - entity_version_display_id
+              - entity_type
+              - author_user_display_id
+              - author_org_display_id
+              - author_project_display_id
+              - display_id
+              - entity_project_display_id
+              - entity_region
+            suggested_triggers:
+              type: array
+              items:
+                type: string
+            user_instructions:
+              type: string
+            creation_surface:
+              type: string
+              enum:
+              - inventor
+              - mcp
+              - builder_ui
+              - chat
+              - direct_api
+              description: 'How the resource was created: inventor / mcp / builder_ui / chat / direct_api.'
+        insert_if_not_exists:
+          type: boolean
+          description: If true, will create the metadata if it does not exist. Defaults to true.
+        fields_to_remove:
+          type: array
+          items:
+            type: string
+          description: Fields to remove from the metadata.
+        fields_to_replace:
+          type: array
+          items:
+            type: string
+          description: Fields to replace in the metadata.
+        fields_to_increment:
+          type: object
+          additionalProperties:
+            type: number
+      additionalProperties: false
+      required:
+      - data
+    ListMASOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              insert_date_: {}
+              update_date: {}
+              expiry_date_: {}
+              project:
+                type: string
+              _id:
+                type: string
+              feature:
+                type: string
+              collection_id:
+                type: string
+              document_id:
+                type: string
+              data:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                    - default
+                    - chat
+                    - workforce-test
+                  thumbnail_url:
+                    type: string
+                    description: link to the thumbnail image of the workforce
+                  title_prompt:
+                    type: string
+                    description: The prompt that the workforce uses to generate a title for the task
+                  params_schema:
+                    type: object
+                    description: A jsonschema superset object that users parameters will be validated against upon execution.
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          field_order:
+                            type: array
+                            items:
+                              type: string
+                      properties:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            metadata:
+                              type: object
+                              properties:
+                                is_frontend_required:
+                                  type: boolean
+                                  default: false
+                                  description: If true, this param must be set to true as required on the frontend
+                                project_key_name:
+                                  type: string
+                                  description: The name of the project key to use for this param
+                                content_type:
+                                  type: string
+                                  enum:
+                                  - json
+                                  - json_list
+                                  - long_text
+                                  - short_text
+                                  - file_url
+                                  - file_urls
+                                  - llm_prompt
+                                  - speech
+                                  - code
+                                  - dataset_id
+                                  - knowledge_set
+                                  - markdown
+                                  - chain_id
+                                  - chain_params
+                                  - replicate_model_params
+                                  - apify_actor_params
+                                  - fal_model_params
+                                  - file_to_text
+                                  - file_to_text_llm_friendly
+                                  - memory_optimizer
+                                  - memory
+                                  - table
+                                  - agent_id
+                                  - api_key
+                                  - key_value_input
+                                  - knowledge_editor
+                                  - oauth_account
+                                  - datetime
+                                  - api_selector
+                                  - single_dependent_selector
+                                  - dependent_api_selector
+                                  - llm_model_selector
+                                  - colour_picker
+                                  - conditional
+                                  - external_field
+                                  - tool_approval
+                                  - componentized_json_array
+                                  - project_key_indicator
+                                allow_one_of_variable_mode:
+                                  type: boolean
+                                possible_options_from:
+                                  type: object
+                                  additionalProperties: false
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                      - object_keys
+                                    source:
+                                      type: object
+                                      additionalProperties: false
+                                      properties:
+                                        variable:
+                                          type: string
+                                default_to_variable_selector:
+                                  type: boolean
+                                api_selector_type:
+                                  type: string
+                                  enum:
+                                  - elevenlabs_voice_selector
+                                  - elevenlabs_model_selector
+                                  - elevenlabs_agent_selector
+                                  - elevenlabs_phone_number_selector
+                                  - heygen_voice_selector
+                                  - heygen_avatar_selector
+                                  - llm_model_selector
+                                  - blandai_voice_selector
+                                  - d_id_voice_selector
+                                  - d_id_avatar_selector
+                                  - vapi_custom_phone_number_selector
+                                  - vapi_custom_assistant_selector
+                                  - webflow_collections
+                                  - pipedream_action_selector
+                                  - pipedream_dynamic_dropdown_selector
+                                  - slack_channels_selector
+                                  - slack_users_selector
+                                  - replicate_collections_selector
+                                  - replicate_models_selector
+                                  - confluence_sites_selector
+                                  - confluence_spaces_selector
+                                  - confluence_pages_selector
+                                  - confluence_posts_selector
+                                  - jira_sites_selector
+                                  - jira_projects_selector
+                                  - jira_issue_types_selector
+                                  - jira_issues_selector
+                                  - bigquery_projects_selector
+                                  - google_drive_drives_selector
+                                  - google_drive_folders_selector
+                                  - fal_ai_models_selector
+                                api_selector_placeholder:
+                                  type: string
+                                  default: Select Option...
+                                api_selector_depends_on:
+                                  type: string
+                                variable_search_field:
+                                  type: string
+                                accepted_file_types:
+                                  type: array
+                                  items:
+                                    type: string
+                                hidden:
+                                  type: boolean
+                                  default: false
+                                relevance_only:
+                                  type: boolean
+                                  default: false
+                                minimum_plan:
+                                  type: string
+                                  enum:
+                                  - free
+                                  - basic
+                                  - starter
+                                  - team
+                                  - business
+                                  - enterprise
+                                  - custom
+                                advanced:
+                                  type: boolean
+                                  default: false
+                                placeholder: {}
+                                title:
+                                  type: string
+                                description:
+                                  type: string
+                                icon_url:
+                                  type: string
+                                require_toggle:
+                                  type: boolean
+                                dont_substitute:
+                                  type: boolean
+                                  default: false
+                                min:
+                                  type: number
+                                max:
+                                  type: number
+                                value_suggestion_chain:
+                                  type: object
+                                  properties:
+                                    url:
+                                      type: string
+                                    project_id:
+                                      type: string
+                                    output_key:
+                                      type: string
+                                      default: value
+                                  required:
+                                  - url
+                                  - project_id
+                                enum:
+                                  items:
+                                    type: object
+                                    properties:
+                                      label:
+                                        type: string
+                                      value:
+                                        oneOf:
+                                        - type: string
+                                        - type: number
+                                      description:
+                                        type: string
+                                    required:
+                                    - description
+                                    - value
+                                    additionalProperties: false
+                                  type: array
+                                bulk_run_input_source:
+                                  type: string
+                                  enum:
+                                  - ''
+                                  - $DOCUMENT
+                                  - $FIELD_PARAM_MAPPING
+                                agent_input_source:
+                                  type: string
+                                  enum:
+                                  - conversation_id
+                                  - agent_id
+                                  - user_id
+                                  - user_email
+                                  - user_name
+                                headers:
+                                  type: array
+                                  items:
+                                    type: string
+                                rows:
+                                  type: number
+                                can_add_or_remove_columns:
+                                  type: boolean
+                                placeholders:
+                                  type: object
+                                  additionalProperties:
+                                    type: string
+                                language:
+                                  type: string
+                                  enum:
+                                  - python
+                                  - javascript
+                                  - html
+                                key_value_input_opts:
+                                  type: object
+                                  description: Props to pass to the KeyValueInput component.
+                                  properties:
+                                    header:
+                                      type: object
+                                      description: Set headers to display above the key and/or value columns.
+                                      properties:
+                                        hide:
+                                          type: boolean
+                                          description: Whether to hide all headers.
+                                        key:
+                                          type: string
+                                          description: The header displayed above the key column.
+                                        value:
+                                          type: string
+                                          description: The header displayed above the value column.
+                                    placeholder:
+                                      type: object
+                                      description: Set placeholder values to display in the key and/or value columns.
+                                      properties:
+                                        hide:
+                                          type: boolean
+                                          description: Whether to hide all placeholders.
+                                        key:
+                                          type: string
+                                          description: The placeholder to display in each cell of the key column.
+                                        value:
+                                          type: string
+                                          description: The placeholder to display in each cell of the value column.
+                                    addButtonText:
+                                      type: string
+                                      description: The text displayed in the 'Add' button that inserts a new pair.
+                                knowledge_set_field_name:
+                                  type: string
+                                  description: '[KnowledgeEditor] The name of the field in the transformation''s param schema containing the knowledge set ID.'
+                                filters:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      condition:
+                                        type: string
+                                      case_insensitive:
+                                        type: boolean
+                                      field:
+                                        type: string
+                                      filter_type:
+                                        type: string
+                                        enum:
+                                        - exact_match
+                                        - exists
+                                        - ilike
+                                        - regexp
+                                        - ids
+                                        - date
+                                        - numeric
+                                        - or
+                                        - and
+                                        - size
+                                        - array_object_match
+                                      condition_value: {}
+                                  description: General filters for the content_type
+                                oauth_permissions:
+                                  type: array
+                                  items:
+                                    type: object
+                                    properties:
+                                      provider:
+                                        type: string
+                                      types:
+                                        type: array
+                                        items:
+                                          type: string
+                                      is_deprecated:
+                                        type: boolean
+                                        description: Legacy permission that we are no longer allowing users to add accounts with.
+                                      helpText:
+                                        type: string
+                                        description: Help text for the permission
+                                    required:
+                                    - provider
+                                    - types
+                                    additionalProperties: false
+                                  description: (Optional) OAuth permissions required for a step. Only applicable for content_type `oauth_token`
+                                is_fixed_param:
+                                  type: boolean
+                                is_history_excluded:
+                                  type: boolean
+                                auto_stringify:
+                                  type: boolean
+                                external_name:
+                                  type: string
+                                  description: Field name in external data source (e.g. 'agent_id' in agent conversation metadata)
+                                oauth_account_provider:
+                                  type: string
+                                  description: Filters the OAuth account selector based on the selected provider
+                                oauth_account_permission_type:
+                                  type: string
+                                  description: Filters the OAuth account selector based on the selected permission type
+                                model_subset:
+                                  type: string
+                                  enum:
+                                  - VISION
+                                  - TEXT
+                                  - CAG
+                                  - AGENT
+                                  - FILES
+                                  - PHONE_CALL
+                                  - MEETING
+                                  - CHAT
+                                scratchpad:
+                                  type: object
+                                  properties:
+                                    type:
+                                      type: string
+                                      enum:
+                                      - dynamic
+                                      - static
+                                  required:
+                                  - type
+                                  additionalProperties: false
+                                remote_options:
+                                  type: object
+                                  properties:
+                                    dependentField:
+                                      type: string
+                                reload_props:
+                                  type: boolean
+                                omit_as_tool_input:
+                                  type: boolean
+                                  description: 'If true, the frontend will not create a tool input for this param when turning a toolstep into a tool.
+
+
+                                    Set true for inputs which do not make sense for an LLM to fill
+
+
+                                    (e.g. the LLM model selector input needs to be filled with internal Relevance model IDs which LLMs have no way of knowing outside of consuming thousands of tokens with an enum).
+
+
+                                    Only respected if thie field is not marked as required.'
+                                is_dynamic_auth:
+                                  type: boolean
+                                  description: If true, prompts the user to use their own oauth account rather than the oauth account set on the tool config
+                              additionalProperties: false
+                            order:
+                              type: number
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                  entities:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                          - chain
+                          - agent
+                        id:
+                          type: string
+                        name:
+                          type: string
+                        emoji:
+                          type: string
+                        project:
+                          type: string
+                          description: Defaults to project agent is being ran from.
+                        region:
+                          type: string
+                          description: Defaults to region agent is being ran from.
+                        scratchpad:
+                          type: object
+                          additionalProperties:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                type:
+                                  type: string
+                                  enum:
+                                  - agent-param
+                                  - trigger-type
+                                  - tool-input
+                                  - agent-input
+                                  - agent-output
+                                  - tool-output
+                                id:
+                                  type: string
+                                field:
+                                  type: string
+                                agent_id:
+                                  type: string
+                                chain_id:
+                                  type: string
+                                source:
+                                  type: string
+                                  enum:
+                                  - input
+                                  - output
+                                  - setting
+                              required:
+                              - field
+                      required:
+                      - type
+                      - id
+                  last_run_date: {}
+                  active_version_id:
+                    type: string
+                  draft_version_id:
+                    type: string
+                  origin:
+                    description: If set, records where the workforce was cloned from.
+                    type: object
+                    properties:
+                      workforce_id:
+                        type: string
+                      region:
+                        type: string
+                        enum:
+                        - 1e3042
+                        - f1db6c
+                        - d7b62b
+                        - bcbe5a
+                        - cd726b
+                        - c1a3d0
+                        - 6c24a5
+                        - 0e489e
+                        - 7a43a2
+                      project:
+                        type: string
+                    additionalProperties: false
+                    required:
+                    - workforce_id
+                  clone_count:
+                    type: number
+                  public:
+                    type: boolean
+                    description: Whether the workforce is publicly cloneable
+                  embeddable:
+                    type: boolean
+                    description: Whether the workforce can be embedded via embed keys
+                  source_marketplace_listing:
+                    type: object
+                    properties:
+                      entity_display_id:
+                        type: string
+                      entity_version_display_id:
+                        type: string
+                      entity_type:
+                        type: string
+                        enum:
+                        - agent
+                        - tool
+                        - workforce
+                      can_clone:
+                        type: boolean
+                        description: Whether the listing can be cloned via clone/sharing link
+                      can_republish:
+                        type: boolean
+                        description: Whether the listing can be republished to the marketplace
+                      author_user_display_id:
+                        type: string
+                      author_org_display_id:
+                        type: string
+                      author_project_display_id:
+                        type: string
+                      display_id:
+                        type: string
+                      entity_project_display_id:
+                        type: string
+                      entity_region:
+                        type: string
+                    additionalProperties: true
+                    required:
+                    - entity_display_id
+                    - entity_version_display_id
+                    - entity_type
+                    - author_user_display_id
+                    - author_org_display_id
+                    - author_project_display_id
+                    - display_id
+                    - entity_project_display_id
+                    - entity_region
+                  suggested_triggers:
+                    type: array
+                    items:
+                      type: string
+                  user_instructions:
+                    type: string
+                  creation_surface:
+                    type: string
+                    enum:
+                    - inventor
+                    - mcp
+                    - builder_ui
+                    - chat
+                    - direct_api
+                    description: 'How the resource was created: inventor / mcp / builder_ui / chat / direct_api.'
+              deleted_date: {}
+            required:
+            - insert_date_
+            - update_date
+            - project
+            - _id
+            - feature
+            - collection_id
+            - document_id
+            - data
+      required:
+      - results
+      additionalProperties: false
+    UpsertMASOutput:
+      type: object
+      additionalProperties: false
+    GetMASOutput:
+      type: object
+      properties:
+        insert_date_: {}
+        update_date: {}
+        expiry_date_: {}
+        project:
+          type: string
+        _id:
+          type: string
+        feature:
+          type: string
+        collection_id:
+          type: string
+        document_id:
+          type: string
+        data:
+          type: object
+          properties:
+            name:
+              type: string
+            description:
+              type: string
+            type:
+              type: string
+              enum:
+              - default
+              - chat
+              - workforce-test
+            thumbnail_url:
+              type: string
+              description: link to the thumbnail image of the workforce
+            title_prompt:
+              type: string
+              description: The prompt that the workforce uses to generate a title for the task
+            params_schema:
+              type: object
+              description: A jsonschema superset object that users parameters will be validated against upon execution.
+              properties:
+                metadata:
+                  type: object
+                  properties:
+                    field_order:
+                      type: array
+                      items:
+                        type: string
+                properties:
+                  type: object
+                  additionalProperties:
+                    type: object
+                    properties:
+                      metadata:
+                        type: object
+                        properties:
+                          is_frontend_required:
+                            type: boolean
+                            default: false
+                            description: If true, this param must be set to true as required on the frontend
+                          project_key_name:
+                            type: string
+                            description: The name of the project key to use for this param
+                          content_type:
+                            type: string
+                            enum:
+                            - json
+                            - json_list
+                            - long_text
+                            - short_text
+                            - file_url
+                            - file_urls
+                            - llm_prompt
+                            - speech
+                            - code
+                            - dataset_id
+                            - knowledge_set
+                            - markdown
+                            - chain_id
+                            - chain_params
+                            - replicate_model_params
+                            - apify_actor_params
+                            - fal_model_params
+                            - file_to_text
+                            - file_to_text_llm_friendly
+                            - memory_optimizer
+                            - memory
+                            - table
+                            - agent_id
+                            - api_key
+                            - key_value_input
+                            - knowledge_editor
+                            - oauth_account
+                            - datetime
+                            - api_selector
+                            - single_dependent_selector
+                            - dependent_api_selector
+                            - llm_model_selector
+                            - colour_picker
+                            - conditional
+                            - external_field
+                            - tool_approval
+                            - componentized_json_array
+                            - project_key_indicator
+                          allow_one_of_variable_mode:
+                            type: boolean
+                          possible_options_from:
+                            type: object
+                            additionalProperties: false
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - object_keys
+                              source:
+                                type: object
+                                additionalProperties: false
+                                properties:
+                                  variable:
+                                    type: string
+                          default_to_variable_selector:
+                            type: boolean
+                          api_selector_type:
+                            type: string
+                            enum:
+                            - elevenlabs_voice_selector
+                            - elevenlabs_model_selector
+                            - elevenlabs_agent_selector
+                            - elevenlabs_phone_number_selector
+                            - heygen_voice_selector
+                            - heygen_avatar_selector
+                            - llm_model_selector
+                            - blandai_voice_selector
+                            - d_id_voice_selector
+                            - d_id_avatar_selector
+                            - vapi_custom_phone_number_selector
+                            - vapi_custom_assistant_selector
+                            - webflow_collections
+                            - pipedream_action_selector
+                            - pipedream_dynamic_dropdown_selector
+                            - slack_channels_selector
+                            - slack_users_selector
+                            - replicate_collections_selector
+                            - replicate_models_selector
+                            - confluence_sites_selector
+                            - confluence_spaces_selector
+                            - confluence_pages_selector
+                            - confluence_posts_selector
+                            - jira_sites_selector
+                            - jira_projects_selector
+                            - jira_issue_types_selector
+                            - jira_issues_selector
+                            - bigquery_projects_selector
+                            - google_drive_drives_selector
+                            - google_drive_folders_selector
+                            - fal_ai_models_selector
+                          api_selector_placeholder:
+                            type: string
+                            default: Select Option...
+                          api_selector_depends_on:
+                            type: string
+                          variable_search_field:
+                            type: string
+                          accepted_file_types:
+                            type: array
+                            items:
+                              type: string
+                          hidden:
+                            type: boolean
+                            default: false
+                          relevance_only:
+                            type: boolean
+                            default: false
+                          minimum_plan:
+                            type: string
+                            enum:
+                            - free
+                            - basic
+                            - starter
+                            - team
+                            - business
+                            - enterprise
+                            - custom
+                          advanced:
+                            type: boolean
+                            default: false
+                          placeholder: {}
+                          title:
+                            type: string
+                          description:
+                            type: string
+                          icon_url:
+                            type: string
+                          require_toggle:
+                            type: boolean
+                          dont_substitute:
+                            type: boolean
+                            default: false
+                          min:
+                            type: number
+                          max:
+                            type: number
+                          value_suggestion_chain:
+                            type: object
+                            properties:
+                              url:
+                                type: string
+                              project_id:
+                                type: string
+                              output_key:
+                                type: string
+                                default: value
+                            required:
+                            - url
+                            - project_id
+                          enum:
+                            items:
+                              type: object
+                              properties:
+                                label:
+                                  type: string
+                                value:
+                                  oneOf:
+                                  - type: string
+                                  - type: number
+                                description:
+                                  type: string
+                              required:
+                              - description
+                              - value
+                              additionalProperties: false
+                            type: array
+                          bulk_run_input_source:
+                            type: string
+                            enum:
+                            - ''
+                            - $DOCUMENT
+                            - $FIELD_PARAM_MAPPING
+                          agent_input_source:
+                            type: string
+                            enum:
+                            - conversation_id
+                            - agent_id
+                            - user_id
+                            - user_email
+                            - user_name
+                          headers:
+                            type: array
+                            items:
+                              type: string
+                          rows:
+                            type: number
+                          can_add_or_remove_columns:
+                            type: boolean
+                          placeholders:
+                            type: object
+                            additionalProperties:
+                              type: string
+                          language:
+                            type: string
+                            enum:
+                            - python
+                            - javascript
+                            - html
+                          key_value_input_opts:
+                            type: object
+                            description: Props to pass to the KeyValueInput component.
+                            properties:
+                              header:
+                                type: object
+                                description: Set headers to display above the key and/or value columns.
+                                properties:
+                                  hide:
+                                    type: boolean
+                                    description: Whether to hide all headers.
+                                  key:
+                                    type: string
+                                    description: The header displayed above the key column.
+                                  value:
+                                    type: string
+                                    description: The header displayed above the value column.
+                              placeholder:
+                                type: object
+                                description: Set placeholder values to display in the key and/or value columns.
+                                properties:
+                                  hide:
+                                    type: boolean
+                                    description: Whether to hide all placeholders.
+                                  key:
+                                    type: string
+                                    description: The placeholder to display in each cell of the key column.
+                                  value:
+                                    type: string
+                                    description: The placeholder to display in each cell of the value column.
+                              addButtonText:
+                                type: string
+                                description: The text displayed in the 'Add' button that inserts a new pair.
+                          knowledge_set_field_name:
+                            type: string
+                            description: '[KnowledgeEditor] The name of the field in the transformation''s param schema containing the knowledge set ID.'
+                          filters:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                condition:
+                                  type: string
+                                case_insensitive:
+                                  type: boolean
+                                field:
+                                  type: string
+                                filter_type:
+                                  type: string
+                                  enum:
+                                  - exact_match
+                                  - exists
+                                  - ilike
+                                  - regexp
+                                  - ids
+                                  - date
+                                  - numeric
+                                  - or
+                                  - and
+                                  - size
+                                  - array_object_match
+                                condition_value: {}
+                            description: General filters for the content_type
+                          oauth_permissions:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                provider:
+                                  type: string
+                                types:
+                                  type: array
+                                  items:
+                                    type: string
+                                is_deprecated:
+                                  type: boolean
+                                  description: Legacy permission that we are no longer allowing users to add accounts with.
+                                helpText:
+                                  type: string
+                                  description: Help text for the permission
+                              required:
+                              - provider
+                              - types
+                              additionalProperties: false
+                            description: (Optional) OAuth permissions required for a step. Only applicable for content_type `oauth_token`
+                          is_fixed_param:
+                            type: boolean
+                          is_history_excluded:
+                            type: boolean
+                          auto_stringify:
+                            type: boolean
+                          external_name:
+                            type: string
+                            description: Field name in external data source (e.g. 'agent_id' in agent conversation metadata)
+                          oauth_account_provider:
+                            type: string
+                            description: Filters the OAuth account selector based on the selected provider
+                          oauth_account_permission_type:
+                            type: string
+                            description: Filters the OAuth account selector based on the selected permission type
+                          model_subset:
+                            type: string
+                            enum:
+                            - VISION
+                            - TEXT
+                            - CAG
+                            - AGENT
+                            - FILES
+                            - PHONE_CALL
+                            - MEETING
+                            - CHAT
+                          scratchpad:
+                            type: object
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                - dynamic
+                                - static
+                            required:
+                            - type
+                            additionalProperties: false
+                          remote_options:
+                            type: object
+                            properties:
+                              dependentField:
+                                type: string
+                          reload_props:
+                            type: boolean
+                          omit_as_tool_input:
+                            type: boolean
+                            description: 'If true, the frontend will not create a tool input for this param when turning a toolstep into a tool.
+
+
+                              Set true for inputs which do not make sense for an LLM to fill
+
+
+                              (e.g. the LLM model selector input needs to be filled with internal Relevance model IDs which LLMs have no way of knowing outside of consuming thousands of tokens with an enum).
+
+
+                              Only respected if thie field is not marked as required.'
+                          is_dynamic_auth:
+                            type: boolean
+                            description: If true, prompts the user to use their own oauth account rather than the oauth account set on the tool config
+                        additionalProperties: false
+                      order:
+                        type: number
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+            entities:
+              type: array
+              items:
+                type: object
+                properties:
+                  type:
+                    type: string
+                    enum:
+                    - chain
+                    - agent
+                  id:
+                    type: string
+                  name:
+                    type: string
+                  emoji:
+                    type: string
+                  project:
+                    type: string
+                    description: Defaults to project agent is being ran from.
+                  region:
+                    type: string
+                    description: Defaults to region agent is being ran from.
+                  scratchpad:
+                    type: object
+                    additionalProperties:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          type:
+                            type: string
+                            enum:
+                            - agent-param
+                            - trigger-type
+                            - tool-input
+                            - agent-input
+                            - agent-output
+                            - tool-output
+                          id:
+                            type: string
+                          field:
+                            type: string
+                          agent_id:
+                            type: string
+                          chain_id:
+                            type: string
+                          source:
+                            type: string
+                            enum:
+                            - input
+                            - output
+                            - setting
+                        required:
+                        - field
+                required:
+                - type
+                - id
+            last_run_date: {}
+            active_version_id:
+              type: string
+            draft_version_id:
+              type: string
+            origin:
+              description: If set, records where the workforce was cloned from.
+              type: object
+              properties:
+                workforce_id:
+                  type: string
+                region:
+                  type: string
+                  enum:
+                  - 1e3042
+                  - f1db6c
+                  - d7b62b
+                  - bcbe5a
+                  - cd726b
+                  - c1a3d0
+                  - 6c24a5
+                  - 0e489e
+                  - 7a43a2
+                project:
+                  type: string
+              additionalProperties: false
+              required:
+              - workforce_id
+            clone_count:
+              type: number
+            public:
+              type: boolean
+              description: Whether the workforce is publicly cloneable
+            embeddable:
+              type: boolean
+              description: Whether the workforce can be embedded via embed keys
+            source_marketplace_listing:
+              type: object
+              properties:
+                entity_display_id:
+                  type: string
+                entity_version_display_id:
+                  type: string
+                entity_type:
+                  type: string
+                  enum:
+                  - agent
+                  - tool
+                  - workforce
+                can_clone:
+                  type: boolean
+                  description: Whether the listing can be cloned via clone/sharing link
+                can_republish:
+                  type: boolean
+                  description: Whether the listing can be republished to the marketplace
+                author_user_display_id:
+                  type: string
+                author_org_display_id:
+                  type: string
+                author_project_display_id:
+                  type: string
+                display_id:
+                  type: string
+                entity_project_display_id:
+                  type: string
+                entity_region:
+                  type: string
+              additionalProperties: true
+              required:
+              - entity_display_id
+              - entity_version_display_id
+              - entity_type
+              - author_user_display_id
+              - author_org_display_id
+              - author_project_display_id
+              - display_id
+              - entity_project_display_id
+              - entity_region
+            suggested_triggers:
+              type: array
+              items:
+                type: string
+            user_instructions:
+              type: string
+            creation_surface:
+              type: string
+              enum:
+              - inventor
+              - mcp
+              - builder_ui
+              - chat
+              - direct_api
+              description: 'How the resource was created: inventor / mcp / builder_ui / chat / direct_api.'
+        deleted_date: {}
+      required:
+      - insert_date_
+      - update_date
+      - project
+      - _id
+      - feature
+      - collection_id
+      - document_id
+      - data
+    ListMASInput:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+        select_fields:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        page_size:
+          type: integer
+          description: Size of each page of results
+        page:
+          type: integer
+          description: Page of the results
+        sort:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: object
+              additionalProperties:
+                type: string
+                enum:
+                - asc
+                - desc
+          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
+        include_vector:
+          type: boolean
+          description: Include vectors in the search results.
+        after_id:
+          type: array
+          items: {}
+          description: Retrieve items after these sort values in the sort order.
+        query:
+          type: string
+    DeleteMASInput: {}
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

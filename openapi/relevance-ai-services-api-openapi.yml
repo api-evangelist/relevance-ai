@@ -1,0 +1,626 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Services API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Services
+paths:
+  /slack/interactions:
+    post:
+      summary: SlackInteractionsWebhook
+      tags:
+      - Services
+      description: 'Webhook for receiving Slack interactions including block kit actions for agent approval/rejection
+
+
+        ### Required permissions
+
+        > []'
+      operationId: SlackInteractionsWebhook
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlackInteractionsWebhookInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlackInteractionsWebhookOutput'
+  /organizations/{organization_id}/delivery_external_id:
+    get:
+      summary: GetDeliveryExternalId
+      tags:
+      - Services
+      description: 'Get or create the delivery external ID for this organization. Used for AWS IAM trust policy setup with cross-account AssumeRole.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write",
+
+        "organizations:read"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetDeliveryExternalId
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDeliveryExternalIdOutput'
+  /google-calendar/events:
+    get:
+      summary: ListGoogleCalendarEvents
+      tags:
+      - Services
+      description: 'List Google Calendar events within a specified time range
+
+
+        ### Required permissions
+
+        > []'
+      operationId: ListGoogleCalendarEvents
+      parameters:
+      - in: query
+        name: oauth_account_id
+        schema:
+          type: string
+          description: OAuth account ID for Google Calendar
+        description: OAuth account ID for Google Calendar
+      - in: query
+        name: start_datetime
+        schema:
+          type: string
+          format: date-time
+          description: Start datetime in UTC ISO 8601 format (e.g., '2024-01-15T09:00:00Z')
+        description: Start datetime in UTC ISO 8601 format (e.g., '2024-01-15T09:00:00Z')
+      - in: query
+        name: end_datetime
+        schema:
+          type: string
+          format: date-time
+          description: End datetime in UTC ISO 8601 format (e.g., '2024-01-15T17:00:00Z')
+        description: End datetime in UTC ISO 8601 format (e.g., '2024-01-15T17:00:00Z')
+      - in: query
+        name: calendar_id
+        schema:
+          type: string
+          description: Calendar ID (defaults to 'primary')
+        description: Calendar ID (defaults to 'primary')
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListGoogleCalendarEventsOutput'
+  /config-flags:
+    get:
+      summary: GetConfigFlags
+      tags:
+      - Services
+      description: 'Returns all config flags for the authenticated frontend app. Includes content_hash for ETag-based caching.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetConfigFlags
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConfigFlagsOutput'
+  /config-flags/public:
+    get:
+      summary: GetPublicConfigFlags
+      tags:
+      - Services
+      description: 'Returns only public- namespace config flags. Unauthenticated — safe for login page and pre-auth consumers.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetPublicConfigFlags
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPublicConfigFlagsOutput'
+  /s/{short_url_key}:
+    get:
+      summary: ShortUrlRedirect
+      tags:
+      - Services
+      description: 'Redirects from a short URL to the original URL
+
+
+        ### Required permissions
+
+        > []'
+      operationId: ShortUrlRedirect
+      parameters:
+      - name: short_url_key
+        in: path
+        description: ID of short_url_key
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShortUrlRedirectOutput'
+  /datasets/{dataset_id}/get_file_upload_urls:
+    post:
+      summary: GetFileUploadUrlsForDataset
+      tags:
+      - Services
+      description: 'specify a list of file paths. For each file path, a url upload_url is returned. files can be POSTed on upload_url to upload them. They can then be accessed on url. Upon dataset deletion, these files will be deleted.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "datasets:write"
+
+        ],
+
+        "datasets": [
+
+        {
+
+        "params": "dataset_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetFileUploadUrlsForDataset
+      parameters:
+      - name: dataset_id
+        in: path
+        description: ID of dataset
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetFileUploadUrlsForDatasetInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFileUploadUrlsForDatasetOutput'
+  /services/get_temporary_public_file_upload_url:
+    post:
+      summary: GetTemporaryPublicFileUploadUrl
+      tags:
+      - Services
+      description: 'Allows anyone, even unauthed users, to upload files that last for 1 hour to relevance.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetTemporaryPublicFileUploadUrl
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTemporaryPublicFileUploadUrlInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTemporaryPublicFileUploadUrlOutput'
+  /services/get_temporary_file_upload_url:
+    post:
+      summary: GetTemporaryFileUploadUrl
+      tags:
+      - Services
+      description: '### Required permissions
+
+        > []'
+      operationId: GetTemporaryFileUploadUrl
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTemporaryFileUploadUrlInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTemporaryFileUploadUrlOutput'
+  /bugs/submit:
+    post:
+      summary: SubmitBugReport
+      tags:
+      - Services
+      description: 'Submit a bug report to track issues in the application
+
+
+        ### Required permissions
+
+        > []'
+      operationId: SubmitBugReport
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitBugReportInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubmitBugReportOutput'
+components:
+  schemas:
+    GetFileUploadUrlsForDatasetInput:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+          description: files we be accessible under a url that will be returned in the output.
+        include_file_path_in_url:
+          type: boolean
+          default: false
+      required:
+      - files
+      additionalProperties: false
+    GetFileUploadUrlsForDatasetOutput:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              upload_url:
+                type: string
+              url:
+                type: string
+            additionalProperties: false
+            required:
+            - upload_url
+            - url
+      additionalProperties: false
+      required:
+      - files
+    SubmitBugReportOutput:
+      type: object
+      properties:
+        bug_id:
+          type: number
+      required:
+      - bug_id
+      additionalProperties: false
+    ListGoogleCalendarEventsOutput:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                description: Event ID
+              summary:
+                type: string
+                description: Event title/summary
+              description:
+                type: string
+                description: Event description
+              location:
+                type: string
+                description: Event location
+              start:
+                type: object
+                properties:
+                  dateTime:
+                    type: string
+                    description: Start datetime in ISO format
+                  timeZone:
+                    type: string
+                    description: Timezone of the start time
+                additionalProperties: true
+              end:
+                type: object
+                properties:
+                  dateTime:
+                    type: string
+                    description: End datetime in ISO format
+                  timeZone:
+                    type: string
+                    description: Timezone of the end time
+                additionalProperties: true
+              attendees:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    displayName:
+                      type: string
+                    responseStatus:
+                      type: string
+                  additionalProperties: true
+                description: List of attendees
+              organizer:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  displayName:
+                    type: string
+                additionalProperties: true
+              htmlLink:
+                type: string
+                description: URL to the event in Google Calendar
+              hangoutLink:
+                type: string
+                description: URL for the video conference (e.g., https://meet.google.com/abc-defg-hij)
+              status:
+                type: string
+                description: Event status (confirmed, tentative, cancelled)
+            additionalProperties: true
+          description: List of calendar events within the specified time range
+      required:
+      - events
+      additionalProperties: false
+    GetPublicConfigFlagsOutput:
+      type: object
+      properties:
+        flags:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              enabled:
+                type: boolean
+              payload: {}
+              source:
+                type: string
+                enum:
+                - global
+                - override
+            required:
+            - enabled
+            - source
+            additionalProperties: false
+        version:
+          type: number
+        content_hash:
+          type: string
+      required:
+      - flags
+      - version
+      - content_hash
+      additionalProperties: false
+    SubmitBugReportInput:
+      type: object
+      properties:
+        source:
+          type: string
+          description: Source of the bug report (e.g., 'web-app', 'api', 'mobile')
+          maxLength: 100
+        message:
+          type: string
+          description: Detailed message describing the bug
+          maxLength: 50000
+        category:
+          type: string
+          description: Category of the bug (e.g., 'UI', 'backend', 'performance')
+          maxLength: 100
+        region:
+          type: string
+          description: Region where the bug occurred
+        project:
+          type: string
+          description: Project ID where the bug occurred
+        context:
+          type: object
+          description: Additional context information about the bug
+          additionalProperties: true
+      required:
+      - source
+      - message
+      - category
+      - region
+      - project
+      additionalProperties: false
+    GetTemporaryFileUploadUrlOutput:
+      type: object
+      properties:
+        upload_url:
+          type: string
+        download_url:
+          type: string
+      additionalProperties: false
+      required:
+      - upload_url
+      - download_url
+    ShortUrlRedirectOutput:
+      type: object
+      properties:
+        redirect_url:
+          type: string
+      required:
+      - redirect_url
+      additionalProperties: false
+    GetTemporaryPublicFileUploadUrlOutput:
+      type: object
+      properties:
+        upload_url:
+          type: string
+        download_url:
+          type: string
+      additionalProperties: false
+      required:
+      - upload_url
+      - download_url
+    GetTemporaryPublicFileUploadUrlInput:
+      type: object
+      properties:
+        extension:
+          type: string
+          default: csv
+          description: Used so when file is downloaded by customers, extension is correct.
+      additionalProperties: false
+    GetConfigFlagsOutput:
+      type: object
+      properties:
+        flags:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              enabled:
+                type: boolean
+              payload: {}
+              source:
+                type: string
+                enum:
+                - global
+                - override
+            required:
+            - enabled
+            - source
+            additionalProperties: false
+        version:
+          type: number
+        content_hash:
+          type: string
+        resolved_at:
+          type: string
+          description: ISO-8601 timestamp of when the flags file was last written. Optional because it is absent until a flags file has been loaded.
+      required:
+      - flags
+      - version
+      - content_hash
+      additionalProperties: false
+    GetTemporaryFileUploadUrlInput:
+      type: object
+      properties:
+        extension:
+          type: string
+          default: csv
+          description: Used so when file is downloaded by customers, extension is correct.
+        filename:
+          type: string
+          description: Used to identify file hosted on the temporary url.
+    SlackInteractionsWebhookOutput: {}
+    SlackInteractionsWebhookInput:
+      type: object
+      properties:
+        payload:
+          type: string
+          description: The raw payload from Slack
+      required:
+      - payload
+      description: Slack interactivity payload - accepts the raw payload from Slack
+      additionalProperties: true
+    GetDeliveryExternalIdOutput:
+      type: object
+      properties:
+        aws_external_id:
+          type: string
+          description: 'The external ID for AWS IAM trust policy. Format: relevance_-_<org_id>_-_<uuid>'
+        organization_id:
+          type: number
+          description: The organization ID this external ID belongs to
+        created_at:
+          type: string
+          description: Timestamp when the external ID was created
+      required:
+      - aws_external_id
+      - organization_id
+      - created_at
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

@@ -1,0 +1,4032 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Analytics API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Analytics
+paths:
+  /analytics/get_metrics:
+    post:
+      summary: GetMetrics
+      tags:
+      - Analytics
+      description: 'Get metrics data with time-series points and summary statistics
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetMetrics
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetMetricsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetMetricsOutput'
+  /analytics/get_agent_breakdown:
+    post:
+      summary: GetAgentBreakdown
+      tags:
+      - Analytics
+      description: 'Get agent breakdown data with task counts, error rates, and top actions
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetAgentBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAgentBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentBreakdownOutput'
+  /analytics/get_action_breakdown:
+    post:
+      summary: GetActionBreakdown
+      tags:
+      - Analytics
+      description: 'Get action breakdown data with execution counts, credits used, and top agents
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetActionBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetActionBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetActionBreakdownOutput'
+  /analytics/get_workforce_breakdown:
+    post:
+      summary: GetWorkforceBreakdown
+      tags:
+      - Analytics
+      description: 'Get workforce breakdown data with task counts, error rates, credits used, and top agents
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetWorkforceBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetWorkforceBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkforceBreakdownOutput'
+  /analytics/get_agent_llm_usage_by_model:
+    post:
+      summary: GetAgentModelBreakdown
+      tags:
+      - Analytics
+      description: 'Get agent usage breakdown by LLM model with credits and input/output token sums
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetAgentModelBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAgentModelBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentModelBreakdownOutput'
+  /analytics/get_agent_errors:
+    post:
+      summary: GetAgentErrors
+      tags:
+      - Analytics
+      description: 'Get error messages from agents and tool runs within a time range
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetAgentErrors
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAgentErrorsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentErrorsOutput'
+  /analytics/get_error_time_series:
+    get:
+      summary: GetErrorTimeSeries
+      tags:
+      - Analytics
+      description: 'Get detailed error records with full execution context
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetErrorTimeSeries
+      parameters:
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date-time
+        description: ''
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date-time
+        description: ''
+      - in: query
+        name: agent_ids
+        schema:
+          type: array
+          items:
+            type: string
+        description: ''
+      - in: query
+        name: workforce_ids
+        schema:
+          type: array
+          items:
+            type: string
+        description: ''
+      - in: query
+        name: source_filter
+        schema:
+          type: string
+          enum:
+          - all
+          - workforce
+          - agent
+          - tool
+          description: 'Filter errors by source type: all (no filter), workforce (only errors from workforce tasks), agent (agent conversation errors), tool (tool execution errors)'
+        description: 'Filter errors by source type: all (no filter), workforce (only errors from workforce tasks), agent (agent conversation errors), tool (tool execution errors)'
+      - in: query
+        name: page_size
+        schema:
+          type: number
+          minimum: 1
+          maximum: 100
+          default: 20
+        description: ''
+      - in: query
+        name: cursor
+        schema:
+          type: string
+        description: ''
+      - in: query
+        name: timezone
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 64
+          description: IANA timezone identifier (e.g., 'America/New_York', 'Europe/London'). Used for date aggregation in charts.
+        description: IANA timezone identifier (e.g., 'America/New_York', 'Europe/London'). Used for date aggregation in charts.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetErrorTimeSeriesOutput'
+  /analytics/get_task_timeline:
+    get:
+      summary: GetTaskTimeline
+      tags:
+      - Analytics
+      description: 'Get day-bucketed counts for one of the Tasks page tab timelines — `view` picks Approvals, Escalated, or Errored. Auth matches ListConversations so any project member viewing the tab can also see the chart.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:read",
+
+        "knowledge_sets:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetTaskTimeline
+      parameters:
+      - in: query
+        name: view
+        schema:
+          type: string
+          enum:
+          - approvals
+          - escalated
+          - errored
+          description: 'Which tab''s timeline to fetch counts for: ''approvals'' (pending-approval conversations — the Approvals tab), ''escalated'' (conversations currently in the escalated state), or ''errored'' (conversations in an errored state with active failures).'
+        description: 'Which tab''s timeline to fetch counts for: ''approvals'' (pending-approval conversations — the Approvals tab), ''escalated'' (conversations currently in the escalated state), or ''errored'' (conversations in an errored state with active failures).'
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date-time
+          description: Inclusive start of the time range, UTC ISO 8601 format (e.g., '2024-01-15T09:00:00Z').
+        description: Inclusive start of the time range, UTC ISO 8601 format (e.g., '2024-01-15T09:00:00Z').
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date-time
+          description: Inclusive end of the time range, UTC ISO 8601 format (e.g., '2024-01-15T09:00:00Z').
+        description: Inclusive end of the time range, UTC ISO 8601 format (e.g., '2024-01-15T09:00:00Z').
+      - in: query
+        name: agent_ids
+        schema:
+          type: array
+          items:
+            type: string
+            maxLength: 128
+          maxItems: 100
+        description: ''
+      - in: query
+        name: timezone
+        schema:
+          type: string
+          maxLength: 64
+          description: IANA timezone identifier (e.g., 'America/New_York', 'Europe/London'). Used for date aggregation in charts.
+        description: IANA timezone identifier (e.g., 'America/New_York', 'Europe/London'). Used for date aggregation in charts.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTaskTimelineOutput'
+  /organizations/{organization_id}/analytics/concurrency_time_series:
+    get:
+      summary: GetConcurrencyTimeSeriesByOrgId
+      tags:
+      - Analytics
+      description: 'Get concurrency usage time-series data for an organization (canonical org-scoped path)
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetConcurrencyTimeSeriesByOrgId
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: start_date
+        schema:
+          type: string
+          format: date-time
+          description: Start date for the query (ISO 8601 format)
+        description: Start date for the query (ISO 8601 format)
+      - in: query
+        name: end_date
+        schema:
+          type: string
+          format: date-time
+          description: End date for the query (ISO 8601 format)
+        description: End date for the query (ISO 8601 format)
+      - in: query
+        name: granularity
+        schema:
+          type: string
+          enum:
+          - 15m
+          - 4h
+          - 1d
+          description: Time bucket granularity
+        description: Time bucket granularity
+      - in: query
+        name: aggregation
+        schema:
+          type: string
+          enum:
+          - max
+          - avg
+          default: max
+          description: Aggregation function applied within each bucket. Defaults to max
+        description: Aggregation function applied within each bucket. Defaults to max
+      - in: query
+        name: project_id
+        schema:
+          type: string
+          description: Optional project ID to filter by. Not yet supported — returns 400 if set
+        description: Optional project ID to filter by. Not yet supported — returns 400 if set
+      - in: query
+        name: group_by
+        schema:
+          type: string
+          enum:
+          - project
+          description: Split the concurrency series per project when set to "project".
+        description: Split the concurrency series per project when set to "project".
+      - in: query
+        name: detail_scope
+        schema:
+          type: string
+          enum:
+          - organization
+          - current_project
+          description: Requested detail scope for the per-project breakdown. Org admins receive full per-project detail; other callers only receive full detail for detail_project_id, with every other project anonymised into a single bucket. The server clamps this to the caller's role, so it can only narrow what is returned.
+        description: Requested detail scope for the per-project breakdown. Org admins receive full per-project detail; other callers only receive full detail for detail_project_id, with every other project anonymised into a single bucket. The server clamps this to the caller's role, so it can only narrow what is returned.
+      - in: query
+        name: detail_project_id
+        schema:
+          type: string
+          minLength: 1
+          description: Project display ID that can receive full detail in the per-project breakdown when detail_scope is current_project.
+        description: Project display ID that can receive full detail in the per-project breakdown when detail_scope is current_project.
+      - in: query
+        name: timezone
+        schema:
+          type: string
+          description: IANA timezone identifier (e.g., 'America/New_York', 'Europe/London'). Used for date aggregation in charts.
+        description: IANA timezone identifier (e.g., 'America/New_York', 'Europe/London'). Used for date aggregation in charts.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConcurrencyTimeSeriesByOrgIdOutput'
+  /organizations/{organization_id}/analytics/live_jobs:
+    get:
+      summary: GetLiveJobsByOrgId
+      tags:
+      - Analytics
+      description: 'Get live scheduler-backed running and queued jobs for an organization
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetLiveJobsByOrgId
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: cursor
+        schema:
+          type: string
+          description: Opaque pagination cursor from the previous response
+        description: Opaque pagination cursor from the previous response
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 500
+          description: Maximum live jobs to return. Defaults to 100
+        description: Maximum live jobs to return. Defaults to 100
+      - in: query
+        name: state
+        schema:
+          type: string
+          enum:
+          - running
+          - queued
+          description: Restrict the returned page to one state. Counts in metadata stay organization-wide and unfiltered. Omitted returns both, interleaved in dispatch order
+        description: Restrict the returned page to one state. Counts in metadata stay organization-wide and unfiltered. Omitted returns both, interleaved in dispatch order
+      - in: query
+        name: priority_tier
+        schema:
+          type: string
+          enum:
+          - high
+          - medium
+          - low
+          - untiered
+          description: Restrict the returned page to one priority tier, 'untiered' included. Counts in metadata stay organization-wide and unfiltered, as with state. Omitted returns every tier
+        description: Restrict the returned page to one priority tier, 'untiered' included. Counts in metadata stay organization-wide and unfiltered, as with state. Omitted returns every tier
+      - in: query
+        name: detail_scope
+        schema:
+          type: string
+          enum:
+          - organization
+          - current_project
+          description: Whether to return organization-wide full detail or only full detail for the current project
+        description: Whether to return organization-wide full detail or only full detail for the current project
+      - in: query
+        name: detail_project_id
+        schema:
+          type: string
+          description: Project display ID that can receive full row detail when detail_scope is current_project
+        description: Project display ID that can receive full row detail when detail_scope is current_project
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetLiveJobsByOrgIdOutput'
+  /task_ops/tab_counts:
+    get:
+      summary: GetTaskOpsTabCounts
+      tags:
+      - Analytics
+      description: 'Get the built-in TaskOps tab counts (Approvals, Escalated, Errors, All tasks) in a single response.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:read",
+
+        "knowledge_sets:read"
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetTaskOpsTabCounts
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTaskOpsTabCountsOutput'
+  /analytics/get_usage:
+    get:
+      summary: GetUsage
+      tags:
+      - Analytics
+      description: 'Get usage data from agents and tool runs within a time range
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetUsage
+      parameters:
+      - in: query
+        name: group
+        schema:
+          type: string
+          enum:
+          - user
+          - agent
+          - tool
+          - workforce
+          description: The actor associated with the usage
+        description: The actor associated with the usage
+      - in: query
+        name: metric
+        schema:
+          type: string
+          enum:
+          - credit
+          - action
+          description: The metric to be measured
+        description: The metric to be measured
+      - in: query
+        name: from
+        schema:
+          type: string
+          format: date
+        description: ''
+      - in: query
+        name: to
+        schema:
+          type: string
+          format: date
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetUsageOutput'
+  /analytics/tool/breakdown:
+    post:
+      summary: GetToolUsageBreakdown
+      tags:
+      - Analytics
+      description: 'Per-tool totals across the date range. Returns `{ meta, rows, totals.grand }` — one row per tool (entity_id + metadata + runs/actions/credits/credits_per_run/error_rate) ordered by runs DESC.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetToolUsageBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetToolUsageBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToolUsageBreakdownOutput'
+  /analytics/tool/breakdown/timeseries:
+    post:
+      summary: GetToolUsageBreakdownTimeseries
+      tags:
+      - Analytics
+      description: 'Per-(tool, day) usage zero-filled across the date range. Returns `{ meta, entities, series, totals }` — `entities` carries per-tool metadata + totals (uncapped), `series` is long-format `(entity_id, date, ...)` chart rows capped at the top 1000 tools by run volume, `totals.by_date` is per-day rollups across the capped `series` only. For projects with >1000 tools the caps diverge: `totals.grand` covers all entities while `totals.by_date` and `series` cover only the top 1000, so `sum(totals.by_date.runs) []'
+      operationId: GetToolUsageBreakdownTimeseries
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetToolUsageBreakdownTimeseriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToolUsageBreakdownTimeseriesOutput'
+  /analytics/tool/timeseries:
+    post:
+      summary: GetToolUsageTimeseries
+      tags:
+      - Analytics
+      description: 'Per-day usage across selected tools (default = all), zero-filled across the date range. Returns `{ meta, rows, totals.grand }` — `rows` ordered by date ASC, one per day with combined runs/actions/credits/error_rate.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetToolUsageTimeseries
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetToolUsageTimeseriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetToolUsageTimeseriesOutput'
+  /analytics/agent/breakdown:
+    post:
+      summary: GetAgentUsageBreakdown
+      tags:
+      - Analytics
+      description: 'Per-agent totals across the date range. Returns `{ meta, rows, totals.grand }` — one row per agent (entity_id + metadata + tasks/actions/credits/credits_per_task/error_rate) ordered by tasks DESC. When `children=yes`, each row carries a `children` array of per-tool rollups stitched at the agent grain (tool-grained children remain runs-keyed since primary metrics are per-entity).
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetAgentUsageBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAgentUsageBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentUsageBreakdownOutput'
+  /analytics/agent/breakdown/timeseries:
+    post:
+      summary: GetAgentUsageBreakdownTimeseries
+      tags:
+      - Analytics
+      description: 'Per-(agent, day) usage zero-filled across the date range. Returns `{ meta, entities, series, totals }` — `entities` carries per-agent metadata + totals (uncapped), `series` is long-format `(entity_id, date, ...)` chart rows capped at the top 1000 agents by task volume, `totals.by_date` is per-day rollups across the capped `series` only. For projects with >1000 agents the caps diverge: `totals.grand` covers all entities while `totals.by_date` and `series` cover only the top 1000, so `sum(totals.by_date.tasks) []'
+      operationId: GetAgentUsageBreakdownTimeseries
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAgentUsageBreakdownTimeseriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentUsageBreakdownTimeseriesOutput'
+  /analytics/agent/timeseries:
+    post:
+      summary: GetAgentUsageTimeseries
+      tags:
+      - Analytics
+      description: 'Per-day agent usage across selected agents (default = all), zero-filled across the date range. Returns `{ meta, rows, totals.grand }` — `rows` ordered by date ASC, one per day with combined tasks/actions/agent_model_credits/tool_credits/error_rate (sum the two credit columns client-side for a full credit total).
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetAgentUsageTimeseries
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAgentUsageTimeseriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentUsageTimeseriesOutput'
+  /analytics/workforce/breakdown:
+    post:
+      summary: GetWorkforceUsageBreakdown
+      tags:
+      - Analytics
+      description: 'Per-workforce totals across the date range. Returns `{ meta, rows, totals.grand }` — one row per workforce (entity_id + metadata + tasks/actions/credits/credits_per_task/error_rate) ordered by tasks DESC. `error_rate` counts only `state_completed` as success (state_idle does not apply to workforces, unlike agents). When `children=yes`, each row carries a `children` array of per-agent rollups (each with its own per-tool `children` array) stitched at the workforce grain — the full workforce -> agent -> tool tree. Agent-grained children remain tasks-keyed and tool-grained children remain runs-keyed (primary metrics are per-entity).
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetWorkforceUsageBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetWorkforceUsageBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkforceUsageBreakdownOutput'
+  /analytics/workforce/breakdown/timeseries:
+    post:
+      summary: GetWorkforceUsageBreakdownTimeseries
+      tags:
+      - Analytics
+      description: 'Per-(workforce, day) usage zero-filled across the date range. Returns `{ meta, entities, series, totals }` — `entities` carries per-workforce metadata + totals (uncapped), `series` is long-format `(entity_id, date, ...)` chart rows capped at the top 1000 workforces by task volume, `totals.by_date` is per-day rollups across the capped `series` only. For projects with >1000 workforces the caps diverge: `totals.grand` covers all entities while `totals.by_date` and `series` cover only the top 1000, so `sum(totals.by_date.tasks) []'
+      operationId: GetWorkforceUsageBreakdownTimeseries
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetWorkforceUsageBreakdownTimeseriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkforceUsageBreakdownTimeseriesOutput'
+  /analytics/workforce/timeseries:
+    post:
+      summary: GetWorkforceUsageTimeseries
+      tags:
+      - Analytics
+      description: 'Per-day workforce usage across selected workforces (default = all), zero-filled across the date range. Returns `{ meta, rows, totals.grand }` — `rows` ordered by date ASC, one per day with combined tasks/actions/agent_model_credits/tool_credits/error_rate (sum the two credit columns client-side for a full credit total).
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetWorkforceUsageTimeseries
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetWorkforceUsageTimeseriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetWorkforceUsageTimeseriesOutput'
+  /analytics/project/timeseries:
+    post:
+      summary: GetProjectUsageTimeseries
+      tags:
+      - Analytics
+      description: 'Per-day project-wide usage, zero-filled across the date range. Returns `{ meta, rows, totals.grand }` with agent_tasks, workforce_tasks, tool_runs, actions, and two credit columns: `tool_credits` (tool execution incl. AI model calls made inside tools) and `agent_model_credits` (agents'' own AI model calls). Workforce credits are excluded to avoid double-counting; sum the two columns client-side for a full credit total.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetProjectUsageTimeseries
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetProjectUsageTimeseriesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProjectUsageTimeseriesOutput'
+  /analytics/model/breakdown:
+    post:
+      summary: GetModelUsageBreakdown
+      tags:
+      - Analytics
+      description: 'Per-(model, context) AI model usage across the date range, where `context` labels where each call occurred in the workforce/agent/tool tree (six buckets: tool, agent_model, agent_tool, workforce_tool, workforce_agent_tool, workforce_agent_model). Returns `{ meta, rows, totals }` — `rows` ordered by credits DESC, model ASC, context ASC; `totals.by_context` collapses model out for per-context subtotals (contexts with zero usage are omitted); `totals.grand` sums across the whole window. Filter via `model_ids` and/or `contexts`.
+
+
+        ### Required permissions
+
+        > []'
+      operationId: GetModelUsageBreakdown
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetModelUsageBreakdownInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetModelUsageBreakdownOutput'
+components:
+  schemas:
+    GetModelUsageBreakdownOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              model:
+                type: string
+                description: AI model identifier (e.g. 'gpt-4o', 'claude-3-7-sonnet-latest').
+              model_name:
+                type:
+                - string
+                - 'null'
+                description: Display label for the model (e.g. 'GPT-4o'). Null for unknown model ids — the frontend should render a fallback.
+              description:
+                type:
+                - string
+                - 'null'
+                description: Human-readable model description. Null for unknown model ids.
+              group_name:
+                type:
+                - string
+                - 'null'
+                description: Vendor / group label (e.g. 'OpenAI', 'Anthropic'). Null for unknown model ids.
+              is_shutdown:
+                type: boolean
+                description: True if the provider has shut the model down. False for unknown model ids.
+              icon:
+                type:
+                - string
+                - 'null'
+                description: CDN URL for the model vendor's icon (SVG). Null when the model has no known parent vendor. Matches the `icon` field used by the v2 Agent / Tool / Workforce breakdown endpoints.
+              runs:
+                type: number
+                description: Count of AI model call invocations.
+              input_tokens:
+                type: number
+                description: Total prompt / input tokens consumed.
+              output_tokens:
+                type: number
+                description: Total completion / output tokens produced.
+              credits:
+                type: number
+                description: Total credits consumed.
+              children:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    context:
+                      type: string
+                      enum:
+                      - tool
+                      - agent_model
+                      - agent_tool
+                      - workforce_tool
+                      - workforce_agent_tool
+                      - workforce_agent_model
+                      description: Where the AI model call happened in the workforce/agent/tool tree. `tool` = standalone tool run, no agent or workforce; `agent_model` = an agent's own AI model call, no tool or workforce; `agent_tool` = a tool inside an agent task, no workforce; `workforce_tool` = a workforce-driven tool with no agent; `workforce_agent_tool` = a tool inside an agent task inside a workforce; `workforce_agent_model` = an agent's own AI model call inside a workforce, no tool.
+                    runs:
+                      type: number
+                      description: Count of AI model call invocations.
+                    input_tokens:
+                      type: number
+                      description: Total prompt / input tokens consumed.
+                    output_tokens:
+                      type: number
+                      description: Total completion / output tokens produced.
+                    credits:
+                      type: number
+                      description: Total credits consumed.
+                  required:
+                  - context
+                  - runs
+                  - input_tokens
+                  - output_tokens
+                  - credits
+                  additionalProperties: false
+                description: Per-context rollups, one entry per context bucket observed for this model in the window (ordered credits DESC, context ASC). Parent-level metrics (runs / input_tokens / output_tokens / credits) are sums across `children`. Always present, never empty.
+            required:
+            - model
+            - model_name
+            - description
+            - group_name
+            - is_shutdown
+            - icon
+            - runs
+            - input_tokens
+            - output_tokens
+            - credits
+            - children
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            by_context:
+              type: array
+              items:
+                type: object
+                properties:
+                  context:
+                    type: string
+                    enum:
+                    - tool
+                    - agent_model
+                    - agent_tool
+                    - workforce_tool
+                    - workforce_agent_tool
+                    - workforce_agent_model
+                    description: Where the AI model call happened in the workforce/agent/tool tree. `tool` = standalone tool run, no agent or workforce; `agent_model` = an agent's own AI model call, no tool or workforce; `agent_tool` = a tool inside an agent task, no workforce; `workforce_tool` = a workforce-driven tool with no agent; `workforce_agent_tool` = a tool inside an agent task inside a workforce; `workforce_agent_model` = an agent's own AI model call inside a workforce, no tool.
+                  runs:
+                    type: number
+                    description: Count of AI model call invocations.
+                  input_tokens:
+                    type: number
+                    description: Total prompt / input tokens consumed.
+                  output_tokens:
+                    type: number
+                    description: Total completion / output tokens produced.
+                  credits:
+                    type: number
+                    description: Total credits consumed.
+                required:
+                - context
+                - runs
+                - input_tokens
+                - output_tokens
+                - credits
+                additionalProperties: false
+              description: Subtotals collapsed across model, one per context bucket that had any usage in the window. Contexts with zero usage are omitted.
+            grand:
+              type: object
+              properties:
+                runs:
+                  type: number
+                  description: Count of AI model call invocations.
+                input_tokens:
+                  type: number
+                  description: Total prompt / input tokens consumed.
+                output_tokens:
+                  type: number
+                  description: Total completion / output tokens produced.
+                credits:
+                  type: number
+                  description: Total credits consumed.
+              required:
+              - runs
+              - input_tokens
+              - output_tokens
+              - credits
+              additionalProperties: false
+          required:
+          - by_context
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetAgentUsageTimeseriesOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                description: Bucket date
+              tasks:
+                type: number
+                description: Count of tasks across all selected agents
+              actions:
+                type: number
+                description: Count of actions across all selected agents
+              agent_model_credits:
+                type: number
+                description: Credits consumed by the agent's own model calls for the bucket. Pairs with tool_credits.
+              tool_credits:
+                type: number
+                description: Credits consumed by tools the agent ran for the bucket. Pairs with agent_model_credits.
+              error_rate:
+                type: number
+                description: Fraction of tasks not in a success state, in [0, 1]; 0 when there are no tasks in the bucket
+            required:
+            - date
+            - tasks
+            - actions
+            - agent_model_credits
+            - tool_credits
+            - error_rate
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                tasks:
+                  type: number
+                  description: Count of tasks (the agent orchestration unit; agent primary metric)
+                actions:
+                  type: number
+                  description: Count of actions
+                agent_model_credits:
+                  type: number
+                  description: Credits consumed by agents' own model calls. Pairs with tool_credits.
+                tool_credits:
+                  type: number
+                  description: Credits consumed by tools agents ran. Pairs with agent_model_credits.
+                credits_per_task:
+                  type: number
+                  description: (agent_model_credits + tool_credits) / tasks ratio. 0 when tasks is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of tasks not in a success state (success = state_completed + state_idle), in [0, 1]; 0 when tasks is 0
+              required:
+              - tasks
+              - actions
+              - agent_model_credits
+              - tool_credits
+              - credits_per_task
+              - error_rate
+              additionalProperties: false
+          required:
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetToolUsageBreakdownTimeseriesOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        entities:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Tool display ID (UUID)
+              name:
+                type:
+                - string
+                - 'null'
+              description:
+                type:
+                - string
+                - 'null'
+              icon:
+                type:
+                - string
+                - 'null'
+              runs:
+                type: number
+                description: Count of runs
+              error_rate:
+                type: number
+                description: Fraction of runs that did not complete, in [0, 1]
+              actions:
+                type: number
+                description: Count of actions
+              credits:
+                type: number
+                description: Total credits consumed
+              credits_per_run:
+                type: number
+                description: credits / runs ratio. 0 when runs is 0.
+            required:
+            - entity_id
+            - name
+            - description
+            - icon
+            - runs
+            - error_rate
+            - actions
+            - credits
+            - credits_per_run
+            additionalProperties: false
+        series:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Tool display ID; joins to `entities[].entity_id`
+              date:
+                type: string
+                format: date
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                description: Bucket date
+              runs:
+                type: number
+                description: Count of runs
+              credits:
+                type: number
+                description: Total credits for the day
+              actions:
+                type: number
+                description: Count of actions
+              error_rate:
+                type: number
+                description: Fraction of runs that did not complete, in [0, 1]; 0 when there are no runs in the bucket
+            required:
+            - entity_id
+            - date
+            - runs
+            - credits
+            - actions
+            - error_rate
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                runs:
+                  type: number
+                  description: Count of runs
+                actions:
+                  type: number
+                  description: Count of actions
+                credits:
+                  type: number
+                  description: Total credits consumed
+                credits_per_run:
+                  type: number
+                  description: credits / runs ratio. 0 when runs is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of runs that did not complete, in [0, 1]; 0 when runs is 0
+              required:
+              - runs
+              - actions
+              - credits
+              - credits_per_run
+              - error_rate
+              additionalProperties: false
+            by_date:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                    pattern: ^\d{4}-\d{2}-\d{2}$
+                    description: Bucket date
+                  runs:
+                    type: number
+                    description: Count of runs across all selected tools
+                  actions:
+                    type: number
+                    description: Count of actions across all selected tools
+                  credits:
+                    type: number
+                    description: Total credits consumed for the bucket
+                  error_rate:
+                    type: number
+                    description: Fraction of runs that did not complete, in [0, 1]; 0 when there are no runs in the bucket
+                required:
+                - date
+                - runs
+                - actions
+                - credits
+                - error_rate
+                additionalProperties: false
+          required:
+          - grand
+          - by_date
+          additionalProperties: false
+      required:
+      - meta
+      - entities
+      - series
+      - totals
+      additionalProperties: false
+    GetConcurrencyTimeSeriesByOrgIdOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                type: string
+                description: ISO 8601 timestamp for the bucket
+              value:
+                type: number
+                description: Aggregated concurrency value
+              queued:
+                type: number
+                description: Jobs waiting for a slot at the bucket's peak instant. Present only when queue-depth reporting is enabled.
+              concurrency_limit:
+                type:
+                - number
+                - 'null'
+                description: Org concurrency limit in effect at the bucket's peak instant; null for buckets predating queue-depth logging. Present only when queue-depth reporting is enabled.
+            required:
+            - timestamp
+            - value
+            additionalProperties: false
+        by_project:
+          type: array
+          description: Per-project series, present only when group_by="project" is set. `usage` is the concurrency slots held by the project at the org's peak instant in the bucket. `queued` is reported as 0 until queue-depth logging lands, at which point it is populated from real data without a contract change. When the caller is not an org admin, projects other than their own are collapsed into a single anonymised bucket with `is_redacted=true` and null `project_id`/`project_name`.
+          items:
+            type: object
+            properties:
+              project_id:
+                type:
+                - string
+                - 'null'
+                description: Project display ID, or null for the anonymised bucket that aggregates projects the caller may not see.
+              project_name:
+                type:
+                - string
+                - 'null'
+              is_redacted:
+                type: boolean
+                description: True for the anonymised bucket aggregating projects the caller is not permitted to see individually.
+              results:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    timestamp:
+                      type: string
+                    usage:
+                      type: number
+                    queued:
+                      type: number
+                  required:
+                  - timestamp
+                  - usage
+                  - queued
+                  additionalProperties: false
+            required:
+            - project_id
+            - project_name
+            - is_redacted
+            - results
+            additionalProperties: false
+        metadata:
+          type: object
+          properties:
+            granularity:
+              type: string
+              enum:
+              - 15m
+              - 4h
+              - 1d
+            aggregation:
+              type: string
+              enum:
+              - max
+              - avg
+            start_date:
+              type: string
+            end_date:
+              type: string
+            concurrency_limit:
+              type: number
+          required:
+          - granularity
+          - aggregation
+          - start_date
+          - end_date
+          - concurrency_limit
+          additionalProperties: false
+      required:
+      - results
+      - metadata
+      additionalProperties: false
+    GetAgentUsageBreakdownTimeseriesOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        entities:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Agent display ID (UUID)
+              name:
+                type:
+                - string
+                - 'null'
+              description:
+                type:
+                - string
+                - 'null'
+              icon:
+                type:
+                - string
+                - 'null'
+              tasks:
+                type: number
+                description: Count of tasks (the agent orchestration unit; agent primary metric)
+              error_rate:
+                type: number
+                description: Fraction of tasks not in a success state (success = state_completed + state_idle), in [0, 1]
+              actions:
+                type: number
+                description: Count of actions
+              credits:
+                type: number
+                description: Total credits consumed
+              credits_per_task:
+                type: number
+                description: credits / tasks ratio. 0 when tasks is 0.
+              children:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entity_id:
+                      type: string
+                      description: Tool display ID (UUID)
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                    icon:
+                      type:
+                      - string
+                      - 'null'
+                    runs:
+                      type: number
+                      description: Count of runs
+                    error_rate:
+                      type: number
+                      description: Fraction of tool runs that did not complete, in [0, 1]
+                    actions:
+                      type: number
+                      description: Count of actions
+                    credits:
+                      type: number
+                      description: Total credits consumed
+                    credits_per_run:
+                      type: number
+                      description: credits / runs ratio. 0 when runs is 0.
+                  required:
+                  - entity_id
+                  - name
+                  - description
+                  - icon
+                  - runs
+                  - error_rate
+                  - actions
+                  - credits
+                  - credits_per_run
+                  additionalProperties: false
+                description: Present only when the request `children=yes`. Per-tool rollups stitched at the agent grain — one entry per tool the agent invoked over the window. Tool-grained metrics are runs-keyed (primary metric per entity).
+            required:
+            - entity_id
+            - name
+            - description
+            - icon
+            - tasks
+            - error_rate
+            - actions
+            - credits
+            - credits_per_task
+            additionalProperties: false
+        series:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Agent display ID; joins to `entities[].entity_id`
+              date:
+                type: string
+                format: date
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                description: Bucket date
+              tasks:
+                type: number
+                description: Count of tasks for this (agent, day)
+              credits:
+                type: number
+                description: Total credits for the day
+              actions:
+                type: number
+                description: Count of actions
+              error_rate:
+                type: number
+                description: Fraction of tasks not in a success state, in [0, 1]; 0 when there are no tasks
+            required:
+            - entity_id
+            - date
+            - tasks
+            - credits
+            - actions
+            - error_rate
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                tasks:
+                  type: number
+                  description: Count of tasks (the agent orchestration unit; agent primary metric)
+                actions:
+                  type: number
+                  description: Count of actions
+                credits:
+                  type: number
+                  description: Total credits consumed
+                agent_model_credits:
+                  type: number
+                  description: Credits consumed by the agent's own model calls. Subset of `credits`; the remainder is from tools the agent ran.
+                credits_per_task:
+                  type: number
+                  description: credits / tasks ratio. 0 when tasks is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of tasks not in a success state (success = state_completed + state_idle), in [0, 1]; 0 when tasks is 0
+              required:
+              - tasks
+              - actions
+              - credits
+              - agent_model_credits
+              - credits_per_task
+              - error_rate
+              additionalProperties: false
+            by_date:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                    pattern: ^\d{4}-\d{2}-\d{2}$
+                    description: Bucket date
+                  tasks:
+                    type: number
+                    description: Count of tasks across all selected agents
+                  actions:
+                    type: number
+                    description: Count of actions across all selected agents
+                  credits:
+                    type: number
+                    description: Total credits consumed for the bucket
+                  error_rate:
+                    type: number
+                    description: Fraction of tasks not in a success state, in [0, 1]; 0 when there are no tasks in the bucket
+                required:
+                - date
+                - tasks
+                - actions
+                - credits
+                - error_rate
+                additionalProperties: false
+          required:
+          - grand
+          - by_date
+          additionalProperties: false
+      required:
+      - meta
+      - entities
+      - series
+      - totals
+      additionalProperties: false
+    GetWorkforceBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          description: Start date for the workforce breakdown query (ISO 8601 format)
+        end_date:
+          description: End date for the workforce breakdown query (ISO 8601 format)
+        workforce_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of workforce display IDs to filter breakdown by
+        agent_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of agent IDs to filter breakdown by
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentModelBreakdownOutput:
+      type: object
+      properties:
+        usage:
+          type: array
+          items:
+            type: object
+            properties:
+              model_name:
+                type: string
+                description: LLM model display name (falls back to model ID if display name not available)
+              credits:
+                type: number
+                description: Credits used for this model
+              input_tokens:
+                type: number
+                description: Total input tokens for this model
+              output_tokens:
+                type: number
+                description: Total output tokens for this model
+              vendor_icon_url:
+                type: string
+                description: URL for the model vendor's icon/logo
+            required:
+            - model_name
+            - credits
+            - input_tokens
+            - output_tokens
+            additionalProperties: false
+          description: Model breakdown data
+      required:
+      - usage
+      additionalProperties: false
+    GetWorkforceUsageTimeseriesOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                description: Bucket date
+              tasks:
+                type: number
+                description: Count of tasks across all selected workforces
+              actions:
+                type: number
+                description: Count of actions across all selected workforces
+              agent_model_credits:
+                type: number
+                description: Credits consumed by agents' own model calls inside the selected workforces for the bucket. Pairs with tool_credits (disjoint; mirrors grand-totals semantics so workforce-row credits aren't double-counted).
+              tool_credits:
+                type: number
+                description: Credits consumed by tools agents ran inside the selected workforces for the bucket. Pairs with agent_model_credits.
+              error_rate:
+                type: number
+                description: Fraction of tasks not completed (success = state_completed), in [0, 1]; 0 when there are no tasks in the bucket
+            required:
+            - date
+            - tasks
+            - actions
+            - agent_model_credits
+            - tool_credits
+            - error_rate
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                tasks:
+                  type: number
+                  description: Count of tasks (the workforce orchestration unit; workforce primary metric)
+                actions:
+                  type: number
+                  description: Count of actions
+                agent_model_credits:
+                  type: number
+                  description: Credits consumed by agents' own model calls inside the selected workforces. Pairs with tool_credits (disjoint; avoids workforce-row double-count).
+                tool_credits:
+                  type: number
+                  description: Credits consumed by tools agents ran inside the selected workforces. Pairs with agent_model_credits.
+                credits_per_task:
+                  type: number
+                  description: (agent_model_credits + tool_credits) / tasks ratio. 0 when tasks is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of tasks not completed (success = state_completed), in [0, 1]; 0 when tasks is 0
+              required:
+              - tasks
+              - actions
+              - agent_model_credits
+              - tool_credits
+              - credits_per_task
+              - error_rate
+              additionalProperties: false
+          required:
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetTaskOpsTabCountsOutput:
+      type: object
+      properties:
+        approvals:
+          type: integer
+          minimum: 0
+          description: Count of conversations currently in the pending-approval state.
+        escalated:
+          type: integer
+          minimum: 0
+          description: Count of conversations currently in the escalated state.
+        errored:
+          type: integer
+          minimum: 0
+          description: Count of conversations in one of the errored states or with at least one active failure.
+        all_tasks:
+          type: integer
+          minimum: 0
+          description: Count of non-completed conversations, matching the All tasks tab.
+      required:
+      - approvals
+      - escalated
+      - errored
+      - all_tasks
+      additionalProperties: false
+    GetAgentUsageBreakdownTimeseriesInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        agent_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of agent display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+        children:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: When `yes`, breakdown-shaped endpoints stitch descendant rollups onto each parent entity's `children` array. Default `no`.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetWorkforceUsageBreakdownTimeseriesInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        workforce_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of workforce display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+        children:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: When `yes`, breakdown-shaped endpoints stitch descendant rollups onto each parent entity's `children` array. Default `no`.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetActionBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          description: Start date for the action breakdown query (ISO 8601 format)
+        end_date:
+          description: End date for the action breakdown query (ISO 8601 format)
+        action_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of action IDs to filter breakdown by
+        agent_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of agent IDs to filter breakdown by
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetWorkforceUsageBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        workforce_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of workforce display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+        children:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: When `yes`, breakdown-shaped endpoints stitch descendant rollups onto each parent entity's `children` array. Default `no`.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentUsageBreakdownOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Agent display ID (UUID)
+              name:
+                type:
+                - string
+                - 'null'
+              description:
+                type:
+                - string
+                - 'null'
+              icon:
+                type:
+                - string
+                - 'null'
+              tasks:
+                type: number
+                description: Count of tasks (the agent orchestration unit; agent primary metric)
+              error_rate:
+                type: number
+                description: Fraction of tasks not in a success state (success = state_completed + state_idle), in [0, 1]
+              actions:
+                type: number
+                description: Count of actions
+              credits:
+                type: number
+                description: Total credits consumed
+              credits_per_task:
+                type: number
+                description: credits / tasks ratio. 0 when tasks is 0.
+              children:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entity_id:
+                      type: string
+                      description: Tool display ID (UUID)
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                    icon:
+                      type:
+                      - string
+                      - 'null'
+                    runs:
+                      type: number
+                      description: Count of runs
+                    error_rate:
+                      type: number
+                      description: Fraction of tool runs that did not complete, in [0, 1]
+                    actions:
+                      type: number
+                      description: Count of actions
+                    credits:
+                      type: number
+                      description: Total credits consumed
+                    credits_per_run:
+                      type: number
+                      description: credits / runs ratio. 0 when runs is 0.
+                  required:
+                  - entity_id
+                  - name
+                  - description
+                  - icon
+                  - runs
+                  - error_rate
+                  - actions
+                  - credits
+                  - credits_per_run
+                  additionalProperties: false
+                description: Present only when the request `children=yes`. Per-tool rollups stitched at the agent grain — one entry per tool the agent invoked over the window. Tool-grained metrics are runs-keyed (primary metric per entity).
+            required:
+            - entity_id
+            - name
+            - description
+            - icon
+            - tasks
+            - error_rate
+            - actions
+            - credits
+            - credits_per_task
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                tasks:
+                  type: number
+                  description: Count of tasks (the agent orchestration unit; agent primary metric)
+                actions:
+                  type: number
+                  description: Count of actions
+                credits:
+                  type: number
+                  description: Total credits consumed
+                agent_model_credits:
+                  type: number
+                  description: Credits consumed by the agent's own model calls. Subset of `credits`; the remainder is from tools the agent ran.
+                credits_per_task:
+                  type: number
+                  description: credits / tasks ratio. 0 when tasks is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of tasks not in a success state (success = state_completed + state_idle), in [0, 1]; 0 when tasks is 0
+              required:
+              - tasks
+              - actions
+              - credits
+              - agent_model_credits
+              - credits_per_task
+              - error_rate
+              additionalProperties: false
+          required:
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetActionBreakdownOutput:
+      type: object
+      properties:
+        actions:
+          type: array
+          items:
+            type: object
+            properties:
+              action_id:
+                type: string
+                description: Action/Tool display ID
+              action_name:
+                type: string
+                description: Action/Tool name
+              execution_count:
+                type: number
+                description: Total number of executions for this action
+              error_rate:
+                type: number
+                description: Error rate percentage (0-100)
+              error_count:
+                type: number
+                description: Number of errored executions (the raw count behind error_rate).
+              credits_used:
+                type: number
+                description: Total credits used by this action
+              top_agents:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    agent_id:
+                      type: string
+                      description: Agent display ID
+                    agent_name:
+                      type: string
+                      description: Agent name (fallback to default if null)
+                    task_count:
+                      type: number
+                      description: Number of tasks this agent executed using this action
+                  required:
+                  - agent_id
+                  - agent_name
+                  - task_count
+                  additionalProperties: false
+                description: Top 3 agents that use this action most
+                maxItems: 3
+            required:
+            - action_id
+            - action_name
+            - execution_count
+            - error_rate
+            - credits_used
+            - top_agents
+            additionalProperties: false
+          description: Action breakdown data
+      required:
+      - actions
+      additionalProperties: false
+    GetWorkforceBreakdownOutput:
+      type: object
+      properties:
+        workforces:
+          type: array
+          items:
+            type: object
+            properties:
+              workforce_id:
+                type: string
+                description: Workforce display ID
+              workforce_name:
+                type: string
+                description: Workforce name (fallback to default if null)
+              workforce_tasks:
+                type: number
+                description: Number of unique workforce tasks (count distinct workforce_task_display_id)
+              agent_tasks:
+                type: number
+                description: Total number of agent tasks/conversations spawned by the workforce
+              error_rate:
+                type: number
+                description: Error rate percentage (0-100) based on agent tasks
+              error_count:
+                type: number
+                description: Number of errored agent tasks (the raw count behind error_rate).
+              total_actions:
+                type: number
+                description: Total number of actions executed by this workforce
+              credits_used:
+                type: number
+                description: Total credits used by this workforce
+              top_agents:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    agent_id:
+                      type: string
+                      description: Agent display ID
+                    agent_name:
+                      type: string
+                      description: Agent name (fallback to default if null)
+                    task_count:
+                      type: number
+                      description: Number of tasks this agent executed using this action
+                  required:
+                  - agent_id
+                  - agent_name
+                  - task_count
+                  additionalProperties: false
+                description: Top 3 agents used by this workforce
+                maxItems: 3
+            required:
+            - workforce_id
+            - workforce_name
+            - workforce_tasks
+            - agent_tasks
+            - error_rate
+            - total_actions
+            - credits_used
+            - top_agents
+            additionalProperties: false
+          description: Workforce breakdown data
+      required:
+      - workforces
+      additionalProperties: false
+    GetToolUsageBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        tool_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of tool display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentErrorsInput:
+      type: object
+      properties:
+        start_date:
+          description: Start date for the errors query (ISO 8601 format)
+        end_date:
+          description: End date for the errors query (ISO 8601 format)
+        agent_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of agent IDs to filter errors by. If omitted, returns errors for all agents in the project.
+        page_size:
+          type: number
+          minimum: 1
+          maximum: 100
+          default: 20
+          description: 'Number of errors per page (default: 20, max: 100)'
+        cursor:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              description: ISO 8601 timestamp of the last error returned
+          required:
+          - timestamp
+          additionalProperties: false
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentModelBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          description: Start date for the model breakdown query (ISO 8601 format)
+        end_date:
+          description: End date for the model breakdown query (ISO 8601 format)
+        agent_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of agent IDs to filter usage by
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentErrorsOutput:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              error_message:
+                type: string
+                description: Human-readable error message
+              timestamp:
+                description: When the error occurred (ISO 8601 format)
+              agent_id:
+                type:
+                - string
+                - 'null'
+                description: Agent display ID associated with the error
+              tool_id:
+                type:
+                - string
+                - 'null'
+                description: Tool display ID (only for tool execution errors)
+              conversation_id:
+                type: string
+                description: Conversation display ID where the error occurred
+              executor_type:
+                type:
+                - string
+                - 'null'
+                description: Type of executor that triggered the error (only for tool errors)
+              step_name:
+                type:
+                - string
+                - 'null'
+                description: Name of the step where the error occurred (only for tool errors)
+              raw_error:
+                type:
+                - string
+                - 'null'
+                description: Raw error details if available
+              error_source:
+                type: string
+                enum:
+                - tool
+                - agent
+                description: Source of the error - tool execution or agent level
+              state_metadata:
+                type:
+                - object
+                - 'null'
+                description: Additional error context from conversation state metadata (agent errors only)
+            required:
+            - error_message
+            - timestamp
+            - agent_id
+            - conversation_id
+            - error_source
+            additionalProperties: false
+          description: List of error items sorted by timestamp descending
+        next_cursor:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              description: ISO 8601 timestamp of the last error returned
+          required:
+          - timestamp
+          additionalProperties: false
+        has_more:
+          type: boolean
+          description: Whether there are more results after this page
+      required:
+      - errors
+      - has_more
+      additionalProperties: false
+    GetToolUsageBreakdownOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Tool display ID (UUID)
+              name:
+                type:
+                - string
+                - 'null'
+              description:
+                type:
+                - string
+                - 'null'
+              icon:
+                type:
+                - string
+                - 'null'
+              runs:
+                type: number
+                description: Count of runs
+              error_rate:
+                type: number
+                description: Fraction of runs that did not complete, in [0, 1]
+              actions:
+                type: number
+                description: Count of actions
+              credits:
+                type: number
+                description: Total credits consumed
+              credits_per_run:
+                type: number
+                description: credits / runs ratio. 0 when runs is 0.
+            required:
+            - entity_id
+            - name
+            - description
+            - icon
+            - runs
+            - error_rate
+            - actions
+            - credits
+            - credits_per_run
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                runs:
+                  type: number
+                  description: Count of runs
+                actions:
+                  type: number
+                  description: Count of actions
+                credits:
+                  type: number
+                  description: Total credits consumed
+                credits_per_run:
+                  type: number
+                  description: credits / runs ratio. 0 when runs is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of runs that did not complete, in [0, 1]; 0 when runs is 0
+              required:
+              - runs
+              - actions
+              - credits
+              - credits_per_run
+              - error_rate
+              additionalProperties: false
+          required:
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetAgentBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          description: Start date for the agent breakdown query (ISO 8601 format)
+        end_date:
+          description: End date for the agent breakdown query (ISO 8601 format)
+        agent_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of agent IDs to filter breakdown by
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetWorkforceUsageBreakdownTimeseriesOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        entities:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Workforce display ID (UUID)
+              name:
+                type:
+                - string
+                - 'null'
+              description:
+                type:
+                - string
+                - 'null'
+              icon:
+                type:
+                - string
+                - 'null'
+              tasks:
+                type: number
+                description: Count of tasks (the workforce orchestration unit; workforce primary metric)
+              error_rate:
+                type: number
+                description: Fraction of tasks not completed (workforce success = state_completed only; state_idle does not apply to workforces), in [0, 1]
+              actions:
+                type: number
+                description: Count of actions
+              credits:
+                type: number
+                description: Total credits consumed
+              credits_per_task:
+                type: number
+                description: credits / tasks ratio. 0 when tasks is 0.
+              children:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entity_id:
+                      type: string
+                      description: Agent display ID (UUID)
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                    icon:
+                      type:
+                      - string
+                      - 'null'
+                    tasks:
+                      type: number
+                      description: Count of tasks (the agent orchestration unit; agent primary metric)
+                    error_rate:
+                      type: number
+                      description: Fraction of tasks not in a success state (agent success = state_completed + state_idle), in [0, 1]
+                    actions:
+                      type: number
+                      description: Count of actions
+                    credits:
+                      type: number
+                      description: Total credits consumed
+                    credits_per_task:
+                      type: number
+                      description: credits / tasks ratio. 0 when tasks is 0.
+                    children:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          entity_id:
+                            type: string
+                            description: Tool display ID (UUID)
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                          description:
+                            type:
+                            - string
+                            - 'null'
+                          icon:
+                            type:
+                            - string
+                            - 'null'
+                          runs:
+                            type: number
+                            description: Count of runs
+                          error_rate:
+                            type: number
+                            description: Fraction of tool runs that did not complete, in [0, 1]
+                          actions:
+                            type: number
+                            description: Count of actions
+                          credits:
+                            type: number
+                            description: Total credits consumed
+                          credits_per_run:
+                            type: number
+                            description: credits / runs ratio. 0 when runs is 0.
+                        required:
+                        - entity_id
+                        - name
+                        - description
+                        - icon
+                        - runs
+                        - error_rate
+                        - actions
+                        - credits
+                        - credits_per_run
+                        additionalProperties: false
+                      description: Present only when the request `children=yes`. Per-tool rollups stitched at the agent grain — one entry per tool the agent invoked within this workforce over the window. Tool-grained children remain runs-keyed (primary metric per entity).
+                  required:
+                  - entity_id
+                  - name
+                  - description
+                  - icon
+                  - tasks
+                  - error_rate
+                  - actions
+                  - credits
+                  - credits_per_task
+                  additionalProperties: false
+                description: Present only when the request `children=yes`. Per-agent rollups stitched at the workforce grain. Each agent child may carry its own nested `children` array of per-tool rollups (the full workforce -> agent -> tool tree).
+            required:
+            - entity_id
+            - name
+            - description
+            - icon
+            - tasks
+            - error_rate
+            - actions
+            - credits
+            - credits_per_task
+            additionalProperties: false
+        series:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Workforce display ID; joins to `entities[].entity_id`
+              date:
+                type: string
+                format: date
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                description: Bucket date
+              tasks:
+                type: number
+                description: Count of tasks for this (workforce, day)
+              credits:
+                type: number
+                description: Total credits for the day
+              actions:
+                type: number
+                description: Count of actions
+              error_rate:
+                type: number
+                description: Fraction of tasks not completed (success = state_completed), in [0, 1]; 0 when there are no tasks
+            required:
+            - entity_id
+            - date
+            - tasks
+            - credits
+            - actions
+            - error_rate
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                tasks:
+                  type: number
+                  description: Count of tasks (the workforce orchestration unit; workforce primary metric)
+                actions:
+                  type: number
+                  description: Count of actions
+                agent_model_credits:
+                  type: number
+                  description: Credits consumed by agents' own model calls inside the selected workforces. Pairs with tool_credits (disjoint; mirrors project-level semantics so workforce/agent/tool credits aren't double-counted).
+                tool_credits:
+                  type: number
+                  description: Credits consumed by tools run inside the selected workforces. Pairs with agent_model_credits.
+                credits_per_task:
+                  type: number
+                  description: (agent_model_credits + tool_credits) / tasks ratio. 0 when tasks is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of tasks not completed (workforce success = state_completed only; no state_idle exists at the workforce level), in [0, 1]; 0 when tasks is 0
+              required:
+              - tasks
+              - actions
+              - agent_model_credits
+              - tool_credits
+              - credits_per_task
+              - error_rate
+              additionalProperties: false
+            by_date:
+              type: array
+              items:
+                type: object
+                properties:
+                  date:
+                    type: string
+                    format: date
+                    pattern: ^\d{4}-\d{2}-\d{2}$
+                    description: Bucket date
+                  tasks:
+                    type: number
+                    description: Count of tasks across all selected workforces
+                  actions:
+                    type: number
+                    description: Count of actions across all selected workforces
+                  credits:
+                    type: number
+                    description: Total credits consumed for the bucket
+                  error_rate:
+                    type: number
+                    description: Fraction of tasks not completed (success = state_completed), in [0, 1]; 0 when there are no tasks in the bucket
+                required:
+                - date
+                - tasks
+                - actions
+                - credits
+                - error_rate
+                additionalProperties: false
+          required:
+          - grand
+          - by_date
+          additionalProperties: false
+      required:
+      - meta
+      - entities
+      - series
+      - totals
+      additionalProperties: false
+    GetToolUsageBreakdownTimeseriesInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        tool_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of tool display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetProjectUsageTimeseriesOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                description: Bucket date
+              agent_tasks:
+                type: number
+              workforce_tasks:
+                type: number
+              tool_runs:
+                type: number
+              actions:
+                type: number
+              tool_credits:
+                type: number
+                description: Per-day credits consumed by tool execution, including AI model calls made inside tools.
+              agent_model_credits:
+                type: number
+                description: Per-day credits consumed by agents' own model calls.
+            required:
+            - date
+            - agent_tasks
+            - workforce_tasks
+            - tool_runs
+            - actions
+            - tool_credits
+            - agent_model_credits
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                agent_tasks:
+                  type: number
+                workforce_tasks:
+                  type: number
+                tool_runs:
+                  type: number
+                actions:
+                  type: number
+                tool_credits:
+                  type: number
+                  description: Credits consumed by tool execution, including AI model calls made inside tools.
+                agent_model_credits:
+                  type: number
+                  description: Credits consumed by agents' own AI model calls (the agent's reasoning model). Tool costs the agent triggered are reported under `tool_credits`.
+              required:
+              - agent_tasks
+              - workforce_tasks
+              - tool_runs
+              - actions
+              - tool_credits
+              - agent_model_credits
+              additionalProperties: false
+          required:
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetProjectUsageTimeseriesInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentUsageBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        agent_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of agent display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+        children:
+          type: string
+          enum:
+          - 'yes'
+          - 'no'
+          description: When `yes`, breakdown-shaped endpoints stitch descendant rollups onto each parent entity's `children` array. Default `no`.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetModelUsageBreakdownInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        model_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of model identifiers (e.g. 'gpt-4o', 'claude-3-7-sonnet-latest') to filter by. Duplicates are ignored. Maximum 1000.
+        contexts:
+          type: array
+          items:
+            type: string
+            enum:
+            - tool
+            - agent_model
+            - agent_tool
+            - workforce_tool
+            - workforce_agent_tool
+            - workforce_agent_model
+            description: Where the AI model call happened in the workforce/agent/tool tree. `tool` = standalone tool run, no agent or workforce; `agent_model` = an agent's own AI model call, no tool or workforce; `agent_tool` = a tool inside an agent task, no workforce; `workforce_tool` = a workforce-driven tool with no agent; `workforce_agent_tool` = a tool inside an agent task inside a workforce; `workforce_agent_model` = an agent's own AI model call inside a workforce, no tool.
+          maxItems: 6
+          description: Optional list of context buckets to include. Duplicates are ignored. Defaults to all six contexts when omitted.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetLiveJobsByOrgIdOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              job_id:
+                type:
+                - string
+                - 'null'
+              state:
+                type: string
+                enum:
+                - queued
+                - running
+              kind:
+                type: string
+                enum:
+                - agent
+                - workforce
+                - tool
+                - unknown
+              status:
+                type: string
+                enum:
+                - pending
+                - pending_dispatch
+                - dispatched
+                - running
+              title:
+                type:
+                - string
+                - 'null'
+              task_title:
+                type:
+                - string
+                - 'null'
+              executor_type:
+                type:
+                - string
+                - 'null'
+              source:
+                type: object
+                properties:
+                  name:
+                    type:
+                    - string
+                    - 'null'
+                  emoji:
+                    type:
+                    - string
+                    - 'null'
+                  trigger_source:
+                    type:
+                    - string
+                    - 'null'
+                    description: Source trigger type when available from the backing conversation, for example webhook or email. Null for manual/API runs, tool-only jobs, unknown jobs, or redacted jobs.
+                required:
+                - name
+                - emoji
+                - trigger_source
+                additionalProperties: false
+              agent_display_id:
+                type:
+                - string
+                - 'null'
+              workforce_display_id:
+                type:
+                - string
+                - 'null'
+              workforce_task_display_id:
+                type:
+                - string
+                - 'null'
+              conversation_display_id:
+                type:
+                - string
+                - 'null'
+              project_display_id:
+                type:
+                - string
+                - 'null'
+              project_name:
+                type:
+                - string
+                - 'null'
+              created_at:
+                type: string
+                format: date-time
+              age_seconds:
+                type: number
+                description: Seconds since the scheduler job was created.
+              queue_rank:
+                type:
+                - number
+                - 'null'
+              priority_tier:
+                type: string
+                enum:
+                - high
+                - medium
+                - low
+                - untiered
+                description: Resolved priority tier stamped at enqueue; 'untiered' when no tier was resolved.
+              is_redacted:
+                type: boolean
+                description: True when project-scoped callers can see org pressure but not this row's task details.
+            required:
+            - job_id
+            - state
+            - kind
+            - status
+            - title
+            - task_title
+            - executor_type
+            - source
+            - agent_display_id
+            - workforce_display_id
+            - workforce_task_display_id
+            - conversation_display_id
+            - project_display_id
+            - project_name
+            - created_at
+            - age_seconds
+            - queue_rank
+            - priority_tier
+            - is_redacted
+            additionalProperties: false
+        metadata:
+          type: object
+          properties:
+            active_count:
+              type: number
+            running_count:
+              type: number
+            queued_count:
+              type: number
+            next_cursor:
+              type:
+              - string
+              - 'null'
+            truncated:
+              type: boolean
+            concurrency_limit:
+              type: number
+          required:
+          - active_count
+          - running_count
+          - queued_count
+          - next_cursor
+          - truncated
+          - concurrency_limit
+          additionalProperties: false
+      required:
+      - results
+      - metadata
+      additionalProperties: false
+    GetTaskTimelineOutput:
+      type: object
+      properties:
+        time_series:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+              count:
+                type: number
+            required:
+            - date
+            - count
+            additionalProperties: false
+      required:
+      - time_series
+      additionalProperties: false
+    GetWorkforceUsageTimeseriesInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        workforce_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of workforce display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentBreakdownOutput:
+      type: object
+      properties:
+        agents:
+          type: array
+          items:
+            type: object
+            properties:
+              agent_id:
+                type: string
+                description: Agent display ID
+              agent_name:
+                type: string
+                description: Agent name (fallback to default if null)
+              task_count:
+                type: number
+                description: Total number of tasks for this agent
+              error_rate:
+                type: number
+                description: Error rate percentage (0-100)
+              error_count:
+                type: number
+                description: Number of errored tasks (the raw count behind error_rate).
+              total_actions:
+                type: number
+                description: Total number of actions executed by this agent
+              credits_used:
+                type: number
+                description: Total credits used by this agent
+              top_actions:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    action_name:
+                      type: string
+                      description: Name of the action/tool
+                    execution_count:
+                      type: number
+                      description: Number of times this action was executed
+                  required:
+                  - action_name
+                  - execution_count
+                  additionalProperties: false
+                description: Top 3 most used actions by this agent
+                maxItems: 3
+            required:
+            - agent_id
+            - agent_name
+            - task_count
+            - error_rate
+            - total_actions
+            - credits_used
+            - top_actions
+            additionalProperties: false
+          description: Agent breakdown data
+      required:
+      - agents
+      additionalProperties: false
+    GetUsageOutput:
+      type: object
+      properties:
+        query:
+          type: object
+          properties:
+            group:
+              type: string
+              enum:
+              - user
+              - agent
+              - tool
+              - workforce
+              description: The actor associated with the usage
+            metric:
+              type: string
+              enum:
+              - credit
+              - action
+              description: The metric to be measured
+            from:
+              type: string
+              format: date
+            to:
+              type: string
+              format: date
+          required:
+          - metric
+          - group
+          - from
+          - to
+          additionalProperties: false
+        series:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              actor:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  type:
+                    type: string
+                    enum:
+                    - user
+                    - agent
+                    - tool
+                    - workforce
+                    description: The actor associated with the usage
+                  machine:
+                    type: boolean
+                  metadata:
+                    type: object
+                    properties:
+                      label:
+                        type: string
+                      avatar_url:
+                        type: string
+                    additionalProperties: false
+                required:
+                - type
+                - id
+                additionalProperties: false
+              metric:
+                type: string
+                enum:
+                - credit
+                - action
+                description: The metric to be measured
+              value:
+                type: number
+              series:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    actor:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                          - user
+                          - agent
+                          - tool
+                          - workforce
+                          description: The actor associated with the usage
+                        machine:
+                          type: boolean
+                        metadata:
+                          type: object
+                          properties:
+                            label:
+                              type: string
+                            avatar_url:
+                              type: string
+                          additionalProperties: false
+                      required:
+                      - type
+                      - id
+                      additionalProperties: false
+                    metric:
+                      type: string
+                      enum:
+                      - credit
+                      - action
+                      description: The metric to be measured
+                    value:
+                      type: number
+                  required:
+                  - id
+                  - actor
+                  - metric
+                  - value
+                  additionalProperties: false
+            required:
+            - id
+            - actor
+            - metric
+            - value
+            description: A time series representing usage data over time
+            additionalProperties: false
+      required:
+      - query
+      - series
+      additionalProperties: false
+    GetToolUsageTimeseriesOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+                format: date
+                pattern: ^\d{4}-\d{2}-\d{2}$
+                description: Bucket date
+              runs:
+                type: number
+                description: Count of runs across all selected tools
+              actions:
+                type: number
+                description: Count of actions across all selected tools
+              credits:
+                type: number
+                description: Total credits consumed for the bucket
+              error_rate:
+                type: number
+                description: Fraction of runs that did not complete, in [0, 1]; 0 when there are no runs in the bucket
+            required:
+            - date
+            - runs
+            - actions
+            - credits
+            - error_rate
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                runs:
+                  type: number
+                  description: Count of runs
+                actions:
+                  type: number
+                  description: Count of actions
+                credits:
+                  type: number
+                  description: Total credits consumed
+                credits_per_run:
+                  type: number
+                  description: credits / runs ratio. 0 when runs is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of runs that did not complete, in [0, 1]; 0 when runs is 0
+              required:
+              - runs
+              - actions
+              - credits
+              - credits_per_run
+              - error_rate
+              additionalProperties: false
+          required:
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetMetricsInput:
+      type: object
+      properties:
+        metric:
+          type: string
+          enum:
+          - total_tasks
+          - tasks_to_review
+          - total_credits
+          - total_actions
+          - daily_active_users
+          - tasks_escalated
+          description: Type of metric to retrieve
+        group_by:
+          type: string
+          enum:
+          - day
+          description: Time grouping for the data points
+          default: day
+        start_date:
+          description: Start date for the metrics query (ISO 8601 format)
+        end_date:
+          description: End date for the metrics query (ISO 8601 format)
+        agent_ids:
+          type: array
+          items:
+            type: string
+          description: Optional array of agent IDs to filter metrics by
+      required:
+      - metric
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetErrorTimeSeriesOutput:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              source_type:
+                type: string
+                enum:
+                - tool
+                - agent
+              source_id:
+                type: string
+              source_name:
+                type:
+                - string
+                - 'null'
+              source_emoji:
+                type:
+                - string
+                - 'null'
+              source_context:
+                type: object
+                properties:
+                  agent_id:
+                    type:
+                    - string
+                    - 'null'
+                  agent_name:
+                    type:
+                    - string
+                    - 'null'
+                  conversation_id:
+                    type:
+                    - string
+                    - 'null'
+                  workforce_id:
+                    type:
+                    - string
+                    - 'null'
+                  workforce_name:
+                    type:
+                    - string
+                    - 'null'
+                  workforce_task_id:
+                    type:
+                    - string
+                    - 'null'
+                additionalProperties: false
+              error_time: {}
+              error_message:
+                type: string
+            required:
+            - source_type
+            - source_id
+            - source_context
+            - error_time
+            - error_message
+            additionalProperties: false
+        has_more:
+          type: boolean
+        next_cursor:
+          type:
+          - string
+          - 'null'
+        time_series:
+          type: array
+          items:
+            type: object
+            properties:
+              date:
+                type: string
+              count:
+                type: number
+            required:
+            - date
+            - count
+      required:
+      - errors
+      - has_more
+      additionalProperties: false
+    GetMetricsOutput:
+      type: object
+      properties:
+        metric_type:
+          type: string
+          enum:
+          - total_tasks
+          - tasks_to_review
+          - total_credits
+          - total_actions
+          - daily_active_users
+          - tasks_escalated
+          description: The metric type this data represents
+        data_points:
+          type: array
+          items:
+            type: object
+            properties:
+              timestamp:
+                description: Timestamp for this data point
+              value:
+                type: number
+                description: Metric value at this timestamp
+              grouped_by:
+                type: string
+                enum:
+                - day
+                description: Time grouping for the data points
+            required:
+            - timestamp
+            - value
+            - grouped_by
+            additionalProperties: false
+          description: Time-series data points for the metric
+        summary:
+          type: object
+          properties:
+            total:
+              type: number
+              description: Sum of all values in the period
+            average:
+              type: number
+              description: Average value in the period
+            min_value:
+              type: number
+              description: Minimum value in the period
+            max_value:
+              type: number
+              description: Maximum value in the period
+          required:
+          - total
+          - average
+          - min_value
+          - max_value
+          additionalProperties: false
+          description: Summary statistics for the metric
+      required:
+      - metric_type
+      - data_points
+      - summary
+      additionalProperties: false
+    GetWorkforceUsageBreakdownOutput:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            start_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive start of the data range covered by this response (as specified by the request)
+            end_date:
+              type: string
+              format: date
+              pattern: ^\d{4}-\d{2}-\d{2}$
+              description: Inclusive end of the data range covered by this response (as specified by the request)
+            interval:
+              type: string
+              enum:
+              - day
+              - total
+              description: Bucket granularity. `day` on time-bucketed endpoints (timeseries / breakdown_timeseries); `total` on plain breakdown endpoints (single bucket covering the whole window). Always present.
+            timezone:
+              type: string
+              description: IANA timezone the daily buckets were materialized in (mirrors the org's internally set timezone).
+            entity:
+              type: string
+              enum:
+              - tool
+              - agent
+              - workforce
+              - project
+              - model
+              description: Entity scope of the response. Each v2 analytics endpoint owns a single entity type; `project` denotes project-wide rollups; `model` denotes AI model usage rollups.
+          required:
+          - start_date
+          - end_date
+          - interval
+          - timezone
+          - entity
+          additionalProperties: false
+        rows:
+          type: array
+          items:
+            type: object
+            properties:
+              entity_id:
+                type: string
+                description: Workforce display ID (UUID)
+              name:
+                type:
+                - string
+                - 'null'
+              description:
+                type:
+                - string
+                - 'null'
+              icon:
+                type:
+                - string
+                - 'null'
+              tasks:
+                type: number
+                description: Count of tasks (the workforce orchestration unit; workforce primary metric)
+              error_rate:
+                type: number
+                description: Fraction of tasks not completed (workforce success = state_completed only; state_idle does not apply to workforces), in [0, 1]
+              actions:
+                type: number
+                description: Count of actions
+              credits:
+                type: number
+                description: Total credits consumed
+              credits_per_task:
+                type: number
+                description: credits / tasks ratio. 0 when tasks is 0.
+              children:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    entity_id:
+                      type: string
+                      description: Agent display ID (UUID)
+                    name:
+                      type:
+                      - string
+                      - 'null'
+                    description:
+                      type:
+                      - string
+                      - 'null'
+                    icon:
+                      type:
+                      - string
+                      - 'null'
+                    tasks:
+                      type: number
+                      description: Count of tasks (the agent orchestration unit; agent primary metric)
+                    error_rate:
+                      type: number
+                      description: Fraction of tasks not in a success state (agent success = state_completed + state_idle), in [0, 1]
+                    actions:
+                      type: number
+                      description: Count of actions
+                    credits:
+                      type: number
+                      description: Total credits consumed
+                    credits_per_task:
+                      type: number
+                      description: credits / tasks ratio. 0 when tasks is 0.
+                    children:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          entity_id:
+                            type: string
+                            description: Tool display ID (UUID)
+                          name:
+                            type:
+                            - string
+                            - 'null'
+                          description:
+                            type:
+                            - string
+                            - 'null'
+                          icon:
+                            type:
+                            - string
+                            - 'null'
+                          runs:
+                            type: number
+                            description: Count of runs
+                          error_rate:
+                            type: number
+                            description: Fraction of tool runs that did not complete, in [0, 1]
+                          actions:
+                            type: number
+                            description: Count of actions
+                          credits:
+                            type: number
+                            description: Total credits consumed
+                          credits_per_run:
+                            type: number
+                            description: credits / runs ratio. 0 when runs is 0.
+                        required:
+                        - entity_id
+                        - name
+                        - description
+                        - icon
+                        - runs
+                        - error_rate
+                        - actions
+                        - credits
+                        - credits_per_run
+                        additionalProperties: false
+                      description: Present only when the request `children=yes`. Per-tool rollups stitched at the agent grain — one entry per tool the agent invoked within this workforce over the window. Tool-grained children remain runs-keyed (primary metric per entity).
+                  required:
+                  - entity_id
+                  - name
+                  - description
+                  - icon
+                  - tasks
+                  - error_rate
+                  - actions
+                  - credits
+                  - credits_per_task
+                  additionalProperties: false
+                description: Present only when the request `children=yes`. Per-agent rollups stitched at the workforce grain. Each agent child may carry its own nested `children` array of per-tool rollups (the full workforce -> agent -> tool tree).
+            required:
+            - entity_id
+            - name
+            - description
+            - icon
+            - tasks
+            - error_rate
+            - actions
+            - credits
+            - credits_per_task
+            additionalProperties: false
+        totals:
+          type: object
+          properties:
+            grand:
+              type: object
+              properties:
+                tasks:
+                  type: number
+                  description: Count of tasks (the workforce orchestration unit; workforce primary metric)
+                actions:
+                  type: number
+                  description: Count of actions
+                agent_model_credits:
+                  type: number
+                  description: Credits consumed by agents' own model calls inside the selected workforces. Pairs with tool_credits (disjoint; mirrors project-level semantics so workforce/agent/tool credits aren't double-counted).
+                tool_credits:
+                  type: number
+                  description: Credits consumed by tools run inside the selected workforces. Pairs with agent_model_credits.
+                credits_per_task:
+                  type: number
+                  description: (agent_model_credits + tool_credits) / tasks ratio. 0 when tasks is 0.
+                error_rate:
+                  type: number
+                  description: Fraction of tasks not completed (workforce success = state_completed only; no state_idle exists at the workforce level), in [0, 1]; 0 when tasks is 0
+              required:
+              - tasks
+              - actions
+              - agent_model_credits
+              - tool_credits
+              - credits_per_task
+              - error_rate
+              additionalProperties: false
+          required:
+          - grand
+          additionalProperties: false
+      required:
+      - meta
+      - rows
+      - totals
+      additionalProperties: false
+    GetToolUsageTimeseriesInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        tool_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of tool display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+    GetAgentUsageTimeseriesInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive start date (YYYY-MM-DD)
+        end_date:
+          type: string
+          format: date
+          pattern: ^\d{4}-\d{2}-\d{2}$
+          description: Inclusive end date (YYYY-MM-DD)
+        agent_ids:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 256
+          maxItems: 1000
+          description: Optional list of agent display IDs to filter by. Duplicates are ignored. Maximum 1000 IDs.
+      required:
+      - start_date
+      - end_date
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

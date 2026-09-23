@@ -1,0 +1,649 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Branding Kits API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Branding Kits
+paths:
+  /branding_kits:
+    post:
+      summary: CreateBrandingKit
+      tags:
+      - Branding Kits
+      description: 'Create a new branding kit
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "admin"
+
+        ]
+
+        }
+
+        ]'
+      operationId: CreateBrandingKit
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateBrandingKitInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateBrandingKitOutput'
+    get:
+      summary: ListBrandingKits
+      tags:
+      - Branding Kits
+      description: 'List all branding kits
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:reader"
+
+        ]
+
+        }
+
+        ]'
+      operationId: ListBrandingKits
+      parameters: []
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListBrandingKitsOutput'
+  /branding_kits/{branding_kit_id}:
+    put:
+      summary: UpdateBrandingKit
+      tags:
+      - Branding Kits
+      description: 'Update an existing branding kit
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "admin"
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateBrandingKit
+      parameters:
+      - name: branding_kit_id
+        in: path
+        description: ID of branding_kit
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBrandingKitInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateBrandingKitOutput'
+    delete:
+      summary: DeleteBrandingKit
+      tags:
+      - Branding Kits
+      description: 'Delete a branding kit
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "admin"
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteBrandingKit
+      parameters:
+      - name: branding_kit_id
+        in: path
+        description: ID of branding_kit
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteBrandingKitInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteBrandingKitOutput'
+  /branding_kits/generate:
+    post:
+      summary: GenerateBrandKitFromImages
+      tags:
+      - Branding Kits
+      description: 'Generate a complete branding kit from a list of image URLs
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "admin"
+
+        ]
+
+        }
+
+        ]'
+      operationId: GenerateBrandKitFromImages
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateBrandKitFromImagesInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateBrandKitFromImagesOutput'
+components:
+  schemas:
+    CreateBrandingKitOutput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+      additionalProperties: false
+      required:
+      - branding_kit_id
+    GenerateBrandKitFromImagesInput:
+      type: object
+      properties:
+        image_urls:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 10
+          description: List of image URLs to analyze for branding elements
+      required:
+      - image_urls
+      additionalProperties: false
+    DeleteBrandingKitOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListBrandingKitsOutput:
+      type: object
+      properties:
+        branding_kits:
+          type: array
+          items:
+            type: object
+            properties:
+              branding_kit_id:
+                type: string
+              name:
+                type: string
+              logos:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                    description:
+                      type: string
+                  additionalProperties: false
+                default: []
+              inspiration_photos:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    url:
+                      type: string
+                    description:
+                      type: string
+                  additionalProperties: false
+                default: []
+              colors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    hexcode:
+                      type: string
+                    description:
+                      type: string
+                  additionalProperties: false
+                default: []
+              heading:
+                type: object
+                properties:
+                  family:
+                    type: string
+                  size:
+                    type: number
+                additionalProperties: false
+              title:
+                type: object
+                properties:
+                  family:
+                    type: string
+                  size:
+                    type: number
+                additionalProperties: false
+              subtitle:
+                type: object
+                properties:
+                  family:
+                    type: string
+                  size:
+                    type: number
+                additionalProperties: false
+              subheading:
+                type: object
+                properties:
+                  family:
+                    type: string
+                  size:
+                    type: number
+                additionalProperties: false
+              section_header:
+                type: object
+                properties:
+                  family:
+                    type: string
+                  size:
+                    type: number
+                additionalProperties: false
+              body:
+                type: object
+                properties:
+                  family:
+                    type: string
+                  size:
+                    type: number
+                additionalProperties: false
+              brand_tone:
+                type: string
+              brand_voice:
+                type: string
+              slide_instructions:
+                type: string
+              created_at:
+                type: string
+              updated_at:
+                type: string
+            additionalProperties: false
+      required:
+      - branding_kits
+      additionalProperties: false
+    UpdateBrandingKitInput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+        name:
+          type: string
+        logos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        inspiration_photos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        colors:
+          type: array
+          items:
+            type: object
+            properties:
+              hexcode:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        heading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        title:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subtitle:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subheading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        section_header:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        body:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        brand_tone:
+          type: string
+        brand_voice:
+          type: string
+        slide_instructions:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      additionalProperties: false
+    DeleteBrandingKitInput: {}
+    GenerateBrandKitFromImagesOutput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+        name:
+          type: string
+        logos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        inspiration_photos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        colors:
+          type: array
+          items:
+            type: object
+            properties:
+              hexcode:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        heading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        title:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subtitle:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subheading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        section_header:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        body:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        brand_tone:
+          type: string
+        brand_voice:
+          type: string
+        slide_instructions:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      additionalProperties: false
+    UpdateBrandingKitOutput:
+      type: object
+    CreateBrandingKitInput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+        name:
+          type: string
+        logos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        inspiration_photos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        colors:
+          type: array
+          items:
+            type: object
+            properties:
+              hexcode:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        heading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        title:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subtitle:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subheading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        section_header:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        body:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        brand_tone:
+          type: string
+        brand_voice:
+          type: string
+        slide_instructions:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

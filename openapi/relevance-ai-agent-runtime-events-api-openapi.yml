@@ -1,0 +1,601 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Agent Runtime Events API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Agent Runtime Events
+paths:
+  /agent-runtime-events/collections/{collection_id}/items/{document_id}/get:
+    get:
+      summary: GetAgentRuntimeEvent
+      tags:
+      - Agent Runtime Events
+      description: '### Required permissions
+
+        > []'
+      operationId: GetAgentRuntimeEvent
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: select_fields
+        schema:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        description: Fields to include in the search results, empty array/list means all fields.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentRuntimeEventOutput'
+  /agent-runtime-events/collections/{collection_id}/items/{document_id}:
+    delete:
+      summary: DeleteAgentRuntimeEvent
+      tags:
+      - Agent Runtime Events
+      description: '### Required permissions
+
+        > []'
+      operationId: DeleteAgentRuntimeEvent
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAgentRuntimeEventInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAgentRuntimeEventOutput'
+  /agent-runtime-events/collections/{collection_id}/list:
+    post:
+      summary: ListAgentRuntimeEvent
+      tags:
+      - Agent Runtime Events
+      description: '### Required permissions
+
+        > []'
+      operationId: ListAgentRuntimeEvent
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListAgentRuntimeEventInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAgentRuntimeEventOutput'
+  /agent-runtime-events/collections/{collection_id}/items/{document_id}/upsert:
+    post:
+      summary: UpsertAgentRuntimeEvent
+      tags:
+      - Agent Runtime Events
+      description: '### Required permissions
+
+        > []'
+      operationId: UpsertAgentRuntimeEvent
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAgentRuntimeEventInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertAgentRuntimeEventOutput'
+components:
+  schemas:
+    ListAgentRuntimeEventOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              insert_date_: {}
+              update_date: {}
+              expiry_date_: {}
+              project:
+                type: string
+              _id:
+                type: string
+              feature:
+                type: string
+              collection_id:
+                type: string
+              document_id:
+                type: string
+              data:
+                type: object
+                properties:
+                  input:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                        - use_tool
+                        - record_tool_use
+                        - error
+                        - agent_message
+                        - run_until_end
+                        - run_one_step
+                        - user_message
+                        - finish
+                      use_tool:
+                        type: object
+                        properties:
+                          params:
+                            type: object
+                            additionalProperties: true
+                          name:
+                            type: string
+                          agent_fills_inputs:
+                            type: boolean
+                            default: true
+                        required:
+                        - params
+                        - name
+                        additionalProperties: false
+                      record_tool_use:
+                        type: object
+                        properties:
+                          params:
+                            type: object
+                            additionalProperties: true
+                          name:
+                            type: string
+                          output:
+                            type: object
+                            additionalProperties: true
+                        required:
+                        - params
+                        - name
+                        - output
+                        additionalProperties: false
+                      error:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                        required:
+                        - message
+                        additionalProperties: false
+                      agent_message:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                        required:
+                        - message
+                        additionalProperties: false
+                      user_message:
+                        type: object
+                        properties:
+                          message:
+                            type: string
+                        required:
+                        - message
+                        additionalProperties: false
+                    required:
+                    - type
+                    additionalProperties: false
+                  output:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                        enum:
+                        - success
+                      requires_approval:
+                        type: boolean
+                      output:
+                        type: object
+                        description: output of last tool ran
+                      params:
+                        type: object
+                        description: params of last tool ran
+                      name:
+                        type: string
+                        description: name of last tool ran
+                additionalProperties: false
+              deleted_date: {}
+            required:
+            - insert_date_
+            - update_date
+            - project
+            - _id
+            - feature
+            - collection_id
+            - document_id
+            - data
+      required:
+      - results
+      additionalProperties: false
+    DeleteAgentRuntimeEventOutput: {}
+    ListAgentRuntimeEventInput:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+        select_fields:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        page_size:
+          type: integer
+          description: Size of each page of results
+        page:
+          type: integer
+          description: Page of the results
+        sort:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: object
+              additionalProperties:
+                type: string
+                enum:
+                - asc
+                - desc
+          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
+        include_vector:
+          type: boolean
+          description: Include vectors in the search results.
+        after_id:
+          type: array
+          items: {}
+          description: Retrieve items after these sort values in the sort order.
+        query:
+          type: string
+    DeleteAgentRuntimeEventInput: {}
+    GetAgentRuntimeEventOutput:
+      type: object
+      properties:
+        insert_date_: {}
+        update_date: {}
+        expiry_date_: {}
+        project:
+          type: string
+        _id:
+          type: string
+        feature:
+          type: string
+        collection_id:
+          type: string
+        document_id:
+          type: string
+        data:
+          type: object
+          properties:
+            input:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - use_tool
+                  - record_tool_use
+                  - error
+                  - agent_message
+                  - run_until_end
+                  - run_one_step
+                  - user_message
+                  - finish
+                use_tool:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    agent_fills_inputs:
+                      type: boolean
+                      default: true
+                  required:
+                  - params
+                  - name
+                  additionalProperties: false
+                record_tool_use:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    output:
+                      type: object
+                      additionalProperties: true
+                  required:
+                  - params
+                  - name
+                  - output
+                  additionalProperties: false
+                error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                agent_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                user_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+              required:
+              - type
+              additionalProperties: false
+            output:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - success
+                requires_approval:
+                  type: boolean
+                output:
+                  type: object
+                  description: output of last tool ran
+                params:
+                  type: object
+                  description: params of last tool ran
+                name:
+                  type: string
+                  description: name of last tool ran
+          additionalProperties: false
+        deleted_date: {}
+      required:
+      - insert_date_
+      - update_date
+      - project
+      - _id
+      - feature
+      - collection_id
+      - document_id
+      - data
+    UpsertAgentRuntimeEventInput:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            input:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - use_tool
+                  - record_tool_use
+                  - error
+                  - agent_message
+                  - run_until_end
+                  - run_one_step
+                  - user_message
+                  - finish
+                use_tool:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    agent_fills_inputs:
+                      type: boolean
+                      default: true
+                  required:
+                  - params
+                  - name
+                  additionalProperties: false
+                record_tool_use:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    output:
+                      type: object
+                      additionalProperties: true
+                  required:
+                  - params
+                  - name
+                  - output
+                  additionalProperties: false
+                error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                agent_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                user_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+              required:
+              - type
+              additionalProperties: false
+            output:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - success
+                requires_approval:
+                  type: boolean
+                output:
+                  type: object
+                  description: output of last tool ran
+                params:
+                  type: object
+                  description: params of last tool ran
+                name:
+                  type: string
+                  description: name of last tool ran
+          additionalProperties: false
+        insert_if_not_exists:
+          type: boolean
+          description: If true, will create the metadata if it does not exist. Defaults to true.
+        fields_to_remove:
+          type: array
+          items:
+            type: string
+          description: Fields to remove from the metadata.
+        fields_to_replace:
+          type: array
+          items:
+            type: string
+          description: Fields to replace in the metadata.
+        fields_to_increment:
+          type: object
+          additionalProperties:
+            type: number
+      additionalProperties: false
+      required:
+      - data
+    UpsertAgentRuntimeEventOutput:
+      type: object
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

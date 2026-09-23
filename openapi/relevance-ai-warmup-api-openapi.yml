@@ -1,0 +1,299 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Warmup API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Warmup
+paths:
+  /warmup/create:
+    post:
+      summary: CreateEmailWarmupInbox
+      tags:
+      - Warmup
+      description: 'Begin to warmup an email address
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:write"
+
+        ]
+
+        }
+
+        ]'
+      operationId: CreateEmailWarmupInbox
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmailWarmupInboxInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateEmailWarmupInboxOutput'
+  /warmup/{email_id}/get:
+    get:
+      summary: GetEmailWarmupStats
+      tags:
+      - Warmup
+      description: 'Get the warmup stats for an email
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:write"
+
+        ],
+
+        "datasets": [
+
+        {
+
+        "raw": "*"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetEmailWarmupStats
+      parameters:
+      - name: email_id
+        in: path
+        description: ID of email
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: include_stats
+        schema:
+          type: boolean
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEmailWarmupStatsOutput'
+  /warmup/start:
+    post:
+      summary: StartEmailWarmup
+      tags:
+      - Warmup
+      description: 'Start email warmup for an email address
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:write"
+
+        ]
+
+        }
+
+        ]'
+      operationId: StartEmailWarmup
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StartEmailWarmupInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StartEmailWarmupOutput'
+  /warmup/stop:
+    post:
+      summary: StopEmailWarmup
+      tags:
+      - Warmup
+      description: 'Stop email warmup for an email address
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "agents:write"
+
+        ]
+
+        }
+
+        ]'
+      operationId: StopEmailWarmup
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StopEmailWarmupInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StopEmailWarmupOutput'
+components:
+  schemas:
+    StopEmailWarmupInput:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+      - email
+    StartEmailWarmupOutput:
+      type: object
+      properties: {}
+    CreateEmailWarmupInboxOutput:
+      type: object
+      properties: {}
+    GetEmailWarmupStatsOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+        status:
+          type: string
+        created_at:
+          type: string
+        reply_rate:
+          type: integer
+        warmup_key_id:
+          type: string
+        blocked_reason:
+          type:
+          - string
+          - 'null'
+        total_sent_count:
+          type: integer
+        total_spam_count:
+          type: integer
+        warmup_max_count:
+          type: integer
+        warmup_min_count:
+          type: integer
+        is_warmup_blocked:
+          type: boolean
+        max_email_per_day:
+          type: integer
+        warmup_reputation:
+          type:
+          - string
+          - 'null'
+        stats:
+          type: object
+          properties:
+            id:
+              type: integer
+            sent_count:
+              type: string
+            spam_count:
+              type: string
+            inbox_count:
+              type: string
+            warmup_email_received_count:
+              type: string
+            stats_by_date:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  date:
+                    type: string
+                  sent_count:
+                    type: integer
+                  reply_count:
+                    type: integer
+                  save_from_spam_count:
+                    type: integer
+    CreateEmailWarmupInboxInput:
+      type: object
+      properties:
+        from_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        max_email_per_day:
+          type: integer
+        custom_tracking_url:
+          type: string
+        bcc:
+          type: string
+        signature:
+          type: string
+        total_warmup_per_day: {}
+        daily_rampup:
+          type: integer
+        reply_rate_percentage:
+          type: integer
+      required:
+      - from_name
+      - email
+      - password
+    StopEmailWarmupOutput:
+      type: object
+      properties: {}
+    StartEmailWarmupInput:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+      - email
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

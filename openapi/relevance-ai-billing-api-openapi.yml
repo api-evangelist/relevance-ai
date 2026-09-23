@@ -1,0 +1,1796 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Billing API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Billing
+paths:
+  /organizations/{organization_id}/billing/totals:
+    get:
+      summary: GetBillingTotals
+      tags:
+      - Billing
+      description: 'Gets total cost over a date range from billing events
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetBillingTotals
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: date_range
+        schema:
+          type: string
+          enum:
+          - week
+          - month
+          - three_months
+          - six_months
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingTotalsOutput'
+  /organizations/{organization_id}/billing/get_billing_frontend_link:
+    get:
+      summary: GetBillingFrontendLink
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetBillingFrontendLink
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: referral
+        schema:
+          type: string
+        description: ''
+      - in: query
+        name: flow
+        schema:
+          type: string
+          enum:
+          - update-payment-method
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingFrontendLinkOutput'
+  /organizations/{organization_id}/billing/checkout:
+    get:
+      summary: GetBillingCheckoutSession
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetBillingCheckoutSession
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - credit_top_up
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBillingCheckoutSessionOutput'
+  /organizations/{organization_id}/billing/update:
+    post:
+      summary: UpdateOrganizationBilling
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateOrganizationBilling
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOrganizationBillingInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOrganizationBillingOutput'
+  /organizations/{organization_id}/subscription/sync:
+    post:
+      summary: SyncSubscription
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: SyncSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SyncSubscriptionOutput'
+  /organizations/{organization_id}/subscription/downgrade:
+    post:
+      summary: DowngradeSubscription
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DowngradeSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DowngradeSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DowngradeSubscriptionOutput'
+  /organizations/{organization_id}/billing/subscription/change:
+    post:
+      summary: ChangeBillingSubscription
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: ChangeBillingSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeBillingSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangeBillingSubscriptionOutput'
+  /organizations/{organization_id}/downgrade/cancel:
+    post:
+      summary: CancelDowngrade
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: CancelDowngrade
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelDowngradeInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelDowngradeOutput'
+  /organizations/{organization_id}/subscription/cancel:
+    post:
+      summary: CancelSubscription
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: CancelSubscription
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelSubscriptionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelSubscriptionOutput'
+  /organizations/{organization_id}/credits/buy:
+    post:
+      summary: BuyCredits
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: BuyCredits
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BuyCreditsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BuyCreditsOutput'
+  /organizations/{organization_id}/credits/checkout:
+    post:
+      summary: CreditPurchaseCheckoutSession
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: CreditPurchaseCheckoutSession
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditPurchaseCheckoutSessionInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreditPurchaseCheckoutSessionOutput'
+  /organizations/{organization_id}/checkout/status:
+    get:
+      summary: GetCheckoutCompletionStatus
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetCheckoutCompletionStatus
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: checkout_session_id
+        schema:
+          type: string
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCheckoutCompletionStatusOutput'
+  /organizations/{organization_id}/trial/trigger:
+    post:
+      summary: TriggerOrganizationPlanTrial
+      tags:
+      - Billing
+      description: '### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: TriggerOrganizationPlanTrial
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerOrganizationPlanTrialInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerOrganizationPlanTrialOutput'
+  /organizations/{organization_id}/aggregate/agents/credits:
+    post:
+      summary: AggregateAgentsCreditsUsed
+      tags:
+      - Billing
+      description: 'Aggregate credits used for all agents
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: AggregateAgentsCreditsUsed
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AggregateAgentsCreditsUsedInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregateAgentsCreditsUsedOutput'
+  /organizations/{organization_id}/aggregate/tools/credits:
+    post:
+      summary: AggregateToolsCreditsUsed
+      tags:
+      - Billing
+      description: 'Aggregate credits used for all tools
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: AggregateToolsCreditsUsed
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AggregateToolsCreditsUsedInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AggregateToolsCreditsUsedOutput'
+  /organizations/{organization_id}/retention-offer/eligibility:
+    get:
+      summary: GetRetentionOfferEligibility
+      tags:
+      - Billing
+      description: 'Check if organization is eligible for retention discount offer
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetRetentionOfferEligibility
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetRetentionOfferEligibilityOutput'
+  /organizations/{organization_id}/retention-offer/accept:
+    post:
+      summary: AcceptRetentionOffer
+      tags:
+      - Billing
+      description: 'Accept retention discount offer and apply 30% or 50% coupon to subscription
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: AcceptRetentionOffer
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AcceptRetentionOfferInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AcceptRetentionOfferOutput'
+  /billing/{organization_id}/overage:
+    get:
+      summary: GetOverageConfig
+      tags:
+      - Billing
+      description: 'Returns overage configuration for credits, actions, and concurrency
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetOverageConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOverageConfigOutput'
+    put:
+      summary: UpdateOverageConfig
+      tags:
+      - Billing
+      description: 'Updates overage configuration for credits, actions, and/or concurrency. Only provided fields are changed.
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpdateOverageConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOverageConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateOverageConfigOutput'
+  /billing/{organization_id}/auto-recharge/{currency}:
+    get:
+      summary: GetAutoRechargeConfig
+      tags:
+      - Billing
+      description: 'Returns auto-recharge configuration for the specified currency
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: GetAutoRechargeConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: currency
+        in: path
+        description: ID of currency
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAutoRechargeConfigOutput'
+    put:
+      summary: UpsertAutoRechargeConfig
+      tags:
+      - Billing
+      description: 'Creates or updates an auto-recharge configuration
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: UpsertAutoRechargeConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: currency
+        in: path
+        description: ID of currency
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAutoRechargeConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertAutoRechargeConfigOutput'
+    delete:
+      summary: DeleteAutoRechargeConfig
+      tags:
+      - Billing
+      description: 'Deletes an auto-recharge configuration for the specified currency
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "organizations:write"
+
+        ],
+
+        "organizations": [
+
+        {
+
+        "params": "organization_id"
+
+        }
+
+        ]
+
+        }
+
+        ]'
+      operationId: DeleteAutoRechargeConfig
+      parameters:
+      - name: organization_id
+        in: path
+        description: ID of organization
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: currency
+        in: path
+        description: ID of currency
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAutoRechargeConfigInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAutoRechargeConfigOutput'
+components:
+  schemas:
+    BuyCreditsInput:
+      type: object
+      properties:
+        quantity:
+          type: number
+          minimum: 10000
+        idempotency_key:
+          type: string
+      required:
+      - idempotency_key
+      - quantity
+      additionalProperties: false
+    AggregateToolsCreditsUsedInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+        end_date:
+          type: string
+      additionalProperties: false
+    UpsertAutoRechargeConfigOutput:
+      type: object
+      properties:
+        threshold:
+          type: number
+        amount:
+          type: number
+      required:
+      - threshold
+      - amount
+      additionalProperties: false
+    AggregateToolsCreditsUsedOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              project_id:
+                type: string
+              description:
+                type: string
+              emoji:
+                type: string
+              credits_used:
+                type: number
+              actions_used:
+                type: number
+              metadata:
+                type: object
+                properties:
+                  last_run_date:
+                    type: string
+                additionalProperties: false
+              studio_id:
+                type: string
+              title:
+                type: string
+              is_linkable:
+                type: boolean
+            additionalProperties: false
+            required:
+            - project_id
+            - credits_used
+            - studio_id
+            - title
+            - is_linkable
+        total_credits:
+          type: number
+        total_actions:
+          type: number
+      required:
+      - results
+      - total_credits
+      additionalProperties: false
+    ChangeBillingSubscriptionOutput:
+      type: object
+      properties:
+        client_secret:
+          type: string
+        checkout_session_id:
+          type: string
+      required:
+      - client_secret
+      - checkout_session_id
+    SyncSubscriptionInput: {}
+    DowngradeSubscriptionInput:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+        feedback:
+          type: object
+          properties:
+            reason:
+              type: string
+              enum:
+              - too-expensive
+              - price-increase
+              - low-usage
+              - missing-features
+              - integration-issues
+              - switching-tool
+              - support-issues
+              - no-longer-needed
+              - other
+              description: The reason for the billing change
+            explanation:
+              type: string
+              description: Additional explanation for the billing change
+          required:
+          - reason
+          additionalProperties: false
+      required:
+      - idempotency_key
+      - plan
+      additionalProperties: false
+    DowngradeSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    GetBillingTotalsOutput:
+      type: object
+      properties:
+        total_cost:
+          type: number
+      required:
+      - total_cost
+      additionalProperties: false
+    GetAutoRechargeConfigOutput:
+      type: object
+      properties:
+        config:
+          oneOf:
+          - type: object
+            properties:
+              threshold:
+                type: number
+              amount:
+                type: number
+            required:
+            - threshold
+            - amount
+            additionalProperties: false
+          - type: 'null'
+      required:
+      - config
+      additionalProperties: false
+    CancelDowngradeOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    CancelSubscriptionInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+    UpdateOverageConfigInput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+      additionalProperties: false
+    BuyCreditsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    GetBillingFrontendLinkOutput:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+      - link
+      additionalProperties: false
+    AggregateAgentsCreditsUsedOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              project_id:
+                type: string
+              description:
+                type: string
+              emoji:
+                type: string
+              credits_used:
+                type: number
+              actions_used:
+                type: number
+              metadata:
+                type: object
+                properties:
+                  last_run_date:
+                    type: string
+                additionalProperties: false
+              agent_id:
+                type: string
+              name:
+                type: string
+            additionalProperties: false
+            required:
+            - project_id
+            - credits_used
+            - agent_id
+            - name
+        total_credits:
+          type: number
+        total_actions:
+          type: number
+      required:
+      - results
+      - total_credits
+      additionalProperties: false
+    UpdateOrganizationBillingInput:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+      required:
+      - plan
+      - billing_cycle
+      additionalProperties: false
+    AggregateAgentsCreditsUsedInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+        end_date:
+          type: string
+      additionalProperties: false
+    ChangeBillingSubscriptionInput:
+      type: object
+      properties:
+        new_plan_name:
+          type: string
+          enum:
+          - free
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+        feedback:
+          type: object
+          properties:
+            reason:
+              type: string
+              enum:
+              - too-expensive
+              - price-increase
+              - low-usage
+              - missing-features
+              - integration-issues
+              - switching-tool
+              - support-issues
+              - no-longer-needed
+              - other
+              description: The reason for the billing change
+            explanation:
+              type: string
+              description: Additional explanation for the billing change
+          required:
+          - reason
+          additionalProperties: false
+        coupon_code:
+          type: string
+      required:
+      - idempotency_key
+      - new_plan_name
+      - billing_cycle
+      additionalProperties: false
+    UpdateOrganizationBillingOutput:
+      type: object
+      properties:
+        next_action:
+          type: object
+          properties:
+            type:
+              type: string
+            data:
+              type: object
+              properties:
+                payment_intent_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+              - client_secret
+              - payment_intent_id
+              additionalProperties: false
+          required:
+          - type
+          - data
+          additionalProperties: false
+      additionalProperties: false
+    GetOverageConfigOutput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            allocation:
+              type: number
+            limit:
+              type: number
+          required:
+          - enabled
+          - allocation
+          - limit
+          additionalProperties: false
+      additionalProperties: false
+    GetRetentionOfferEligibilityOutput:
+      type: object
+      properties:
+        eligible:
+          type: boolean
+        reason:
+          type: string
+          enum:
+          - plan_not_eligible
+          - already_redeemed
+          - no_active_subscription
+        offer:
+          type: object
+          properties:
+            discount_percentage:
+              type: number
+            duration_months:
+              type: number
+            current_plan:
+              type: string
+          additionalProperties: false
+      required:
+      - eligible
+      additionalProperties: false
+    CancelDowngradeInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+      required:
+      - idempotency_key
+      additionalProperties: false
+    TriggerOrganizationPlanTrialOutput:
+      type: object
+      properties:
+        next_action:
+          type: object
+          properties:
+            type:
+              type: string
+            data:
+              type: object
+              properties:
+                payment_intent_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+              - client_secret
+              - payment_intent_id
+              additionalProperties: false
+          required:
+          - type
+          - data
+          additionalProperties: false
+      additionalProperties: false
+    AcceptRetentionOfferOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+      - success
+      - message
+      additionalProperties: false
+    GetBillingCheckoutSessionOutput:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+      - link
+      additionalProperties: false
+    CreditPurchaseCheckoutSessionInput:
+      type: object
+      properties:
+        credits_quantity:
+          type: number
+        actions_quantity:
+          type: number
+      required:
+      - credits_quantity
+      - actions_quantity
+      additionalProperties: false
+    UpsertAutoRechargeConfigInput:
+      type: object
+      properties:
+        threshold:
+          type: number
+          description: The auto-recharge threshold will be triggered when the balance drops below this amount.
+        amount:
+          type: number
+          description: This amount is NOT the amount that will be auto-recharged. The actual recharge amount is (threshold + amount) - (current balance), i.e. the amount required to bring the balance up.
+      required:
+      - threshold
+      - amount
+      additionalProperties: false
+    TriggerOrganizationPlanTrialInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+      additionalProperties: false
+    CreditPurchaseCheckoutSessionOutput:
+      type: object
+      properties:
+        client_secret:
+          type: string
+        checkout_session_id:
+          type: string
+      required:
+      - client_secret
+      - checkout_session_id
+    DeleteAutoRechargeConfigOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    UpdateOverageConfigOutput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+      additionalProperties: false
+    GetCheckoutCompletionStatusOutput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          - success
+          - fail
+      required:
+      - status
+      additionalProperties: false
+    SyncSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteAutoRechargeConfigInput: {}
+    AcceptRetentionOfferInput:
+      type: object
+      properties:
+        cancellation_reason:
+          type: string
+        experiment_variant:
+          type: string
+          enum:
+          - test_30
+          - test_50
+      additionalProperties: false
+    CancelSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

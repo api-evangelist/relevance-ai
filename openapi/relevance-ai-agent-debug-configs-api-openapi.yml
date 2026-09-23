@@ -1,0 +1,2422 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Agent Debug Configs API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Agent Debug Configs
+paths:
+  /agent-debug-configs/collections/{collection_id}/items/{document_id}/get:
+    get:
+      summary: GetAgentDebugConfigs
+      tags:
+      - Agent Debug Configs
+      description: '### Required permissions
+
+        > []'
+      operationId: GetAgentDebugConfigs
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - in: query
+        name: select_fields
+        schema:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        description: Fields to include in the search results, empty array/list means all fields.
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAgentDebugConfigsOutput'
+  /agent-debug-configs/collections/{collection_id}/items/{document_id}:
+    delete:
+      summary: DeleteAgentDebugConfigs
+      tags:
+      - Agent Debug Configs
+      description: '### Required permissions
+
+        > []'
+      operationId: DeleteAgentDebugConfigs
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteAgentDebugConfigsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAgentDebugConfigsOutput'
+  /agent-debug-configs/collections/{collection_id}/list:
+    post:
+      summary: ListAgentDebugConfigs
+      tags:
+      - Agent Debug Configs
+      description: '### Required permissions
+
+        > []'
+      operationId: ListAgentDebugConfigs
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ListAgentDebugConfigsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAgentDebugConfigsOutput'
+  /agent-debug-configs/collections/{collection_id}/items/{document_id}/upsert:
+    post:
+      summary: UpsertAgentDebugConfigs
+      tags:
+      - Agent Debug Configs
+      description: '### Required permissions
+
+        > []'
+      operationId: UpsertAgentDebugConfigs
+      parameters:
+      - name: collection_id
+        in: path
+        description: ID of collection
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: document_id
+        in: path
+        description: ID of document
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpsertAgentDebugConfigsInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpsertAgentDebugConfigsOutput'
+components:
+  schemas:
+    UpsertAgentDebugConfigsOutput:
+      type: object
+      additionalProperties: false
+    UpsertAgentDebugConfigsInput:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            tool_configs:
+              type: object
+              description: Mapping from tool action_id => override config
+              additionalProperties:
+                type: object
+                properties:
+                  overrides:
+                    type: object
+                    description: 0-indexed mapping from tool run of this specific tool to the overrides. Use `'default'` to set the default overrides for all runs of this tool.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        input_overrides_enabled:
+                          type: boolean
+                        input_overrides:
+                          type: object
+                        input_override_settings:
+                          type: object
+                          properties:
+                            simulate_missing_fixed_params:
+                              type: boolean
+                            content_types_to_make_optional:
+                              type: array
+                              items:
+                                type: string
+                                enum:
+                                - json
+                                - json_list
+                                - long_text
+                                - short_text
+                                - file_url
+                                - file_urls
+                                - llm_prompt
+                                - speech
+                                - code
+                                - dataset_id
+                                - knowledge_set
+                                - markdown
+                                - chain_id
+                                - chain_params
+                                - replicate_model_params
+                                - apify_actor_params
+                                - fal_model_params
+                                - file_to_text
+                                - file_to_text_llm_friendly
+                                - memory_optimizer
+                                - memory
+                                - table
+                                - agent_id
+                                - api_key
+                                - key_value_input
+                                - knowledge_editor
+                                - oauth_account
+                                - datetime
+                                - api_selector
+                                - single_dependent_selector
+                                - dependent_api_selector
+                                - llm_model_selector
+                                - colour_picker
+                                - conditional
+                                - external_field
+                                - tool_approval
+                                - componentized_json_array
+                                - project_key_indicator
+                          additionalProperties: false
+                        output_overrides_enabled:
+                          type: boolean
+                        output_overrides:
+                          type: object
+                          properties:
+                            output:
+                              type: object
+                              description: Directly specify the output of the tool.
+                            simulate_output:
+                              type: object
+                              description: Simulate the output of the tool using an LLM instead of calling the actual tool.
+                              properties:
+                                is_simulated:
+                                  type: boolean
+                                  description: If true, the agent will be run in simulation mode. This will not run the tool, but will instead run an LLM simulated version of the tool.
+                                simulation_prompt:
+                                  type: string
+                                  description: The prompt to use for the simulation. If not provided, the tool will use a default prompt.
+                                model:
+                                  type: string
+                                  enum:
+                                  - openai-gpt-4o
+                                  - openai-gpt-4o-2024-08-06
+                                  - gpt-4o-2024-11-20
+                                  - openai-gpt-4o-mini
+                                  - openai-gpt-4o-mini-2024-07-18
+                                  - openai-o1-latest
+                                  - openai-o1-2024-12-17
+                                  - openai-o3
+                                  - openai-o3-2025-04-16
+                                  - openai-o3-mini
+                                  - openai-o3-mini-2025-01-31
+                                  - openai-o4-mini
+                                  - openai-o4-mini-2025-04-16
+                                  - openai-gpt-4.1
+                                  - openai-gpt-4.1-2025-04-14
+                                  - openai-gpt-4.1-mini
+                                  - openai-gpt-4.1-mini-2025-04-14
+                                  - openai-gpt-4.1-nano
+                                  - openai-gpt-4.1-nano-2025-04-14
+                                  - openai-o3-pro
+                                  - openai-o3-pro-2025-06-10
+                                  - openai-gpt-4o-mini-realtime-preview-2024-12-17
+                                  - openai-gpt-realtime-2025-08-28
+                                  - openai-gpt-5
+                                  - openai-gpt-5-mini
+                                  - openai-gpt-5-nano
+                                  - openai-gpt-5-pro
+                                  - openai-gpt-5.1
+                                  - openai-gpt-5.2
+                                  - openai-gpt-5.2-pro
+                                  - openai-gpt-5.4
+                                  - openai-gpt-5.5
+                                  - openai-gpt-5.5-2026-04-23
+                                  - openai-gpt-5.5-pro
+                                  - openai-gpt-5.5-pro-2026-04-23
+                                  - openai-gpt-5.6
+                                  - openai-gpt-5.6-luna
+                                  - openai-gpt-5.6-terra
+                                  - openai-gpt-5.6-sol
+                                  - openai-gpt-5.4-pro
+                                  - openai-gpt-5.4-mini
+                                  - openai-gpt-5.4-nano
+                                  - openai-gpt-oss-120b-bedrock
+                                  - openai-gpt-oss-20b-bedrock
+                                  - anthropic-claude-haiku-4-5
+                                  - anthropic-claude-sonnet-4-5
+                                  - anthropic-claude-sonnet-4-6
+                                  - anthropic-claude-sonnet-4-6-context-1m
+                                  - anthropic-claude-sonnet-5
+                                  - anthropic-claude-opus-4-20250514
+                                  - anthropic-claude-opus-4-1
+                                  - anthropic-claude-opus-4-1-20250805
+                                  - anthropic-claude-opus-4-5
+                                  - anthropic-claude-opus-4-6
+                                  - anthropic-claude-opus-4-6-context-1m
+                                  - anthropic-claude-opus-4-7
+                                  - anthropic-claude-opus-4-8
+                                  - anthropic-claude-opus-5
+                                  - anthropic-claude-fable-5
+                                  - claude-v3-vision
+                                  - google-gemini-2.5-pro
+                                  - google-gemini-2.5-flash
+                                  - google-gemini-2.5-flash-lite
+                                  - google-gemini-3-flash-preview
+                                  - google-gemini-3.6-flash
+                                  - google-gemini-3.5-flash
+                                  - google-gemini-3.5-flash-lite
+                                  - google-gemini-3.1-pro-preview
+                                  - open-router
+                                  - pplx-sonar-reasoning-pro
+                                  - pplx-sonar-reasoning
+                                  - pplx-sonar-pro
+                                  - pplx-sonar
+                                  - pplx-r1-1776
+                                  - cohere-command-light
+                                  - cohere-command-light-nightly
+                                  - cohere-command
+                                  - cohere-command-nightly
+                                  - cohere-command-r
+                                  - cohere-command-r-plus
+                                  - cohere-command-a
+                                  - fast-mixtral-8x7b
+                                  - fast-llama3-8b
+                                  - fast-llama3-70b
+                                  - fast-llama-3.1-8b
+                                  - fast-llama-3.3-70b
+                                  - fast-gemma-7b-it
+                                  - fast-gemma-2-9b-it
+                                  - fast-kimi-k2
+                                  - fast-qwen-3-32b
+                                  - replicate-llava13b
+                                  - replicate-qwen
+                                  - clarifai-llama-3_2-3b-instruct
+                                  - xai-grok-3-mini-latest
+                                  - xai-grok-3-latest
+                                  - xai-grok-4-latest
+                                  - xai-grok-4-0709
+                                  - xai-grok-4-fast-non-reasoning
+                                  - xai-grok-4-fast-reasoning
+                                  - xai-grok-code-fast-1
+                                  - xai-grok-4-1-fast-non-reasoning
+                                  - xai-grok-4-1-fast-reasoning
+                                  - openai-gpt35
+                                  - openai-gpt35-16k
+                                  - openai-gpt35-0613
+                                  - openai-gpt35-1106
+                                  - openai-gpt4
+                                  - openai-gpt4-32k-0613
+                                  - openai-gpt4-0613
+                                  - openai-gpt4-1106
+                                  - openai-gpt4-0125
+                                  - openai-gpt4-turbo-2024-04-09
+                                  - openai-gpt-4.5-preview-2025-02-27
+                                  - openai-gpt-4.5-preview
+                                  - openai-o1-preview
+                                  - openai-o1-preview-2024-09-12
+                                  - openai-o1-mini
+                                  - openai-o1-mini-2024-09-12
+                                  - openai-gpt4v
+                                  - openai-gpt-4o-realtime-preview-2024-12-17
+                                  - anthropic-claude-v21
+                                  - anthropic-claude-v2
+                                  - anthropic-claude-instant-v1
+                                  - anthropic-claude-v1
+                                  - anthropic-claude-instant-v1-100k
+                                  - anthropic-claude-v1-100k
+                                  - anthropic-claude-v3-haiku
+                                  - anthropic-claude-v35-haiku
+                                  - anthropic-claude-v35-haiku-20241022
+                                  - anthropic-claude-v3-sonnet
+                                  - anthropic-claude-v35-sonnet
+                                  - anthropic-claude-v35-sonnet-20241022
+                                  - anthropic-claude-v35-sonnet-20240620
+                                  - anthropic-claude-3-7-sonnet-20250219
+                                  - anthropic-claude-3-7-sonnet
+                                  - anthropic-claude-v3-opus
+                                  - anthropic-claude-opus-4
+                                  - litellm-bedrock
+                                  - pplx-70b-chat
+                                  - pplx-llama-3-8b-instruct
+                                  - pplx-llama-3-70b-instruct
+                                  - pplx-mixtral-8x7b-instruct
+                                  - pplx-llama-3-sonar-small-32k-chat
+                                  - pplx-llama-3-sonar-small-32k-online
+                                  - pplx-llama-3-sonar-large-32k-chat
+                                  - pplx-llama-3-sonar-large-32k-online
+                                  - pplx-llama-3.1-sonar-small-128k-online
+                                  - pplx-llama-3.1-sonar-large-128k-online
+                                  - pplx-llama-3.1-sonar-huge-128k-online
+                                  - pplx-llama-3.1-sonar-small-128k-chat
+                                  - pplx-llama-3.1-sonar-large-128k-chat
+                                  - pplx-llama-3.1-8b-instruct
+                                  - pplx-llama-3.1-70b-instruct
+                                  - google-gemini
+                                  - google-gemini-15
+                                  - google-gemini-15-flash
+                                  - google-gemini-1.5-pro-001
+                                  - google-gemini-1.5-flash-001
+                                  - google-gemini-2.0-flash-exp
+                                  - google-gemini-2.0-flash-lite-preview-02-05
+                                  - google-gemini-2.0-pro-exp-02-05
+                                  - google-gemini-2.5-pro-exp-03-25
+                                  - google-gemini-2.5-pro-preview-03-25
+                                  - google-gemini-2.5-pro-preview-05-06
+                                  - google-gemini-2.5-pro-preview-06-05
+                                  - google-gemini-2.5-flash-preview-04-17
+                                  - google-gemini-2.5-flash-preview-05-20
+                                  - gemini-vision
+                                  - google-gemini-2.5-flash-lite-preview-06-17
+                                  - google-gemini-3-pro-preview
+                                  - google-gemini-2.0-flash
+                                  - google-gemini-2.0-flash-lite-001
+                                  - fireworks-mistral-7b
+                                  - fireworks-function-calling-34b
+                                  - anthropic-claude-sonnet-4
+                                  - anthropic-claude-sonnet-4-20250514
+                                  - anthropic-claude-sonnet-4-20250514-context-1m
+                                  - anthropic-claude-sonnet-4-5-context-1m
+                                  - open-router-openai/gpt-5.6-luna-pro
+                                  - open-router-openai/gpt-5.6-luna
+                                  - open-router-openai/gpt-5.6-terra-pro
+                                  - open-router-openai/gpt-5.6-terra
+                                  - open-router-openai/gpt-5.6-sol-pro
+                                  - open-router-openai/gpt-5.6-sol
+                                  - open-router-x-ai/grok-4.5
+                                  - open-router-~x-ai/grok-latest
+                                  - open-router-aion-labs/aion-3.0-mini
+                                  - open-router-aion-labs/aion-3.0
+                                  - open-router-tencent/hy3:free
+                                  - open-router-tencent/hy3
+                                  - open-router-poolside/laguna-xs-2.1:free
+                                  - open-router-poolside/laguna-xs-2.1
+                                  - open-router-anthropic/claude-sonnet-5
+                                  - open-router-google/gemini-3.1-flash-lite-image
+                                  - open-router-nex-agi/nex-n2-mini
+                                  - open-router-sakana/fugu-ultra
+                                  - open-router-google/gemini-3.1-flash-image
+                                  - open-router-google/gemini-3-pro-image
+                                  - open-router-cohere/north-mini-code:free
+                                  - open-router-z-ai/glm-5.2
+                                  - open-router-openrouter/fusion
+                                  - open-router-moonshotai/kimi-k2.7-code
+                                  - open-router-~anthropic/claude-fable-latest
+                                  - open-router-anthropic/claude-fable-5
+                                  - open-router-nex-agi/nex-n2-pro
+                                  - open-router-nvidia/nemotron-3.5-content-safety:free
+                                  - open-router-nvidia/nemotron-3-ultra-550b-a55b:free
+                                  - open-router-nvidia/nemotron-3-ultra-550b-a55b
+                                  - open-router-qwen/qwen3.7-plus
+                                  - open-router-minimax/minimax-m3
+                                  - open-router-stepfun/step-3.7-flash
+                                  - open-router-anthropic/claude-opus-4.8-fast
+                                  - open-router-anthropic/claude-opus-4.8
+                                  - open-router-qwen/qwen3.7-max
+                                  - open-router-x-ai/grok-build-0.1
+                                  - open-router-google/gemini-3.5-flash
+                                  - open-router-anthropic/claude-opus-4.7-fast
+                                  - open-router-perceptron/perceptron-mk1
+                                  - open-router-inclusionai/ring-2.6-1t
+                                  - open-router-google/gemini-3.1-flash-lite
+                                  - open-router-openai/gpt-chat-latest
+                                  - open-router-x-ai/grok-4.3
+                                  - open-router-ibm-granite/granite-4.1-8b
+                                  - open-router-mistralai/mistral-medium-3-5
+                                  - open-router-nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+                                  - open-router-poolside/laguna-m.1:free
+                                  - open-router-poolside/laguna-m.1
+                                  - open-router-~anthropic/claude-haiku-latest
+                                  - open-router-~openai/gpt-mini-latest
+                                  - open-router-~google/gemini-pro-latest
+                                  - open-router-~moonshotai/kimi-latest
+                                  - open-router-~google/gemini-flash-latest
+                                  - open-router-~anthropic/claude-sonnet-latest
+                                  - open-router-~openai/gpt-latest
+                                  - open-router-qwen/qwen3.5-plus-20260420
+                                  - open-router-qwen/qwen3.6-flash
+                                  - open-router-qwen/qwen3.6-35b-a3b
+                                  - open-router-qwen/qwen3.6-max-preview
+                                  - open-router-qwen/qwen3.6-27b
+                                  - open-router-openai/gpt-5.5-pro
+                                  - open-router-openai/gpt-5.5
+                                  - open-router-deepseek/deepseek-v4-pro
+                                  - open-router-deepseek/deepseek-v4-flash
+                                  - open-router-inclusionai/ling-2.6-1t
+                                  - open-router-tencent/hy3-preview
+                                  - open-router-xiaomi/mimo-v2.5-pro
+                                  - open-router-xiaomi/mimo-v2.5
+                                  - open-router-openai/gpt-5.4-image-2
+                                  - open-router-inclusionai/ling-2.6-flash
+                                  - open-router-~anthropic/claude-opus-latest
+                                  - open-router-openrouter/pareto-code
+                                  - open-router-moonshotai/kimi-k2.6
+                                  - open-router-anthropic/claude-opus-4.7
+                                  - open-router-z-ai/glm-5.1
+                                  - open-router-google/gemma-4-26b-a4b-it:free
+                                  - open-router-google/gemma-4-26b-a4b-it
+                                  - open-router-google/gemma-4-31b-it:free
+                                  - open-router-google/gemma-4-31b-it
+                                  - open-router-qwen/qwen3.6-plus
+                                  - open-router-z-ai/glm-5v-turbo
+                                  - open-router-arcee-ai/trinity-large-thinking
+                                  - open-router-x-ai/grok-4.20-multi-agent
+                                  - open-router-x-ai/grok-4.20
+                                  - open-router-google/lyria-3-pro-preview
+                                  - open-router-google/lyria-3-clip-preview
+                                  - open-router-kwaipilot/kat-coder-pro-v2
+                                  - open-router-rekaai/reka-edge
+                                  - open-router-minimax/minimax-m2.7
+                                  - open-router-openai/gpt-5.4-nano
+                                  - open-router-openai/gpt-5.4-mini
+                                  - open-router-mistralai/mistral-small-2603
+                                  - open-router-z-ai/glm-5-turbo
+                                  - open-router-nvidia/nemotron-3-super-120b-a12b:free
+                                  - open-router-nvidia/nemotron-3-super-120b-a12b
+                                  - open-router-bytedance-seed/seed-2.0-lite
+                                  - open-router-qwen/qwen3.5-9b
+                                  - open-router-openai/gpt-5.4-pro
+                                  - open-router-openai/gpt-5.4
+                                  - open-router-inception/mercury-2
+                                  - open-router-openai/gpt-5.3-chat
+                                  - open-router-google/gemini-3.1-flash-lite-preview
+                                  - open-router-bytedance-seed/seed-2.0-mini
+                                  - open-router-google/gemini-3.1-flash-image-preview
+                                  - open-router-qwen/qwen3.5-35b-a3b
+                                  - open-router-qwen/qwen3.5-27b
+                                  - open-router-qwen/qwen3.5-122b-a10b
+                                  - open-router-qwen/qwen3.5-flash-02-23
+                                  - open-router-google/gemini-3.1-pro-preview-customtools
+                                  - open-router-openai/gpt-5.3-codex
+                                  - open-router-aion-labs/aion-2.0
+                                  - open-router-google/gemini-3.1-pro-preview
+                                  - open-router-anthropic/claude-sonnet-4.6
+                                  - open-router-qwen/qwen3.5-plus-02-15
+                                  - open-router-qwen/qwen3.5-397b-a17b
+                                  - open-router-minimax/minimax-m2.5
+                                  - open-router-z-ai/glm-5
+                                  - open-router-qwen/qwen3-max-thinking
+                                  - open-router-anthropic/claude-opus-4.6
+                                  - open-router-qwen/qwen3-coder-next
+                                  - open-router-openrouter/free
+                                  - open-router-stepfun/step-3.5-flash
+                                  - open-router-moonshotai/kimi-k2.5
+                                  - open-router-upstage/solar-pro-3
+                                  - open-router-minimax/minimax-m2-her
+                                  - open-router-writer/palmyra-x5
+                                  - open-router-liquid/lfm-2.5-1.2b-thinking:free
+                                  - open-router-liquid/lfm-2.5-1.2b-instruct:free
+                                  - open-router-openai/gpt-audio
+                                  - open-router-openai/gpt-audio-mini
+                                  - open-router-z-ai/glm-4.7-flash
+                                  - open-router-openai/gpt-5.2-codex
+                                  - open-router-bytedance-seed/seed-1.6-flash
+                                  - open-router-bytedance-seed/seed-1.6
+                                  - open-router-minimax/minimax-m2.1
+                                  - open-router-z-ai/glm-4.7
+                                  - open-router-google/gemini-3-flash-preview
+                                  - open-router-nvidia/nemotron-3-nano-30b-a3b:free
+                                  - open-router-nvidia/nemotron-3-nano-30b-a3b
+                                  - open-router-openai/gpt-5.2-chat
+                                  - open-router-openai/gpt-5.2-pro
+                                  - open-router-openai/gpt-5.2
+                                  - open-router-mistralai/devstral-2512
+                                  - open-router-relace/relace-search
+                                  - open-router-z-ai/glm-4.6v
+                                  - open-router-openrouter/bodybuilder
+                                  - open-router-openai/gpt-5.1-codex-max
+                                  - open-router-amazon/nova-2-lite-v1
+                                  - open-router-mistralai/ministral-14b-2512
+                                  - open-router-mistralai/ministral-8b-2512
+                                  - open-router-mistralai/ministral-3b-2512
+                                  - open-router-mistralai/mistral-large-2512
+                                  - open-router-deepseek/deepseek-v3.2
+                                  - open-router-anthropic/claude-opus-4.5
+                                  - open-router-allenai/olmo-3-32b-think
+                                  - open-router-google/gemini-3-pro-image-preview
+                                  - open-router-deepcogito/cogito-v2.1-671b
+                                  - open-router-openai/gpt-5.1
+                                  - open-router-openai/gpt-5.1-chat
+                                  - open-router-openai/gpt-5.1-codex
+                                  - open-router-openai/gpt-5.1-codex-mini
+                                  - open-router-moonshotai/kimi-k2-thinking
+                                  - open-router-amazon/nova-premier-v1
+                                  - open-router-perplexity/sonar-pro-search
+                                  - open-router-mistralai/voxtral-small-24b-2507
+                                  - open-router-openai/gpt-oss-safeguard-20b
+                                  - open-router-nvidia/nemotron-nano-12b-v2-vl:free
+                                  - open-router-minimax/minimax-m2
+                                  - open-router-qwen/qwen3-vl-32b-instruct
+                                  - open-router-ibm-granite/granite-4.0-h-micro
+                                  - open-router-openai/gpt-5-image-mini
+                                  - open-router-anthropic/claude-haiku-4.5
+                                  - open-router-qwen/qwen3-vl-8b-thinking
+                                  - open-router-qwen/qwen3-vl-8b-instruct
+                                  - open-router-openai/gpt-5-image
+                                  - open-router-openai/o3-deep-research
+                                  - open-router-openai/o4-mini-deep-research
+                                  - open-router-nvidia/llama-3.3-nemotron-super-49b-v1.5
+                                  - open-router-google/gemini-2.5-flash-image
+                                  - open-router-qwen/qwen3-vl-30b-a3b-thinking
+                                  - open-router-qwen/qwen3-vl-30b-a3b-instruct
+                                  - open-router-openai/gpt-5-pro
+                                  - open-router-z-ai/glm-4.6
+                                  - open-router-anthropic/claude-sonnet-4.5
+                                  - open-router-deepseek/deepseek-v3.2-exp
+                                  - open-router-thedrummer/cydonia-24b-v4.1
+                                  - open-router-relace/relace-apply-3
+                                  - open-router-qwen/qwen3-vl-235b-a22b-thinking
+                                  - open-router-qwen/qwen3-vl-235b-a22b-instruct
+                                  - open-router-qwen/qwen3-max
+                                  - open-router-qwen/qwen3-coder-plus
+                                  - open-router-openai/gpt-5-codex
+                                  - open-router-deepseek/deepseek-v3.1-terminus
+                                  - open-router-qwen/qwen3-coder-flash
+                                  - open-router-qwen/qwen3-next-80b-a3b-thinking
+                                  - open-router-qwen/qwen3-next-80b-a3b-instruct:free
+                                  - open-router-qwen/qwen3-next-80b-a3b-instruct
+                                  - open-router-qwen/qwen-plus-2025-07-28:thinking
+                                  - open-router-qwen/qwen-plus-2025-07-28
+                                  - open-router-nvidia/nemotron-nano-9b-v2:free
+                                  - open-router-moonshotai/kimi-k2-0905
+                                  - open-router-qwen/qwen3-30b-a3b-thinking-2507
+                                  - open-router-nousresearch/hermes-4-70b
+                                  - open-router-nousresearch/hermes-4-405b
+                                  - open-router-deepseek/deepseek-chat-v3.1
+                                  - open-router-mistralai/mistral-medium-3.1
+                                  - open-router-z-ai/glm-4.5v
+                                  - open-router-ai21/jamba-large-1.7
+                                  - open-router-openai/gpt-5-chat
+                                  - open-router-openai/gpt-5
+                                  - open-router-openai/gpt-5-mini
+                                  - open-router-openai/gpt-5-nano
+                                  - open-router-openai/gpt-oss-120b:free
+                                  - open-router-openai/gpt-oss-120b
+                                  - open-router-openai/gpt-oss-20b:free
+                                  - open-router-openai/gpt-oss-20b
+                                  - open-router-anthropic/claude-opus-4.1
+                                  - open-router-mistralai/codestral-2508
+                                  - open-router-qwen/qwen3-coder-30b-a3b-instruct
+                                  - open-router-qwen/qwen3-30b-a3b-instruct-2507
+                                  - open-router-z-ai/glm-4.5
+                                  - open-router-z-ai/glm-4.5-air
+                                  - open-router-qwen/qwen3-235b-a22b-thinking-2507
+                                  - open-router-qwen/qwen3-coder:free
+                                  - open-router-qwen/qwen3-coder
+                                  - open-router-bytedance/ui-tars-1.5-7b
+                                  - open-router-google/gemini-2.5-flash-lite
+                                  - open-router-qwen/qwen3-235b-a22b-2507
+                                  - open-router-moonshotai/kimi-k2
+                                  - open-router-cognitivecomputations/dolphin-mistral-24b-venice-edition:free
+                                  - open-router-cognitivecomputations/dolphin-mistral-24b-venice-edition
+                                  - open-router-tencent/hunyuan-a13b-instruct
+                                  - open-router-morph/morph-v3-large
+                                  - open-router-morph/morph-v3-fast
+                                  - open-router-baidu/ernie-4.5-vl-424b-a47b
+                                  - open-router-mistralai/mistral-small-3.2-24b-instruct
+                                  - open-router-minimax/minimax-m1
+                                  - open-router-google/gemini-2.5-flash
+                                  - open-router-google/gemini-2.5-pro
+                                  - open-router-openai/o3-pro
+                                  - open-router-google/gemini-2.5-pro-preview
+                                  - open-router-deepseek/deepseek-r1-0528
+                                  - open-router-anthropic/claude-opus-4
+                                  - open-router-anthropic/claude-sonnet-4
+                                  - open-router-google/gemma-3n-e4b-it
+                                  - open-router-mistralai/mistral-medium-3
+                                  - open-router-google/gemini-2.5-pro-preview-05-06
+                                  - open-router-arcee-ai/virtuoso-large
+                                  - open-router-arcee-ai/coder-large
+                                  - open-router-meta-llama/llama-guard-4-12b
+                                  - open-router-qwen/qwen3-30b-a3b
+                                  - open-router-qwen/qwen3-8b
+                                  - open-router-qwen/qwen3-14b
+                                  - open-router-qwen/qwen3-32b
+                                  - open-router-qwen/qwen3-235b-a22b
+                                  - open-router-openai/o4-mini-high
+                                  - open-router-openai/o3
+                                  - open-router-openai/o4-mini
+                                  - open-router-openai/gpt-4.1
+                                  - open-router-openai/gpt-4.1-mini
+                                  - open-router-openai/gpt-4.1-nano
+                                  - open-router-meta-llama/llama-4-maverick
+                                  - open-router-meta-llama/llama-4-scout
+                                  - open-router-deepseek/deepseek-chat-v3-0324
+                                  - open-router-openai/o1-pro
+                                  - open-router-mistralai/mistral-small-3.1-24b-instruct
+                                  - open-router-google/gemma-3-4b-it
+                                  - open-router-google/gemma-3-12b-it
+                                  - open-router-cohere/command-a
+                                  - open-router-openai/gpt-4o-mini-search-preview
+                                  - open-router-openai/gpt-4o-search-preview
+                                  - open-router-rekaai/reka-flash-3
+                                  - open-router-google/gemma-3-27b-it
+                                  - open-router-thedrummer/skyfall-36b-v2
+                                  - open-router-perplexity/sonar-reasoning-pro
+                                  - open-router-perplexity/sonar-pro
+                                  - open-router-perplexity/sonar-deep-research
+                                  - open-router-mistralai/mistral-saba
+                                  - open-router-openai/o3-mini-high
+                                  - open-router-aion-labs/aion-rp-llama-3.1-8b
+                                  - open-router-qwen/qwen2.5-vl-72b-instruct
+                                  - open-router-qwen/qwen-plus
+                                  - open-router-openai/o3-mini
+                                  - open-router-mistralai/mistral-small-24b-instruct-2501
+                                  - open-router-perplexity/sonar
+                                  - open-router-deepseek/deepseek-r1-distill-llama-70b
+                                  - open-router-deepseek/deepseek-r1
+                                  - open-router-minimax/minimax-01
+                                  - open-router-microsoft/phi-4
+                                  - open-router-sao10k/l3.1-70b-hanami-x1
+                                  - open-router-deepseek/deepseek-chat
+                                  - open-router-sao10k/l3.3-euryale-70b
+                                  - open-router-openai/o1
+                                  - open-router-cohere/command-r7b-12-2024
+                                  - open-router-meta-llama/llama-3.3-70b-instruct:free
+                                  - open-router-meta-llama/llama-3.3-70b-instruct
+                                  - open-router-amazon/nova-lite-v1
+                                  - open-router-amazon/nova-micro-v1
+                                  - open-router-amazon/nova-pro-v1
+                                  - open-router-openai/gpt-4o-2024-11-20
+                                  - open-router-mistralai/mistral-large-2407
+                                  - open-router-qwen/qwen-2.5-coder-32b-instruct
+                                  - open-router-thedrummer/unslopnemo-12b
+                                  - open-router-anthracite-org/magnum-v4-72b
+                                  - open-router-qwen/qwen-2.5-7b-instruct
+                                  - open-router-inflection/inflection-3-productivity
+                                  - open-router-inflection/inflection-3-pi
+                                  - open-router-thedrummer/rocinante-12b
+                                  - open-router-meta-llama/llama-3.2-1b-instruct
+                                  - open-router-meta-llama/llama-3.2-11b-vision-instruct
+                                  - open-router-meta-llama/llama-3.2-3b-instruct:free
+                                  - open-router-meta-llama/llama-3.2-3b-instruct
+                                  - open-router-qwen/qwen-2.5-72b-instruct
+                                  - open-router-cohere/command-r-08-2024
+                                  - open-router-cohere/command-r-plus-08-2024
+                                  - open-router-sao10k/l3.1-euryale-70b
+                                  - open-router-nousresearch/hermes-3-llama-3.1-70b
+                                  - open-router-nousresearch/hermes-3-llama-3.1-405b:free
+                                  - open-router-nousresearch/hermes-3-llama-3.1-405b
+                                  - open-router-sao10k/l3-lunaris-8b
+                                  - open-router-openai/gpt-4o-2024-08-06
+                                  - open-router-meta-llama/llama-3.1-8b-instruct
+                                  - open-router-meta-llama/llama-3.1-70b-instruct
+                                  - open-router-mistralai/mistral-nemo
+                                  - open-router-openai/gpt-4o-mini-2024-07-18
+                                  - open-router-openai/gpt-4o-mini
+                                  - open-router-google/gemma-2-27b-it
+                                  - open-router-openai/gpt-4o-2024-05-13
+                                  - open-router-openai/gpt-4o
+                                  - open-router-mistralai/mixtral-8x22b-instruct
+                                  - open-router-microsoft/wizardlm-2-8x22b
+                                  - open-router-openai/gpt-4-turbo
+                                  - open-router-anthropic/claude-3-haiku
+                                  - open-router-mistralai/mistral-large
+                                  - open-router-openai/gpt-3.5-turbo-0613
+                                  - open-router-openai/gpt-4-turbo-preview
+                                  - open-router-openai/gpt-3.5-turbo-instruct
+                                  - open-router-openai/gpt-3.5-turbo-16k
+                                  - open-router-mancer/weaver
+                                  - open-router-undi95/remm-slerp-l2-13b
+                                  - open-router-gryphe/mythomax-l2-13b
+                                  - open-router-openai/gpt-4
+                                  - open-router-openai/gpt-3.5-turbo
+                                  - azure-openai
+                                  - azure-openai-gpt-4o-mini
+                                  - azure-openai-gpt-4o
+                                  - azure-openai-gpt-4.1
+                                  - azure-openai-gpt-4.1-mini
+                                  - azure-openai-gpt-4.1-nano
+                                  - azure-openai-o1
+                                  - azure-openai-o3-mini
+                                  - azure-openai-o3
+                                  - azure-openai-o4-mini
+                                  - azure-openai-o3-pro
+                                  - azure-openai-gpt-5
+                                  - azure-openai-gpt-5-mini
+                                  - azure-openai-gpt-5-nano
+                                  - azure-openai-gpt-5-pro
+                                  - azure-openai-gpt-5.1
+                                  - azure-openai-gpt-5.2
+                                  - azure-openai-gpt-5.2-pro
+                                  - bedrock-anthropic.claude-3-opus-20240229-v1:0
+                                  - bedrock-anthropic.claude-3-sonnet-20240229-v1:0
+                                  - bedrock-anthropic.claude-3-haiku-20240307-v1:0
+                                  - bedrock-anthropic.claude-3-5-haiku-20241022-v1:0
+                                  - bedrock-anthropic.claude-haiku-4-5-20251001-v1:0
+                                  - bedrock-anthropic.claude-3-5-sonnet-20241022-v2:0
+                                  - bedrock-anthropic.claude-3-5-sonnet-20240620-v1:0
+                                  - bedrock-anthropic.claude-3-7-sonnet-20250219-v1:0
+                                  - bedrock-anthropic.claude-sonnet-4-20250514-v1:0
+                                  - bedrock-anthropic.claude-sonnet-4-20250514-v1:0-context-1m
+                                  - bedrock-anthropic.claude-sonnet-4-5-20250929-v1:0
+                                  - bedrock-anthropic.claude-sonnet-4-5-20250929-v1:0-context-1m
+                                  - bedrock-anthropic.claude-opus-4-20250514-v1:0
+                                  - bedrock-anthropic.claude-opus-4-1-20250805-v1:0
+                                  - bedrock-anthropic.claude-opus-4-5-20251101-v1:0
+                                  - bedrock-anthropic.claude-opus-4-6-v1
+                                  - bedrock-anthropic.claude-opus-4-7
+                                  - bedrock-anthropic.claude-sonnet-4-6
+                                  - gcp-vertex-ai-claude-3-haiku@20240307
+                                  - gcp-vertex-ai-claude-3-5-haiku@20241022
+                                  - gcp-vertex-ai-claude-haiku-4-5@20251001
+                                  - gcp-vertex-ai-claude-3-5-sonnet@20240620
+                                  - gcp-vertex-ai-claude-3-5-sonnet-v2@20241022
+                                  - gcp-vertex-ai-claude-3-7-sonnet@20250219
+                                  - gcp-vertex-ai-claude-sonnet-4@20250514
+                                  - gcp-vertex-ai-claude-sonnet-4-5@20250929
+                                  - gcp-vertex-ai-claude-opus-4@20250514
+                                  - gcp-vertex-ai-claude-opus-4-1@20250805
+                                  - gcp-vertex-ai-claude-opus-4-5@20251101
+                                  - gcp-vertex-ai-claude-opus-4-6
+                                  - gcp-vertex-ai-claude-opus-4-7
+                                  - gcp-vertex-ai-claude-sonnet-4-6
+                                  - relevance-performance-optimized
+                                  - relevance-cost-optimized
+                                  description: The model to use for the simulation.
+                              required:
+                              - is_simulated
+                              additionalProperties: false
+                          additionalProperties: false
+                        action_config_overrides:
+                          type: object
+                          properties:
+                            action_behaviour:
+                              type: string
+                            action_retry_config:
+                              type: object
+                              properties:
+                                max_retries:
+                                  type: number
+                                force_retry:
+                                  type: boolean
+                                after_retries_behaviour:
+                                  type: string
+                                  enum:
+                                  - terminate-conversation
+                                  - ask-for-approval
+                              additionalProperties: false
+                            agent_decide_prompt:
+                              type: string
+                              description: This prompt guides the agent's decision on whether or not approval is required to execute the tool.
+                            conditional_approval_rules:
+                              type: object
+                              properties:
+                                max_auto_approvals:
+                                  type: number
+                                max_approvals_asked:
+                                  type: number
+                              additionalProperties: false
+                          additionalProperties: false
+                      additionalProperties: false
+                additionalProperties: false
+          additionalProperties: false
+        insert_if_not_exists:
+          type: boolean
+          description: If true, will create the metadata if it does not exist. Defaults to true.
+        fields_to_remove:
+          type: array
+          items:
+            type: string
+          description: Fields to remove from the metadata.
+        fields_to_replace:
+          type: array
+          items:
+            type: string
+          description: Fields to replace in the metadata.
+        fields_to_increment:
+          type: object
+          additionalProperties:
+            type: number
+      additionalProperties: false
+      required:
+      - data
+    ListAgentDebugConfigsInput:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+        select_fields:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        page_size:
+          type: integer
+          description: Size of each page of results
+        page:
+          type: integer
+          description: Page of the results
+        sort:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: object
+              additionalProperties:
+                type: string
+                enum:
+                - asc
+                - desc
+          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
+        include_vector:
+          type: boolean
+          description: Include vectors in the search results.
+        after_id:
+          type: array
+          items: {}
+          description: Retrieve items after these sort values in the sort order.
+        query:
+          type: string
+    DeleteAgentDebugConfigsInput: {}
+    DeleteAgentDebugConfigsOutput: {}
+    ListAgentDebugConfigsOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              insert_date_: {}
+              update_date: {}
+              expiry_date_: {}
+              project:
+                type: string
+              _id:
+                type: string
+              feature:
+                type: string
+              collection_id:
+                type: string
+              document_id:
+                type: string
+              data:
+                type: object
+                properties:
+                  tool_configs:
+                    type: object
+                    description: Mapping from tool action_id => override config
+                    additionalProperties:
+                      type: object
+                      properties:
+                        overrides:
+                          type: object
+                          description: 0-indexed mapping from tool run of this specific tool to the overrides. Use `'default'` to set the default overrides for all runs of this tool.
+                          additionalProperties:
+                            type: object
+                            properties:
+                              input_overrides_enabled:
+                                type: boolean
+                              input_overrides:
+                                type: object
+                              input_override_settings:
+                                type: object
+                                properties:
+                                  simulate_missing_fixed_params:
+                                    type: boolean
+                                  content_types_to_make_optional:
+                                    type: array
+                                    items:
+                                      type: string
+                                      enum:
+                                      - json
+                                      - json_list
+                                      - long_text
+                                      - short_text
+                                      - file_url
+                                      - file_urls
+                                      - llm_prompt
+                                      - speech
+                                      - code
+                                      - dataset_id
+                                      - knowledge_set
+                                      - markdown
+                                      - chain_id
+                                      - chain_params
+                                      - replicate_model_params
+                                      - apify_actor_params
+                                      - fal_model_params
+                                      - file_to_text
+                                      - file_to_text_llm_friendly
+                                      - memory_optimizer
+                                      - memory
+                                      - table
+                                      - agent_id
+                                      - api_key
+                                      - key_value_input
+                                      - knowledge_editor
+                                      - oauth_account
+                                      - datetime
+                                      - api_selector
+                                      - single_dependent_selector
+                                      - dependent_api_selector
+                                      - llm_model_selector
+                                      - colour_picker
+                                      - conditional
+                                      - external_field
+                                      - tool_approval
+                                      - componentized_json_array
+                                      - project_key_indicator
+                                additionalProperties: false
+                              output_overrides_enabled:
+                                type: boolean
+                              output_overrides:
+                                type: object
+                                properties:
+                                  output:
+                                    type: object
+                                    description: Directly specify the output of the tool.
+                                  simulate_output:
+                                    type: object
+                                    description: Simulate the output of the tool using an LLM instead of calling the actual tool.
+                                    properties:
+                                      is_simulated:
+                                        type: boolean
+                                        description: If true, the agent will be run in simulation mode. This will not run the tool, but will instead run an LLM simulated version of the tool.
+                                      simulation_prompt:
+                                        type: string
+                                        description: The prompt to use for the simulation. If not provided, the tool will use a default prompt.
+                                      model:
+                                        type: string
+                                        enum:
+                                        - openai-gpt-4o
+                                        - openai-gpt-4o-2024-08-06
+                                        - gpt-4o-2024-11-20
+                                        - openai-gpt-4o-mini
+                                        - openai-gpt-4o-mini-2024-07-18
+                                        - openai-o1-latest
+                                        - openai-o1-2024-12-17
+                                        - openai-o3
+                                        - openai-o3-2025-04-16
+                                        - openai-o3-mini
+                                        - openai-o3-mini-2025-01-31
+                                        - openai-o4-mini
+                                        - openai-o4-mini-2025-04-16
+                                        - openai-gpt-4.1
+                                        - openai-gpt-4.1-2025-04-14
+                                        - openai-gpt-4.1-mini
+                                        - openai-gpt-4.1-mini-2025-04-14
+                                        - openai-gpt-4.1-nano
+                                        - openai-gpt-4.1-nano-2025-04-14
+                                        - openai-o3-pro
+                                        - openai-o3-pro-2025-06-10
+                                        - openai-gpt-4o-mini-realtime-preview-2024-12-17
+                                        - openai-gpt-realtime-2025-08-28
+                                        - openai-gpt-5
+                                        - openai-gpt-5-mini
+                                        - openai-gpt-5-nano
+                                        - openai-gpt-5-pro
+                                        - openai-gpt-5.1
+                                        - openai-gpt-5.2
+                                        - openai-gpt-5.2-pro
+                                        - openai-gpt-5.4
+                                        - openai-gpt-5.5
+                                        - openai-gpt-5.5-2026-04-23
+                                        - openai-gpt-5.5-pro
+                                        - openai-gpt-5.5-pro-2026-04-23
+                                        - openai-gpt-5.6
+                                        - openai-gpt-5.6-luna
+                                        - openai-gpt-5.6-terra
+                                        - openai-gpt-5.6-sol
+                                        - openai-gpt-5.4-pro
+                                        - openai-gpt-5.4-mini
+                                        - openai-gpt-5.4-nano
+                                        - openai-gpt-oss-120b-bedrock
+                                        - openai-gpt-oss-20b-bedrock
+                                        - anthropic-claude-haiku-4-5
+                                        - anthropic-claude-sonnet-4-5
+                                        - anthropic-claude-sonnet-4-6
+                                        - anthropic-claude-sonnet-4-6-context-1m
+                                        - anthropic-claude-sonnet-5
+                                        - anthropic-claude-opus-4-20250514
+                                        - anthropic-claude-opus-4-1
+                                        - anthropic-claude-opus-4-1-20250805
+                                        - anthropic-claude-opus-4-5
+                                        - anthropic-claude-opus-4-6
+                                        - anthropic-claude-opus-4-6-context-1m
+                                        - anthropic-claude-opus-4-7
+                                        - anthropic-claude-opus-4-8
+                                        - anthropic-claude-opus-5
+                                        - anthropic-claude-fable-5
+                                        - claude-v3-vision
+                                        - google-gemini-2.5-pro
+                                        - google-gemini-2.5-flash
+                                        - google-gemini-2.5-flash-lite
+                                        - google-gemini-3-flash-preview
+                                        - google-gemini-3.6-flash
+                                        - google-gemini-3.5-flash
+                                        - google-gemini-3.5-flash-lite
+                                        - google-gemini-3.1-pro-preview
+                                        - open-router
+                                        - pplx-sonar-reasoning-pro
+                                        - pplx-sonar-reasoning
+                                        - pplx-sonar-pro
+                                        - pplx-sonar
+                                        - pplx-r1-1776
+                                        - cohere-command-light
+                                        - cohere-command-light-nightly
+                                        - cohere-command
+                                        - cohere-command-nightly
+                                        - cohere-command-r
+                                        - cohere-command-r-plus
+                                        - cohere-command-a
+                                        - fast-mixtral-8x7b
+                                        - fast-llama3-8b
+                                        - fast-llama3-70b
+                                        - fast-llama-3.1-8b
+                                        - fast-llama-3.3-70b
+                                        - fast-gemma-7b-it
+                                        - fast-gemma-2-9b-it
+                                        - fast-kimi-k2
+                                        - fast-qwen-3-32b
+                                        - replicate-llava13b
+                                        - replicate-qwen
+                                        - clarifai-llama-3_2-3b-instruct
+                                        - xai-grok-3-mini-latest
+                                        - xai-grok-3-latest
+                                        - xai-grok-4-latest
+                                        - xai-grok-4-0709
+                                        - xai-grok-4-fast-non-reasoning
+                                        - xai-grok-4-fast-reasoning
+                                        - xai-grok-code-fast-1
+                                        - xai-grok-4-1-fast-non-reasoning
+                                        - xai-grok-4-1-fast-reasoning
+                                        - openai-gpt35
+                                        - openai-gpt35-16k
+                                        - openai-gpt35-0613
+                                        - openai-gpt35-1106
+                                        - openai-gpt4
+                                        - openai-gpt4-32k-0613
+                                        - openai-gpt4-0613
+                                        - openai-gpt4-1106
+                                        - openai-gpt4-0125
+                                        - openai-gpt4-turbo-2024-04-09
+                                        - openai-gpt-4.5-preview-2025-02-27
+                                        - openai-gpt-4.5-preview
+                                        - openai-o1-preview
+                                        - openai-o1-preview-2024-09-12
+                                        - openai-o1-mini
+                                        - openai-o1-mini-2024-09-12
+                                        - openai-gpt4v
+                                        - openai-gpt-4o-realtime-preview-2024-12-17
+                                        - anthropic-claude-v21
+                                        - anthropic-claude-v2
+                                        - anthropic-claude-instant-v1
+                                        - anthropic-claude-v1
+                                        - anthropic-claude-instant-v1-100k
+                                        - anthropic-claude-v1-100k
+                                        - anthropic-claude-v3-haiku
+                                        - anthropic-claude-v35-haiku
+                                        - anthropic-claude-v35-haiku-20241022
+                                        - anthropic-claude-v3-sonnet
+                                        - anthropic-claude-v35-sonnet
+                                        - anthropic-claude-v35-sonnet-20241022
+                                        - anthropic-claude-v35-sonnet-20240620
+                                        - anthropic-claude-3-7-sonnet-20250219
+                                        - anthropic-claude-3-7-sonnet
+                                        - anthropic-claude-v3-opus
+                                        - anthropic-claude-opus-4
+                                        - litellm-bedrock
+                                        - pplx-70b-chat
+                                        - pplx-llama-3-8b-instruct
+                                        - pplx-llama-3-70b-instruct
+                                        - pplx-mixtral-8x7b-instruct
+                                        - pplx-llama-3-sonar-small-32k-chat
+                                        - pplx-llama-3-sonar-small-32k-online
+                                        - pplx-llama-3-sonar-large-32k-chat
+                                        - pplx-llama-3-sonar-large-32k-online
+                                        - pplx-llama-3.1-sonar-small-128k-online
+                                        - pplx-llama-3.1-sonar-large-128k-online
+                                        - pplx-llama-3.1-sonar-huge-128k-online
+                                        - pplx-llama-3.1-sonar-small-128k-chat
+                                        - pplx-llama-3.1-sonar-large-128k-chat
+                                        - pplx-llama-3.1-8b-instruct
+                                        - pplx-llama-3.1-70b-instruct
+                                        - google-gemini
+                                        - google-gemini-15
+                                        - google-gemini-15-flash
+                                        - google-gemini-1.5-pro-001
+                                        - google-gemini-1.5-flash-001
+                                        - google-gemini-2.0-flash-exp
+                                        - google-gemini-2.0-flash-lite-preview-02-05
+                                        - google-gemini-2.0-pro-exp-02-05
+                                        - google-gemini-2.5-pro-exp-03-25
+                                        - google-gemini-2.5-pro-preview-03-25
+                                        - google-gemini-2.5-pro-preview-05-06
+                                        - google-gemini-2.5-pro-preview-06-05
+                                        - google-gemini-2.5-flash-preview-04-17
+                                        - google-gemini-2.5-flash-preview-05-20
+                                        - gemini-vision
+                                        - google-gemini-2.5-flash-lite-preview-06-17
+                                        - google-gemini-3-pro-preview
+                                        - google-gemini-2.0-flash
+                                        - google-gemini-2.0-flash-lite-001
+                                        - fireworks-mistral-7b
+                                        - fireworks-function-calling-34b
+                                        - anthropic-claude-sonnet-4
+                                        - anthropic-claude-sonnet-4-20250514
+                                        - anthropic-claude-sonnet-4-20250514-context-1m
+                                        - anthropic-claude-sonnet-4-5-context-1m
+                                        - open-router-openai/gpt-5.6-luna-pro
+                                        - open-router-openai/gpt-5.6-luna
+                                        - open-router-openai/gpt-5.6-terra-pro
+                                        - open-router-openai/gpt-5.6-terra
+                                        - open-router-openai/gpt-5.6-sol-pro
+                                        - open-router-openai/gpt-5.6-sol
+                                        - open-router-x-ai/grok-4.5
+                                        - open-router-~x-ai/grok-latest
+                                        - open-router-aion-labs/aion-3.0-mini
+                                        - open-router-aion-labs/aion-3.0
+                                        - open-router-tencent/hy3:free
+                                        - open-router-tencent/hy3
+                                        - open-router-poolside/laguna-xs-2.1:free
+                                        - open-router-poolside/laguna-xs-2.1
+                                        - open-router-anthropic/claude-sonnet-5
+                                        - open-router-google/gemini-3.1-flash-lite-image
+                                        - open-router-nex-agi/nex-n2-mini
+                                        - open-router-sakana/fugu-ultra
+                                        - open-router-google/gemini-3.1-flash-image
+                                        - open-router-google/gemini-3-pro-image
+                                        - open-router-cohere/north-mini-code:free
+                                        - open-router-z-ai/glm-5.2
+                                        - open-router-openrouter/fusion
+                                        - open-router-moonshotai/kimi-k2.7-code
+                                        - open-router-~anthropic/claude-fable-latest
+                                        - open-router-anthropic/claude-fable-5
+                                        - open-router-nex-agi/nex-n2-pro
+                                        - open-router-nvidia/nemotron-3.5-content-safety:free
+                                        - open-router-nvidia/nemotron-3-ultra-550b-a55b:free
+                                        - open-router-nvidia/nemotron-3-ultra-550b-a55b
+                                        - open-router-qwen/qwen3.7-plus
+                                        - open-router-minimax/minimax-m3
+                                        - open-router-stepfun/step-3.7-flash
+                                        - open-router-anthropic/claude-opus-4.8-fast
+                                        - open-router-anthropic/claude-opus-4.8
+                                        - open-router-qwen/qwen3.7-max
+                                        - open-router-x-ai/grok-build-0.1
+                                        - open-router-google/gemini-3.5-flash
+                                        - open-router-anthropic/claude-opus-4.7-fast
+                                        - open-router-perceptron/perceptron-mk1
+                                        - open-router-inclusionai/ring-2.6-1t
+                                        - open-router-google/gemini-3.1-flash-lite
+                                        - open-router-openai/gpt-chat-latest
+                                        - open-router-x-ai/grok-4.3
+                                        - open-router-ibm-granite/granite-4.1-8b
+                                        - open-router-mistralai/mistral-medium-3-5
+                                        - open-router-nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+                                        - open-router-poolside/laguna-m.1:free
+                                        - open-router-poolside/laguna-m.1
+                                        - open-router-~anthropic/claude-haiku-latest
+                                        - open-router-~openai/gpt-mini-latest
+                                        - open-router-~google/gemini-pro-latest
+                                        - open-router-~moonshotai/kimi-latest
+                                        - open-router-~google/gemini-flash-latest
+                                        - open-router-~anthropic/claude-sonnet-latest
+                                        - open-router-~openai/gpt-latest
+                                        - open-router-qwen/qwen3.5-plus-20260420
+                                        - open-router-qwen/qwen3.6-flash
+                                        - open-router-qwen/qwen3.6-35b-a3b
+                                        - open-router-qwen/qwen3.6-max-preview
+                                        - open-router-qwen/qwen3.6-27b
+                                        - open-router-openai/gpt-5.5-pro
+                                        - open-router-openai/gpt-5.5
+                                        - open-router-deepseek/deepseek-v4-pro
+                                        - open-router-deepseek/deepseek-v4-flash
+                                        - open-router-inclusionai/ling-2.6-1t
+                                        - open-router-tencent/hy3-preview
+                                        - open-router-xiaomi/mimo-v2.5-pro
+                                        - open-router-xiaomi/mimo-v2.5
+                                        - open-router-openai/gpt-5.4-image-2
+                                        - open-router-inclusionai/ling-2.6-flash
+                                        - open-router-~anthropic/claude-opus-latest
+                                        - open-router-openrouter/pareto-code
+                                        - open-router-moonshotai/kimi-k2.6
+                                        - open-router-anthropic/claude-opus-4.7
+                                        - open-router-z-ai/glm-5.1
+                                        - open-router-google/gemma-4-26b-a4b-it:free
+                                        - open-router-google/gemma-4-26b-a4b-it
+                                        - open-router-google/gemma-4-31b-it:free
+                                        - open-router-google/gemma-4-31b-it
+                                        - open-router-qwen/qwen3.6-plus
+                                        - open-router-z-ai/glm-5v-turbo
+                                        - open-router-arcee-ai/trinity-large-thinking
+                                        - open-router-x-ai/grok-4.20-multi-agent
+                                        - open-router-x-ai/grok-4.20
+                                        - open-router-google/lyria-3-pro-preview
+                                        - open-router-google/lyria-3-clip-preview
+                                        - open-router-kwaipilot/kat-coder-pro-v2
+                                        - open-router-rekaai/reka-edge
+                                        - open-router-minimax/minimax-m2.7
+                                        - open-router-openai/gpt-5.4-nano
+                                        - open-router-openai/gpt-5.4-mini
+                                        - open-router-mistralai/mistral-small-2603
+                                        - open-router-z-ai/glm-5-turbo
+                                        - open-router-nvidia/nemotron-3-super-120b-a12b:free
+                                        - open-router-nvidia/nemotron-3-super-120b-a12b
+                                        - open-router-bytedance-seed/seed-2.0-lite
+                                        - open-router-qwen/qwen3.5-9b
+                                        - open-router-openai/gpt-5.4-pro
+                                        - open-router-openai/gpt-5.4
+                                        - open-router-inception/mercury-2
+                                        - open-router-openai/gpt-5.3-chat
+                                        - open-router-google/gemini-3.1-flash-lite-preview
+                                        - open-router-bytedance-seed/seed-2.0-mini
+                                        - open-router-google/gemini-3.1-flash-image-preview
+                                        - open-router-qwen/qwen3.5-35b-a3b
+                                        - open-router-qwen/qwen3.5-27b
+                                        - open-router-qwen/qwen3.5-122b-a10b
+                                        - open-router-qwen/qwen3.5-flash-02-23
+                                        - open-router-google/gemini-3.1-pro-preview-customtools
+                                        - open-router-openai/gpt-5.3-codex
+                                        - open-router-aion-labs/aion-2.0
+                                        - open-router-google/gemini-3.1-pro-preview
+                                        - open-router-anthropic/claude-sonnet-4.6
+                                        - open-router-qwen/qwen3.5-plus-02-15
+                                        - open-router-qwen/qwen3.5-397b-a17b
+                                        - open-router-minimax/minimax-m2.5
+                                        - open-router-z-ai/glm-5
+                                        - open-router-qwen/qwen3-max-thinking
+                                        - open-router-anthropic/claude-opus-4.6
+                                        - open-router-qwen/qwen3-coder-next
+                                        - open-router-openrouter/free
+                                        - open-router-stepfun/step-3.5-flash
+                                        - open-router-moonshotai/kimi-k2.5
+                                        - open-router-upstage/solar-pro-3
+                                        - open-router-minimax/minimax-m2-her
+                                        - open-router-writer/palmyra-x5
+                                        - open-router-liquid/lfm-2.5-1.2b-thinking:free
+                                        - open-router-liquid/lfm-2.5-1.2b-instruct:free
+                                        - open-router-openai/gpt-audio
+                                        - open-router-openai/gpt-audio-mini
+                                        - open-router-z-ai/glm-4.7-flash
+                                        - open-router-openai/gpt-5.2-codex
+                                        - open-router-bytedance-seed/seed-1.6-flash
+                                        - open-router-bytedance-seed/seed-1.6
+                                        - open-router-minimax/minimax-m2.1
+                                        - open-router-z-ai/glm-4.7
+                                        - open-router-google/gemini-3-flash-preview
+                                        - open-router-nvidia/nemotron-3-nano-30b-a3b:free
+                                        - open-router-nvidia/nemotron-3-nano-30b-a3b
+                                        - open-router-openai/gpt-5.2-chat
+                                        - open-router-openai/gpt-5.2-pro
+                                        - open-router-openai/gpt-5.2
+                                        - open-router-mistralai/devstral-2512
+                                        - open-router-relace/relace-search
+                                        - open-router-z-ai/glm-4.6v
+                                        - open-router-openrouter/bodybuilder
+                                        - open-router-openai/gpt-5.1-codex-max
+                                        - open-router-amazon/nova-2-lite-v1
+                                        - open-router-mistralai/ministral-14b-2512
+                                        - open-router-mistralai/ministral-8b-2512
+                                        - open-router-mistralai/ministral-3b-2512
+                                        - open-router-mistralai/mistral-large-2512
+                                        - open-router-deepseek/deepseek-v3.2
+                                        - open-router-anthropic/claude-opus-4.5
+                                        - open-router-allenai/olmo-3-32b-think
+                                        - open-router-google/gemini-3-pro-image-preview
+                                        - open-router-deepcogito/cogito-v2.1-671b
+                                        - open-router-openai/gpt-5.1
+                                        - open-router-openai/gpt-5.1-chat
+                                        - open-router-openai/gpt-5.1-codex
+                                        - open-router-openai/gpt-5.1-codex-mini
+                                        - open-router-moonshotai/kimi-k2-thinking
+                                        - open-router-amazon/nova-premier-v1
+                                        - open-router-perplexity/sonar-pro-search
+                                        - open-router-mistralai/voxtral-small-24b-2507
+                                        - open-router-openai/gpt-oss-safeguard-20b
+                                        - open-router-nvidia/nemotron-nano-12b-v2-vl:free
+                                        - open-router-minimax/minimax-m2
+                                        - open-router-qwen/qwen3-vl-32b-instruct
+                                        - open-router-ibm-granite/granite-4.0-h-micro
+                                        - open-router-openai/gpt-5-image-mini
+                                        - open-router-anthropic/claude-haiku-4.5
+                                        - open-router-qwen/qwen3-vl-8b-thinking
+                                        - open-router-qwen/qwen3-vl-8b-instruct
+                                        - open-router-openai/gpt-5-image
+                                        - open-router-openai/o3-deep-research
+                                        - open-router-openai/o4-mini-deep-research
+                                        - open-router-nvidia/llama-3.3-nemotron-super-49b-v1.5
+                                        - open-router-google/gemini-2.5-flash-image
+                                        - open-router-qwen/qwen3-vl-30b-a3b-thinking
+                                        - open-router-qwen/qwen3-vl-30b-a3b-instruct
+                                        - open-router-openai/gpt-5-pro
+                                        - open-router-z-ai/glm-4.6
+                                        - open-router-anthropic/claude-sonnet-4.5
+                                        - open-router-deepseek/deepseek-v3.2-exp
+                                        - open-router-thedrummer/cydonia-24b-v4.1
+                                        - open-router-relace/relace-apply-3
+                                        - open-router-qwen/qwen3-vl-235b-a22b-thinking
+                                        - open-router-qwen/qwen3-vl-235b-a22b-instruct
+                                        - open-router-qwen/qwen3-max
+                                        - open-router-qwen/qwen3-coder-plus
+                                        - open-router-openai/gpt-5-codex
+                                        - open-router-deepseek/deepseek-v3.1-terminus
+                                        - open-router-qwen/qwen3-coder-flash
+                                        - open-router-qwen/qwen3-next-80b-a3b-thinking
+                                        - open-router-qwen/qwen3-next-80b-a3b-instruct:free
+                                        - open-router-qwen/qwen3-next-80b-a3b-instruct
+                                        - open-router-qwen/qwen-plus-2025-07-28:thinking
+                                        - open-router-qwen/qwen-plus-2025-07-28
+                                        - open-router-nvidia/nemotron-nano-9b-v2:free
+                                        - open-router-moonshotai/kimi-k2-0905
+                                        - open-router-qwen/qwen3-30b-a3b-thinking-2507
+                                        - open-router-nousresearch/hermes-4-70b
+                                        - open-router-nousresearch/hermes-4-405b
+                                        - open-router-deepseek/deepseek-chat-v3.1
+                                        - open-router-mistralai/mistral-medium-3.1
+                                        - open-router-z-ai/glm-4.5v
+                                        - open-router-ai21/jamba-large-1.7
+                                        - open-router-openai/gpt-5-chat
+                                        - open-router-openai/gpt-5
+                                        - open-router-openai/gpt-5-mini
+                                        - open-router-openai/gpt-5-nano
+                                        - open-router-openai/gpt-oss-120b:free
+                                        - open-router-openai/gpt-oss-120b
+                                        - open-router-openai/gpt-oss-20b:free
+                                        - open-router-openai/gpt-oss-20b
+                                        - open-router-anthropic/claude-opus-4.1
+                                        - open-router-mistralai/codestral-2508
+                                        - open-router-qwen/qwen3-coder-30b-a3b-instruct
+                                        - open-router-qwen/qwen3-30b-a3b-instruct-2507
+                                        - open-router-z-ai/glm-4.5
+                                        - open-router-z-ai/glm-4.5-air
+                                        - open-router-qwen/qwen3-235b-a22b-thinking-2507
+                                        - open-router-qwen/qwen3-coder:free
+                                        - open-router-qwen/qwen3-coder
+                                        - open-router-bytedance/ui-tars-1.5-7b
+                                        - open-router-google/gemini-2.5-flash-lite
+                                        - open-router-qwen/qwen3-235b-a22b-2507
+                                        - open-router-moonshotai/kimi-k2
+                                        - open-router-cognitivecomputations/dolphin-mistral-24b-venice-edition:free
+                                        - open-router-cognitivecomputations/dolphin-mistral-24b-venice-edition
+                                        - open-router-tencent/hunyuan-a13b-instruct
+                                        - open-router-morph/morph-v3-large
+                                        - open-router-morph/morph-v3-fast
+                                        - open-router-baidu/ernie-4.5-vl-424b-a47b
+                                        - open-router-mistralai/mistral-small-3.2-24b-instruct
+                                        - open-router-minimax/minimax-m1
+                                        - open-router-google/gemini-2.5-flash
+                                        - open-router-google/gemini-2.5-pro
+                                        - open-router-openai/o3-pro
+                                        - open-router-google/gemini-2.5-pro-preview
+                                        - open-router-deepseek/deepseek-r1-0528
+                                        - open-router-anthropic/claude-opus-4
+                                        - open-router-anthropic/claude-sonnet-4
+                                        - open-router-google/gemma-3n-e4b-it
+                                        - open-router-mistralai/mistral-medium-3
+                                        - open-router-google/gemini-2.5-pro-preview-05-06
+                                        - open-router-arcee-ai/virtuoso-large
+                                        - open-router-arcee-ai/coder-large
+                                        - open-router-meta-llama/llama-guard-4-12b
+                                        - open-router-qwen/qwen3-30b-a3b
+                                        - open-router-qwen/qwen3-8b
+                                        - open-router-qwen/qwen3-14b
+                                        - open-router-qwen/qwen3-32b
+                                        - open-router-qwen/qwen3-235b-a22b
+                                        - open-router-openai/o4-mini-high
+                                        - open-router-openai/o3
+                                        - open-router-openai/o4-mini
+                                        - open-router-openai/gpt-4.1
+                                        - open-router-openai/gpt-4.1-mini
+                                        - open-router-openai/gpt-4.1-nano
+                                        - open-router-meta-llama/llama-4-maverick
+                                        - open-router-meta-llama/llama-4-scout
+                                        - open-router-deepseek/deepseek-chat-v3-0324
+                                        - open-router-openai/o1-pro
+                                        - open-router-mistralai/mistral-small-3.1-24b-instruct
+                                        - open-router-google/gemma-3-4b-it
+                                        - open-router-google/gemma-3-12b-it
+                                        - open-router-cohere/command-a
+                                        - open-router-openai/gpt-4o-mini-search-preview
+                                        - open-router-openai/gpt-4o-search-preview
+                                        - open-router-rekaai/reka-flash-3
+                                        - open-router-google/gemma-3-27b-it
+                                        - open-router-thedrummer/skyfall-36b-v2
+                                        - open-router-perplexity/sonar-reasoning-pro
+                                        - open-router-perplexity/sonar-pro
+                                        - open-router-perplexity/sonar-deep-research
+                                        - open-router-mistralai/mistral-saba
+                                        - open-router-openai/o3-mini-high
+                                        - open-router-aion-labs/aion-rp-llama-3.1-8b
+                                        - open-router-qwen/qwen2.5-vl-72b-instruct
+                                        - open-router-qwen/qwen-plus
+                                        - open-router-openai/o3-mini
+                                        - open-router-mistralai/mistral-small-24b-instruct-2501
+                                        - open-router-perplexity/sonar
+                                        - open-router-deepseek/deepseek-r1-distill-llama-70b
+                                        - open-router-deepseek/deepseek-r1
+                                        - open-router-minimax/minimax-01
+                                        - open-router-microsoft/phi-4
+                                        - open-router-sao10k/l3.1-70b-hanami-x1
+                                        - open-router-deepseek/deepseek-chat
+                                        - open-router-sao10k/l3.3-euryale-70b
+                                        - open-router-openai/o1
+                                        - open-router-cohere/command-r7b-12-2024
+                                        - open-router-meta-llama/llama-3.3-70b-instruct:free
+                                        - open-router-meta-llama/llama-3.3-70b-instruct
+                                        - open-router-amazon/nova-lite-v1
+                                        - open-router-amazon/nova-micro-v1
+                                        - open-router-amazon/nova-pro-v1
+                                        - open-router-openai/gpt-4o-2024-11-20
+                                        - open-router-mistralai/mistral-large-2407
+                                        - open-router-qwen/qwen-2.5-coder-32b-instruct
+                                        - open-router-thedrummer/unslopnemo-12b
+                                        - open-router-anthracite-org/magnum-v4-72b
+                                        - open-router-qwen/qwen-2.5-7b-instruct
+                                        - open-router-inflection/inflection-3-productivity
+                                        - open-router-inflection/inflection-3-pi
+                                        - open-router-thedrummer/rocinante-12b
+                                        - open-router-meta-llama/llama-3.2-1b-instruct
+                                        - open-router-meta-llama/llama-3.2-11b-vision-instruct
+                                        - open-router-meta-llama/llama-3.2-3b-instruct:free
+                                        - open-router-meta-llama/llama-3.2-3b-instruct
+                                        - open-router-qwen/qwen-2.5-72b-instruct
+                                        - open-router-cohere/command-r-08-2024
+                                        - open-router-cohere/command-r-plus-08-2024
+                                        - open-router-sao10k/l3.1-euryale-70b
+                                        - open-router-nousresearch/hermes-3-llama-3.1-70b
+                                        - open-router-nousresearch/hermes-3-llama-3.1-405b:free
+                                        - open-router-nousresearch/hermes-3-llama-3.1-405b
+                                        - open-router-sao10k/l3-lunaris-8b
+                                        - open-router-openai/gpt-4o-2024-08-06
+                                        - open-router-meta-llama/llama-3.1-8b-instruct
+                                        - open-router-meta-llama/llama-3.1-70b-instruct
+                                        - open-router-mistralai/mistral-nemo
+                                        - open-router-openai/gpt-4o-mini-2024-07-18
+                                        - open-router-openai/gpt-4o-mini
+                                        - open-router-google/gemma-2-27b-it
+                                        - open-router-openai/gpt-4o-2024-05-13
+                                        - open-router-openai/gpt-4o
+                                        - open-router-mistralai/mixtral-8x22b-instruct
+                                        - open-router-microsoft/wizardlm-2-8x22b
+                                        - open-router-openai/gpt-4-turbo
+                                        - open-router-anthropic/claude-3-haiku
+                                        - open-router-mistralai/mistral-large
+                                        - open-router-openai/gpt-3.5-turbo-0613
+                                        - open-router-openai/gpt-4-turbo-preview
+                                        - open-router-openai/gpt-3.5-turbo-instruct
+                                        - open-router-openai/gpt-3.5-turbo-16k
+                                        - open-router-mancer/weaver
+                                        - open-router-undi95/remm-slerp-l2-13b
+                                        - open-router-gryphe/mythomax-l2-13b
+                                        - open-router-openai/gpt-4
+                                        - open-router-openai/gpt-3.5-turbo
+                                        - azure-openai
+                                        - azure-openai-gpt-4o-mini
+                                        - azure-openai-gpt-4o
+                                        - azure-openai-gpt-4.1
+                                        - azure-openai-gpt-4.1-mini
+                                        - azure-openai-gpt-4.1-nano
+                                        - azure-openai-o1
+                                        - azure-openai-o3-mini
+                                        - azure-openai-o3
+                                        - azure-openai-o4-mini
+                                        - azure-openai-o3-pro
+                                        - azure-openai-gpt-5
+                                        - azure-openai-gpt-5-mini
+                                        - azure-openai-gpt-5-nano
+                                        - azure-openai-gpt-5-pro
+                                        - azure-openai-gpt-5.1
+                                        - azure-openai-gpt-5.2
+                                        - azure-openai-gpt-5.2-pro
+                                        - bedrock-anthropic.claude-3-opus-20240229-v1:0
+                                        - bedrock-anthropic.claude-3-sonnet-20240229-v1:0
+                                        - bedrock-anthropic.claude-3-haiku-20240307-v1:0
+                                        - bedrock-anthropic.claude-3-5-haiku-20241022-v1:0
+                                        - bedrock-anthropic.claude-haiku-4-5-20251001-v1:0
+                                        - bedrock-anthropic.claude-3-5-sonnet-20241022-v2:0
+                                        - bedrock-anthropic.claude-3-5-sonnet-20240620-v1:0
+                                        - bedrock-anthropic.claude-3-7-sonnet-20250219-v1:0
+                                        - bedrock-anthropic.claude-sonnet-4-20250514-v1:0
+                                        - bedrock-anthropic.claude-sonnet-4-20250514-v1:0-context-1m
+                                        - bedrock-anthropic.claude-sonnet-4-5-20250929-v1:0
+                                        - bedrock-anthropic.claude-sonnet-4-5-20250929-v1:0-context-1m
+                                        - bedrock-anthropic.claude-opus-4-20250514-v1:0
+                                        - bedrock-anthropic.claude-opus-4-1-20250805-v1:0
+                                        - bedrock-anthropic.claude-opus-4-5-20251101-v1:0
+                                        - bedrock-anthropic.claude-opus-4-6-v1
+                                        - bedrock-anthropic.claude-opus-4-7
+                                        - bedrock-anthropic.claude-sonnet-4-6
+                                        - gcp-vertex-ai-claude-3-haiku@20240307
+                                        - gcp-vertex-ai-claude-3-5-haiku@20241022
+                                        - gcp-vertex-ai-claude-haiku-4-5@20251001
+                                        - gcp-vertex-ai-claude-3-5-sonnet@20240620
+                                        - gcp-vertex-ai-claude-3-5-sonnet-v2@20241022
+                                        - gcp-vertex-ai-claude-3-7-sonnet@20250219
+                                        - gcp-vertex-ai-claude-sonnet-4@20250514
+                                        - gcp-vertex-ai-claude-sonnet-4-5@20250929
+                                        - gcp-vertex-ai-claude-opus-4@20250514
+                                        - gcp-vertex-ai-claude-opus-4-1@20250805
+                                        - gcp-vertex-ai-claude-opus-4-5@20251101
+                                        - gcp-vertex-ai-claude-opus-4-6
+                                        - gcp-vertex-ai-claude-opus-4-7
+                                        - gcp-vertex-ai-claude-sonnet-4-6
+                                        - relevance-performance-optimized
+                                        - relevance-cost-optimized
+                                        description: The model to use for the simulation.
+                                    required:
+                                    - is_simulated
+                                    additionalProperties: false
+                                additionalProperties: false
+                              action_config_overrides:
+                                type: object
+                                properties:
+                                  action_behaviour:
+                                    type: string
+                                  action_retry_config:
+                                    type: object
+                                    properties:
+                                      max_retries:
+                                        type: number
+                                      force_retry:
+                                        type: boolean
+                                      after_retries_behaviour:
+                                        type: string
+                                        enum:
+                                        - terminate-conversation
+                                        - ask-for-approval
+                                    additionalProperties: false
+                                  agent_decide_prompt:
+                                    type: string
+                                    description: This prompt guides the agent's decision on whether or not approval is required to execute the tool.
+                                  conditional_approval_rules:
+                                    type: object
+                                    properties:
+                                      max_auto_approvals:
+                                        type: number
+                                      max_approvals_asked:
+                                        type: number
+                                    additionalProperties: false
+                                additionalProperties: false
+                            additionalProperties: false
+                      additionalProperties: false
+                additionalProperties: false
+              deleted_date: {}
+            required:
+            - insert_date_
+            - update_date
+            - project
+            - _id
+            - feature
+            - collection_id
+            - document_id
+            - data
+      required:
+      - results
+      additionalProperties: false
+    GetAgentDebugConfigsOutput:
+      type: object
+      properties:
+        insert_date_: {}
+        update_date: {}
+        expiry_date_: {}
+        project:
+          type: string
+        _id:
+          type: string
+        feature:
+          type: string
+        collection_id:
+          type: string
+        document_id:
+          type: string
+        data:
+          type: object
+          properties:
+            tool_configs:
+              type: object
+              description: Mapping from tool action_id => override config
+              additionalProperties:
+                type: object
+                properties:
+                  overrides:
+                    type: object
+                    description: 0-indexed mapping from tool run of this specific tool to the overrides. Use `'default'` to set the default overrides for all runs of this tool.
+                    additionalProperties:
+                      type: object
+                      properties:
+                        input_overrides_enabled:
+                          type: boolean
+                        input_overrides:
+                          type: object
+                        input_override_settings:
+                          type: object
+                          properties:
+                            simulate_missing_fixed_params:
+                              type: boolean
+                            content_types_to_make_optional:
+                              type: array
+                              items:
+                                type: string
+                                enum:
+                                - json
+                                - json_list
+                                - long_text
+                                - short_text
+                                - file_url
+                                - file_urls
+                                - llm_prompt
+                                - speech
+                                - code
+                                - dataset_id
+                                - knowledge_set
+                                - markdown
+                                - chain_id
+                                - chain_params
+                                - replicate_model_params
+                                - apify_actor_params
+                                - fal_model_params
+                                - file_to_text
+                                - file_to_text_llm_friendly
+                                - memory_optimizer
+                                - memory
+                                - table
+                                - agent_id
+                                - api_key
+                                - key_value_input
+                                - knowledge_editor
+                                - oauth_account
+                                - datetime
+                                - api_selector
+                                - single_dependent_selector
+                                - dependent_api_selector
+                                - llm_model_selector
+                                - colour_picker
+                                - conditional
+                                - external_field
+                                - tool_approval
+                                - componentized_json_array
+                                - project_key_indicator
+                          additionalProperties: false
+                        output_overrides_enabled:
+                          type: boolean
+                        output_overrides:
+                          type: object
+                          properties:
+                            output:
+                              type: object
+                              description: Directly specify the output of the tool.
+                            simulate_output:
+                              type: object
+                              description: Simulate the output of the tool using an LLM instead of calling the actual tool.
+                              properties:
+                                is_simulated:
+                                  type: boolean
+                                  description: If true, the agent will be run in simulation mode. This will not run the tool, but will instead run an LLM simulated version of the tool.
+                                simulation_prompt:
+                                  type: string
+                                  description: The prompt to use for the simulation. If not provided, the tool will use a default prompt.
+                                model:
+                                  type: string
+                                  enum:
+                                  - openai-gpt-4o
+                                  - openai-gpt-4o-2024-08-06
+                                  - gpt-4o-2024-11-20
+                                  - openai-gpt-4o-mini
+                                  - openai-gpt-4o-mini-2024-07-18
+                                  - openai-o1-latest
+                                  - openai-o1-2024-12-17
+                                  - openai-o3
+                                  - openai-o3-2025-04-16
+                                  - openai-o3-mini
+                                  - openai-o3-mini-2025-01-31
+                                  - openai-o4-mini
+                                  - openai-o4-mini-2025-04-16
+                                  - openai-gpt-4.1
+                                  - openai-gpt-4.1-2025-04-14
+                                  - openai-gpt-4.1-mini
+                                  - openai-gpt-4.1-mini-2025-04-14
+                                  - openai-gpt-4.1-nano
+                                  - openai-gpt-4.1-nano-2025-04-14
+                                  - openai-o3-pro
+                                  - openai-o3-pro-2025-06-10
+                                  - openai-gpt-4o-mini-realtime-preview-2024-12-17
+                                  - openai-gpt-realtime-2025-08-28
+                                  - openai-gpt-5
+                                  - openai-gpt-5-mini
+                                  - openai-gpt-5-nano
+                                  - openai-gpt-5-pro
+                                  - openai-gpt-5.1
+                                  - openai-gpt-5.2
+                                  - openai-gpt-5.2-pro
+                                  - openai-gpt-5.4
+                                  - openai-gpt-5.5
+                                  - openai-gpt-5.5-2026-04-23
+                                  - openai-gpt-5.5-pro
+                                  - openai-gpt-5.5-pro-2026-04-23
+                                  - openai-gpt-5.6
+                                  - openai-gpt-5.6-luna
+                                  - openai-gpt-5.6-terra
+                                  - openai-gpt-5.6-sol
+                                  - openai-gpt-5.4-pro
+                                  - openai-gpt-5.4-mini
+                                  - openai-gpt-5.4-nano
+                                  - openai-gpt-oss-120b-bedrock
+                                  - openai-gpt-oss-20b-bedrock
+                                  - anthropic-claude-haiku-4-5
+                                  - anthropic-claude-sonnet-4-5
+                                  - anthropic-claude-sonnet-4-6
+                                  - anthropic-claude-sonnet-4-6-context-1m
+                                  - anthropic-claude-sonnet-5
+                                  - anthropic-claude-opus-4-20250514
+                                  - anthropic-claude-opus-4-1
+                                  - anthropic-claude-opus-4-1-20250805
+                                  - anthropic-claude-opus-4-5
+                                  - anthropic-claude-opus-4-6
+                                  - anthropic-claude-opus-4-6-context-1m
+                                  - anthropic-claude-opus-4-7
+                                  - anthropic-claude-opus-4-8
+                                  - anthropic-claude-opus-5
+                                  - anthropic-claude-fable-5
+                                  - claude-v3-vision
+                                  - google-gemini-2.5-pro
+                                  - google-gemini-2.5-flash
+                                  - google-gemini-2.5-flash-lite
+                                  - google-gemini-3-flash-preview
+                                  - google-gemini-3.6-flash
+                                  - google-gemini-3.5-flash
+                                  - google-gemini-3.5-flash-lite
+                                  - google-gemini-3.1-pro-preview
+                                  - open-router
+                                  - pplx-sonar-reasoning-pro
+                                  - pplx-sonar-reasoning
+                                  - pplx-sonar-pro
+                                  - pplx-sonar
+                                  - pplx-r1-1776
+                                  - cohere-command-light
+                                  - cohere-command-light-nightly
+                                  - cohere-command
+                                  - cohere-command-nightly
+                                  - cohere-command-r
+                                  - cohere-command-r-plus
+                                  - cohere-command-a
+                                  - fast-mixtral-8x7b
+                                  - fast-llama3-8b
+                                  - fast-llama3-70b
+                                  - fast-llama-3.1-8b
+                                  - fast-llama-3.3-70b
+                                  - fast-gemma-7b-it
+                                  - fast-gemma-2-9b-it
+                                  - fast-kimi-k2
+                                  - fast-qwen-3-32b
+                                  - replicate-llava13b
+                                  - replicate-qwen
+                                  - clarifai-llama-3_2-3b-instruct
+                                  - xai-grok-3-mini-latest
+                                  - xai-grok-3-latest
+                                  - xai-grok-4-latest
+                                  - xai-grok-4-0709
+                                  - xai-grok-4-fast-non-reasoning
+                                  - xai-grok-4-fast-reasoning
+                                  - xai-grok-code-fast-1
+                                  - xai-grok-4-1-fast-non-reasoning
+                                  - xai-grok-4-1-fast-reasoning
+                                  - openai-gpt35
+                                  - openai-gpt35-16k
+                                  - openai-gpt35-0613
+                                  - openai-gpt35-1106
+                                  - openai-gpt4
+                                  - openai-gpt4-32k-0613
+                                  - openai-gpt4-0613
+                                  - openai-gpt4-1106
+                                  - openai-gpt4-0125
+                                  - openai-gpt4-turbo-2024-04-09
+                                  - openai-gpt-4.5-preview-2025-02-27
+                                  - openai-gpt-4.5-preview
+                                  - openai-o1-preview
+                                  - openai-o1-preview-2024-09-12
+                                  - openai-o1-mini
+                                  - openai-o1-mini-2024-09-12
+                                  - openai-gpt4v
+                                  - openai-gpt-4o-realtime-preview-2024-12-17
+                                  - anthropic-claude-v21
+                                  - anthropic-claude-v2
+                                  - anthropic-claude-instant-v1
+                                  - anthropic-claude-v1
+                                  - anthropic-claude-instant-v1-100k
+                                  - anthropic-claude-v1-100k
+                                  - anthropic-claude-v3-haiku
+                                  - anthropic-claude-v35-haiku
+                                  - anthropic-claude-v35-haiku-20241022
+                                  - anthropic-claude-v3-sonnet
+                                  - anthropic-claude-v35-sonnet
+                                  - anthropic-claude-v35-sonnet-20241022
+                                  - anthropic-claude-v35-sonnet-20240620
+                                  - anthropic-claude-3-7-sonnet-20250219
+                                  - anthropic-claude-3-7-sonnet
+                                  - anthropic-claude-v3-opus
+                                  - anthropic-claude-opus-4
+                                  - litellm-bedrock
+                                  - pplx-70b-chat
+                                  - pplx-llama-3-8b-instruct
+                                  - pplx-llama-3-70b-instruct
+                                  - pplx-mixtral-8x7b-instruct
+                                  - pplx-llama-3-sonar-small-32k-chat
+                                  - pplx-llama-3-sonar-small-32k-online
+                                  - pplx-llama-3-sonar-large-32k-chat
+                                  - pplx-llama-3-sonar-large-32k-online
+                                  - pplx-llama-3.1-sonar-small-128k-online
+                                  - pplx-llama-3.1-sonar-large-128k-online
+                                  - pplx-llama-3.1-sonar-huge-128k-online
+                                  - pplx-llama-3.1-sonar-small-128k-chat
+                                  - pplx-llama-3.1-sonar-large-128k-chat
+                                  - pplx-llama-3.1-8b-instruct
+                                  - pplx-llama-3.1-70b-instruct
+                                  - google-gemini
+                                  - google-gemini-15
+                                  - google-gemini-15-flash
+                                  - google-gemini-1.5-pro-001
+                                  - google-gemini-1.5-flash-001
+                                  - google-gemini-2.0-flash-exp
+                                  - google-gemini-2.0-flash-lite-preview-02-05
+                                  - google-gemini-2.0-pro-exp-02-05
+                                  - google-gemini-2.5-pro-exp-03-25
+                                  - google-gemini-2.5-pro-preview-03-25
+                                  - google-gemini-2.5-pro-preview-05-06
+                                  - google-gemini-2.5-pro-preview-06-05
+                                  - google-gemini-2.5-flash-preview-04-17
+                                  - google-gemini-2.5-flash-preview-05-20
+                                  - gemini-vision
+                                  - google-gemini-2.5-flash-lite-preview-06-17
+                                  - google-gemini-3-pro-preview
+                                  - google-gemini-2.0-flash
+                                  - google-gemini-2.0-flash-lite-001
+                                  - fireworks-mistral-7b
+                                  - fireworks-function-calling-34b
+                                  - anthropic-claude-sonnet-4
+                                  - anthropic-claude-sonnet-4-20250514
+                                  - anthropic-claude-sonnet-4-20250514-context-1m
+                                  - anthropic-claude-sonnet-4-5-context-1m
+                                  - open-router-openai/gpt-5.6-luna-pro
+                                  - open-router-openai/gpt-5.6-luna
+                                  - open-router-openai/gpt-5.6-terra-pro
+                                  - open-router-openai/gpt-5.6-terra
+                                  - open-router-openai/gpt-5.6-sol-pro
+                                  - open-router-openai/gpt-5.6-sol
+                                  - open-router-x-ai/grok-4.5
+                                  - open-router-~x-ai/grok-latest
+                                  - open-router-aion-labs/aion-3.0-mini
+                                  - open-router-aion-labs/aion-3.0
+                                  - open-router-tencent/hy3:free
+                                  - open-router-tencent/hy3
+                                  - open-router-poolside/laguna-xs-2.1:free
+                                  - open-router-poolside/laguna-xs-2.1
+                                  - open-router-anthropic/claude-sonnet-5
+                                  - open-router-google/gemini-3.1-flash-lite-image
+                                  - open-router-nex-agi/nex-n2-mini
+                                  - open-router-sakana/fugu-ultra
+                                  - open-router-google/gemini-3.1-flash-image
+                                  - open-router-google/gemini-3-pro-image
+                                  - open-router-cohere/north-mini-code:free
+                                  - open-router-z-ai/glm-5.2
+                                  - open-router-openrouter/fusion
+                                  - open-router-moonshotai/kimi-k2.7-code
+                                  - open-router-~anthropic/claude-fable-latest
+                                  - open-router-anthropic/claude-fable-5
+                                  - open-router-nex-agi/nex-n2-pro
+                                  - open-router-nvidia/nemotron-3.5-content-safety:free
+                                  - open-router-nvidia/nemotron-3-ultra-550b-a55b:free
+                                  - open-router-nvidia/nemotron-3-ultra-550b-a55b
+                                  - open-router-qwen/qwen3.7-plus
+                                  - open-router-minimax/minimax-m3
+                                  - open-router-stepfun/step-3.7-flash
+                                  - open-router-anthropic/claude-opus-4.8-fast
+                                  - open-router-anthropic/claude-opus-4.8
+                                  - open-router-qwen/qwen3.7-max
+                                  - open-router-x-ai/grok-build-0.1
+                                  - open-router-google/gemini-3.5-flash
+                                  - open-router-anthropic/claude-opus-4.7-fast
+                                  - open-router-perceptron/perceptron-mk1
+                                  - open-router-inclusionai/ring-2.6-1t
+                                  - open-router-google/gemini-3.1-flash-lite
+                                  - open-router-openai/gpt-chat-latest
+                                  - open-router-x-ai/grok-4.3
+                                  - open-router-ibm-granite/granite-4.1-8b
+                                  - open-router-mistralai/mistral-medium-3-5
+                                  - open-router-nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free
+                                  - open-router-poolside/laguna-m.1:free
+                                  - open-router-poolside/laguna-m.1
+                                  - open-router-~anthropic/claude-haiku-latest
+                                  - open-router-~openai/gpt-mini-latest
+                                  - open-router-~google/gemini-pro-latest
+                                  - open-router-~moonshotai/kimi-latest
+                                  - open-router-~google/gemini-flash-latest
+                                  - open-router-~anthropic/claude-sonnet-latest
+                                  - open-router-~openai/gpt-latest
+                                  - open-router-qwen/qwen3.5-plus-20260420
+                                  - open-router-qwen/qwen3.6-flash
+                                  - open-router-qwen/qwen3.6-35b-a3b
+                                  - open-router-qwen/qwen3.6-max-preview
+                                  - open-router-qwen/qwen3.6-27b
+                                  - open-router-openai/gpt-5.5-pro
+                                  - open-router-openai/gpt-5.5
+                                  - open-router-deepseek/deepseek-v4-pro
+                                  - open-router-deepseek/deepseek-v4-flash
+                                  - open-router-inclusionai/ling-2.6-1t
+                                  - open-router-tencent/hy3-preview
+                                  - open-router-xiaomi/mimo-v2.5-pro
+                                  - open-router-xiaomi/mimo-v2.5
+                                  - open-router-openai/gpt-5.4-image-2
+                                  - open-router-inclusionai/ling-2.6-flash
+                                  - open-router-~anthropic/claude-opus-latest
+                                  - open-router-openrouter/pareto-code
+                                  - open-router-moonshotai/kimi-k2.6
+                                  - open-router-anthropic/claude-opus-4.7
+                                  - open-router-z-ai/glm-5.1
+                                  - open-router-google/gemma-4-26b-a4b-it:free
+                                  - open-router-google/gemma-4-26b-a4b-it
+                                  - open-router-google/gemma-4-31b-it:free
+                                  - open-router-google/gemma-4-31b-it
+                                  - open-router-qwen/qwen3.6-plus
+                                  - open-router-z-ai/glm-5v-turbo
+                                  - open-router-arcee-ai/trinity-large-thinking
+                                  - open-router-x-ai/grok-4.20-multi-agent
+                                  - open-router-x-ai/grok-4.20
+                                  - open-router-google/lyria-3-pro-preview
+                                  - open-router-google/lyria-3-clip-preview
+                                  - open-router-kwaipilot/kat-coder-pro-v2
+                                  - open-router-rekaai/reka-edge
+                                  - open-router-minimax/minimax-m2.7
+                                  - open-router-openai/gpt-5.4-nano
+                                  - open-router-openai/gpt-5.4-mini
+                                  - open-router-mistralai/mistral-small-2603
+                                  - open-router-z-ai/glm-5-turbo
+                                  - open-router-nvidia/nemotron-3-super-120b-a12b:free
+                                  - open-router-nvidia/nemotron-3-super-120b-a12b
+                                  - open-router-bytedance-seed/seed-2.0-lite
+                                  - open-router-qwen/qwen3.5-9b
+                                  - open-router-openai/gpt-5.4-pro
+                                  - open-router-openai/gpt-5.4
+                                  - open-router-inception/mercury-2
+                                  - open-router-openai/gpt-5.3-chat
+                                  - open-router-google/gemini-3.1-flash-lite-preview
+                                  - open-router-bytedance-seed/seed-2.0-mini
+                                  - open-router-google/gemini-3.1-flash-image-preview
+                                  - open-router-qwen/qwen3.5-35b-a3b
+                                  - open-router-qwen/qwen3.5-27b
+                                  - open-router-qwen/qwen3.5-122b-a10b
+                                  - open-router-qwen/qwen3.5-flash-02-23
+                                  - open-router-google/gemini-3.1-pro-preview-customtools
+                                  - open-router-openai/gpt-5.3-codex
+                                  - open-router-aion-labs/aion-2.0
+                                  - open-router-google/gemini-3.1-pro-preview
+                                  - open-router-anthropic/claude-sonnet-4.6
+                                  - open-router-qwen/qwen3.5-plus-02-15
+                                  - open-router-qwen/qwen3.5-397b-a17b
+                                  - open-router-minimax/minimax-m2.5
+                                  - open-router-z-ai/glm-5
+                                  - open-router-qwen/qwen3-max-thinking
+                                  - open-router-anthropic/claude-opus-4.6
+                                  - open-router-qwen/qwen3-coder-next
+                                  - open-router-openrouter/free
+                                  - open-router-stepfun/step-3.5-flash
+                                  - open-router-moonshotai/kimi-k2.5
+                                  - open-router-upstage/solar-pro-3
+                                  - open-router-minimax/minimax-m2-her
+                                  - open-router-writer/palmyra-x5
+                                  - open-router-liquid/lfm-2.5-1.2b-thinking:free
+                                  - open-router-liquid/lfm-2.5-1.2b-instruct:free
+                                  - open-router-openai/gpt-audio
+                                  - open-router-openai/gpt-audio-mini
+                                  - open-router-z-ai/glm-4.7-flash
+                                  - open-router-openai/gpt-5.2-codex
+                                  - open-router-bytedance-seed/seed-1.6-flash
+                                  - open-router-bytedance-seed/seed-1.6
+                                  - open-router-minimax/minimax-m2.1
+                                  - open-router-z-ai/glm-4.7
+                                  - open-router-google/gemini-3-flash-preview
+                                  - open-router-nvidia/nemotron-3-nano-30b-a3b:free
+                                  - open-router-nvidia/nemotron-3-nano-30b-a3b
+                                  - open-router-openai/gpt-5.2-chat
+                                  - open-router-openai/gpt-5.2-pro
+                                  - open-router-openai/gpt-5.2
+                                  - open-router-mistralai/devstral-2512
+                                  - open-router-relace/relace-search
+                                  - open-router-z-ai/glm-4.6v
+                                  - open-router-openrouter/bodybuilder
+                                  - open-router-openai/gpt-5.1-codex-max
+                                  - open-router-amazon/nova-2-lite-v1
+                                  - open-router-mistralai/ministral-14b-2512
+                                  - open-router-mistralai/ministral-8b-2512
+                                  - open-router-mistralai/ministral-3b-2512
+                                  - open-router-mistralai/mistral-large-2512
+                                  - open-router-deepseek/deepseek-v3.2
+                                  - open-router-anthropic/claude-opus-4.5
+                                  - open-router-allenai/olmo-3-32b-think
+                                  - open-router-google/gemini-3-pro-image-preview
+                                  - open-router-deepcogito/cogito-v2.1-671b
+                                  - open-router-openai/gpt-5.1
+                                  - open-router-openai/gpt-5.1-chat
+                                  - open-router-openai/gpt-5.1-codex
+                                  - open-router-openai/gpt-5.1-codex-mini
+                                  - open-router-moonshotai/kimi-k2-thinking
+                                  - open-router-amazon/nova-premier-v1
+                                  - open-router-perplexity/sonar-pro-search
+                                  - open-router-mistralai/voxtral-small-24b-2507
+                                  - open-router-openai/gpt-oss-safeguard-20b
+                                  - open-router-nvidia/nemotron-nano-12b-v2-vl:free
+                                  - open-router-minimax/minimax-m2
+                                  - open-router-qwen/qwen3-vl-32b-instruct
+                                  - open-router-ibm-granite/granite-4.0-h-micro
+                                  - open-router-openai/gpt-5-image-mini
+                                  - open-router-anthropic/claude-haiku-4.5
+                                  - open-router-qwen/qwen3-vl-8b-thinking
+                                  - open-router-qwen/qwen3-vl-8b-instruct
+                                  - open-router-openai/gpt-5-image
+                                  - open-router-openai/o3-deep-research
+                                  - open-router-openai/o4-mini-deep-research
+                                  - open-router-nvidia/llama-3.3-nemotron-super-49b-v1.5
+                                  - open-router-google/gemini-2.5-flash-image
+                                  - open-router-qwen/qwen3-vl-30b-a3b-thinking
+                                  - open-router-qwen/qwen3-vl-30b-a3b-instruct
+                                  - open-router-openai/gpt-5-pro
+                                  - open-router-z-ai/glm-4.6
+                                  - open-router-anthropic/claude-sonnet-4.5
+                                  - open-router-deepseek/deepseek-v3.2-exp
+                                  - open-router-thedrummer/cydonia-24b-v4.1
+                                  - open-router-relace/relace-apply-3
+                                  - open-router-qwen/qwen3-vl-235b-a22b-thinking
+                                  - open-router-qwen/qwen3-vl-235b-a22b-instruct
+                                  - open-router-qwen/qwen3-max
+                                  - open-router-qwen/qwen3-coder-plus
+                                  - open-router-openai/gpt-5-codex
+                                  - open-router-deepseek/deepseek-v3.1-terminus
+                                  - open-router-qwen/qwen3-coder-flash
+                                  - open-router-qwen/qwen3-next-80b-a3b-thinking
+                                  - open-router-qwen/qwen3-next-80b-a3b-instruct:free
+                                  - open-router-qwen/qwen3-next-80b-a3b-instruct
+                                  - open-router-qwen/qwen-plus-2025-07-28:thinking
+                                  - open-router-qwen/qwen-plus-2025-07-28
+                                  - open-router-nvidia/nemotron-nano-9b-v2:free
+                                  - open-router-moonshotai/kimi-k2-0905
+                                  - open-router-qwen/qwen3-30b-a3b-thinking-2507
+                                  - open-router-nousresearch/hermes-4-70b
+                                  - open-router-nousresearch/hermes-4-405b
+                                  - open-router-deepseek/deepseek-chat-v3.1
+                                  - open-router-mistralai/mistral-medium-3.1
+                                  - open-router-z-ai/glm-4.5v
+                                  - open-router-ai21/jamba-large-1.7
+                                  - open-router-openai/gpt-5-chat
+                                  - open-router-openai/gpt-5
+                                  - open-router-openai/gpt-5-mini
+                                  - open-router-openai/gpt-5-nano
+                                  - open-router-openai/gpt-oss-120b:free
+                                  - open-router-openai/gpt-oss-120b
+                                  - open-router-openai/gpt-oss-20b:free
+                                  - open-router-openai/gpt-oss-20b
+                                  - open-router-anthropic/claude-opus-4.1
+                                  - open-router-mistralai/codestral-2508
+                                  - open-router-qwen/qwen3-coder-30b-a3b-instruct
+                                  - open-router-qwen/qwen3-30b-a3b-instruct-2507
+                                  - open-router-z-ai/glm-4.5
+                                  - open-router-z-ai/glm-4.5-air
+                                  - open-router-qwen/qwen3-235b-a22b-thinking-2507
+                                  - open-router-qwen/qwen3-coder:free
+                                  - open-router-qwen/qwen3-coder
+                                  - open-router-bytedance/ui-tars-1.5-7b
+                                  - open-router-google/gemini-2.5-flash-lite
+                                  - open-router-qwen/qwen3-235b-a22b-2507
+                                  - open-router-moonshotai/kimi-k2
+                                  - open-router-cognitivecomputations/dolphin-mistral-24b-venice-edition:free
+                                  - open-router-cognitivecomputations/dolphin-mistral-24b-venice-edition
+                                  - open-router-tencent/hunyuan-a13b-instruct
+                                  - open-router-morph/morph-v3-large
+                                  - open-router-morph/morph-v3-fast
+                                  - open-router-baidu/ernie-4.5-vl-424b-a47b
+                                  - open-router-mistralai/mistral-small-3.2-24b-instruct
+                                  - open-router-minimax/minimax-m1
+                                  - open-router-google/gemini-2.5-flash
+                                  - open-router-google/gemini-2.5-pro
+                                  - open-router-openai/o3-pro
+                                  - open-router-google/gemini-2.5-pro-preview
+                                  - open-router-deepseek/deepseek-r1-0528
+                                  - open-router-anthropic/claude-opus-4
+                                  - open-router-anthropic/claude-sonnet-4
+                                  - open-router-google/gemma-3n-e4b-it
+                                  - open-router-mistralai/mistral-medium-3
+                                  - open-router-google/gemini-2.5-pro-preview-05-06
+                                  - open-router-arcee-ai/virtuoso-large
+                                  - open-router-arcee-ai/coder-large
+                                  - open-router-meta-llama/llama-guard-4-12b
+                                  - open-router-qwen/qwen3-30b-a3b
+                                  - open-router-qwen/qwen3-8b
+                                  - open-router-qwen/qwen3-14b
+                                  - open-router-qwen/qwen3-32b
+                                  - open-router-qwen/qwen3-235b-a22b
+                                  - open-router-openai/o4-mini-high
+                                  - open-router-openai/o3
+                                  - open-router-openai/o4-mini
+                                  - open-router-openai/gpt-4.1
+                                  - open-router-openai/gpt-4.1-mini
+                                  - open-router-openai/gpt-4.1-nano
+                                  - open-router-meta-llama/llama-4-maverick
+                                  - open-router-meta-llama/llama-4-scout
+                                  - open-router-deepseek/deepseek-chat-v3-0324
+                                  - open-router-openai/o1-pro
+                                  - open-router-mistralai/mistral-small-3.1-24b-instruct
+                                  - open-router-google/gemma-3-4b-it
+                                  - open-router-google/gemma-3-12b-it
+                                  - open-router-cohere/command-a
+                                  - open-router-openai/gpt-4o-mini-search-preview
+                                  - open-router-openai/gpt-4o-search-preview
+                                  - open-router-rekaai/reka-flash-3
+                                  - open-router-google/gemma-3-27b-it
+                                  - open-router-thedrummer/skyfall-36b-v2
+                                  - open-router-perplexity/sonar-reasoning-pro
+                                  - open-router-perplexity/sonar-pro
+                                  - open-router-perplexity/sonar-deep-research
+                                  - open-router-mistralai/mistral-saba
+                                  - open-router-openai/o3-mini-high
+                                  - open-router-aion-labs/aion-rp-llama-3.1-8b
+                                  - open-router-qwen/qwen2.5-vl-72b-instruct
+                                  - open-router-qwen/qwen-plus
+                                  - open-router-openai/o3-mini
+                                  - open-router-mistralai/mistral-small-24b-instruct-2501
+                                  - open-router-perplexity/sonar
+                                  - open-router-deepseek/deepseek-r1-distill-llama-70b
+                                  - open-router-deepseek/deepseek-r1
+                                  - open-router-minimax/minimax-01
+                                  - open-router-microsoft/phi-4
+                                  - open-router-sao10k/l3.1-70b-hanami-x1
+                                  - open-router-deepseek/deepseek-chat
+                                  - open-router-sao10k/l3.3-euryale-70b
+                                  - open-router-openai/o1
+                                  - open-router-cohere/command-r7b-12-2024
+                                  - open-router-meta-llama/llama-3.3-70b-instruct:free
+                                  - open-router-meta-llama/llama-3.3-70b-instruct
+                                  - open-router-amazon/nova-lite-v1
+                                  - open-router-amazon/nova-micro-v1
+                                  - open-router-amazon/nova-pro-v1
+                                  - open-router-openai/gpt-4o-2024-11-20
+                                  - open-router-mistralai/mistral-large-2407
+                                  - open-router-qwen/qwen-2.5-coder-32b-instruct
+                                  - open-router-thedrummer/unslopnemo-12b
+                                  - open-router-anthracite-org/magnum-v4-72b
+                                  - open-router-qwen/qwen-2.5-7b-instruct
+                                  - open-router-inflection/inflection-3-productivity
+                                  - open-router-inflection/inflection-3-pi
+                                  - open-router-thedrummer/rocinante-12b
+                                  - open-router-meta-llama/llama-3.2-1b-instruct
+                                  - open-router-meta-llama/llama-3.2-11b-vision-instruct
+                                  - open-router-meta-llama/llama-3.2-3b-instruct:free
+                                  - open-router-meta-llama/llama-3.2-3b-instruct
+                                  - open-router-qwen/qwen-2.5-72b-instruct
+                                  - open-router-cohere/command-r-08-2024
+                                  - open-router-cohere/command-r-plus-08-2024
+                                  - open-router-sao10k/l3.1-euryale-70b
+                                  - open-router-nousresearch/hermes-3-llama-3.1-70b
+                                  - open-router-nousresearch/hermes-3-llama-3.1-405b:free
+                                  - open-router-nousresearch/hermes-3-llama-3.1-405b
+                                  - open-router-sao10k/l3-lunaris-8b
+                                  - open-router-openai/gpt-4o-2024-08-06
+                                  - open-router-meta-llama/llama-3.1-8b-instruct
+                                  - open-router-meta-llama/llama-3.1-70b-instruct
+                                  - open-router-mistralai/mistral-nemo
+                                  - open-router-openai/gpt-4o-mini-2024-07-18
+                                  - open-router-openai/gpt-4o-mini
+                                  - open-router-google/gemma-2-27b-it
+                                  - open-router-openai/gpt-4o-2024-05-13
+                                  - open-router-openai/gpt-4o
+                                  - open-router-mistralai/mixtral-8x22b-instruct
+                                  - open-router-microsoft/wizardlm-2-8x22b
+                                  - open-router-openai/gpt-4-turbo
+                                  - open-router-anthropic/claude-3-haiku
+                                  - open-router-mistralai/mistral-large
+                                  - open-router-openai/gpt-3.5-turbo-0613
+                                  - open-router-openai/gpt-4-turbo-preview
+                                  - open-router-openai/gpt-3.5-turbo-instruct
+                                  - open-router-openai/gpt-3.5-turbo-16k
+                                  - open-router-mancer/weaver
+                                  - open-router-undi95/remm-slerp-l2-13b
+                                  - open-router-gryphe/mythomax-l2-13b
+                                  - open-router-openai/gpt-4
+                                  - open-router-openai/gpt-3.5-turbo
+                                  - azure-openai
+                                  - azure-openai-gpt-4o-mini
+                                  - azure-openai-gpt-4o
+                                  - azure-openai-gpt-4.1
+                                  - azure-openai-gpt-4.1-mini
+                                  - azure-openai-gpt-4.1-nano
+                                  - azure-openai-o1
+                                  - azure-openai-o3-mini
+                                  - azure-openai-o3
+                                  - azure-openai-o4-mini
+                                  - azure-openai-o3-pro
+                                  - azure-openai-gpt-5
+                                  - azure-openai-gpt-5-mini
+                                  - azure-openai-gpt-5-nano
+                                  - azure-openai-gpt-5-pro
+                                  - azure-openai-gpt-5.1
+                                  - azure-openai-gpt-5.2
+                                  - azure-openai-gpt-5.2-pro
+                                  - bedrock-anthropic.claude-3-opus-20240229-v1:0
+                                  - bedrock-anthropic.claude-3-sonnet-20240229-v1:0
+                                  - bedrock-anthropic.claude-3-haiku-20240307-v1:0
+                                  - bedrock-anthropic.claude-3-5-haiku-20241022-v1:0
+                                  - bedrock-anthropic.claude-haiku-4-5-20251001-v1:0
+                                  - bedrock-anthropic.claude-3-5-sonnet-20241022-v2:0
+                                  - bedrock-anthropic.claude-3-5-sonnet-20240620-v1:0
+                                  - bedrock-anthropic.claude-3-7-sonnet-20250219-v1:0
+                                  - bedrock-anthropic.claude-sonnet-4-20250514-v1:0
+                                  - bedrock-anthropic.claude-sonnet-4-20250514-v1:0-context-1m
+                                  - bedrock-anthropic.claude-sonnet-4-5-20250929-v1:0
+                                  - bedrock-anthropic.claude-sonnet-4-5-20250929-v1:0-context-1m
+                                  - bedrock-anthropic.claude-opus-4-20250514-v1:0
+                                  - bedrock-anthropic.claude-opus-4-1-20250805-v1:0
+                                  - bedrock-anthropic.claude-opus-4-5-20251101-v1:0
+                                  - bedrock-anthropic.claude-opus-4-6-v1
+                                  - bedrock-anthropic.claude-opus-4-7
+                                  - bedrock-anthropic.claude-sonnet-4-6
+                                  - gcp-vertex-ai-claude-3-haiku@20240307
+                                  - gcp-vertex-ai-claude-3-5-haiku@20241022
+                                  - gcp-vertex-ai-claude-haiku-4-5@20251001
+                                  - gcp-vertex-ai-claude-3-5-sonnet@20240620
+                                  - gcp-vertex-ai-claude-3-5-sonnet-v2@20241022
+                                  - gcp-vertex-ai-claude-3-7-sonnet@20250219
+                                  - gcp-vertex-ai-claude-sonnet-4@20250514
+                                  - gcp-vertex-ai-claude-sonnet-4-5@20250929
+                                  - gcp-vertex-ai-claude-opus-4@20250514
+                                  - gcp-vertex-ai-claude-opus-4-1@20250805
+                                  - gcp-vertex-ai-claude-opus-4-5@20251101
+                                  - gcp-vertex-ai-claude-opus-4-6
+                                  - gcp-vertex-ai-claude-opus-4-7
+                                  - gcp-vertex-ai-claude-sonnet-4-6
+                                  - relevance-performance-optimized
+                                  - relevance-cost-optimized
+                                  description: The model to use for the simulation.
+                              required:
+                              - is_simulated
+                              additionalProperties: false
+                          additionalProperties: false
+                        action_config_overrides:
+                          type: object
+                          properties:
+                            action_behaviour:
+                              type: string
+                            action_retry_config:
+                              type: object
+                              properties:
+                                max_retries:
+                                  type: number
+                                force_retry:
+                                  type: boolean
+                                after_retries_behaviour:
+                                  type: string
+                                  enum:
+                                  - terminate-conversation
+                                  - ask-for-approval
+                              additionalProperties: false
+                            agent_decide_prompt:
+                              type: string
+                              description: This prompt guides the agent's decision on whether or not approval is required to execute the tool.
+                            conditional_approval_rules:
+                              type: object
+                              properties:
+                                max_auto_approvals:
+                                  type: number
+                                max_approvals_asked:
+                                  type: number
+                              additionalProperties: false
+                          additionalProperties: false
+                      additionalProperties: false
+                additionalProperties: false
+          additionalProperties: false
+        deleted_date: {}
+      required:
+      - insert_date_
+      - update_date
+      - project
+      - _id
+      - feature
+      - collection_id
+      - document_id
+      - data
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

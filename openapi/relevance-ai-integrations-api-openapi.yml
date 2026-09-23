@@ -1,0 +1,141 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Integrations API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Integrations
+paths:
+  /integrations/slack/{account_id}/email/{email}:
+    get:
+      summary: SlackEmailLookup
+      tags:
+      - Integrations
+      description: 'Lookup and validate a slack email
+
+
+        ### Required permissions
+
+        > [
+
+        {
+
+        "actions": [
+
+        "role:reader"
+
+        ]
+
+        }
+
+        ]'
+      operationId: SlackEmailLookup
+      parameters:
+      - name: account_id
+        in: path
+        description: ID of account
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      - name: email
+        in: path
+        description: ID of email
+        required: true
+        schema:
+          type: string
+          maxLength: 240
+          pattern: ^[a-zd._-]+$
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlackEmailLookupOutput'
+  /slack/agents/webhook:
+    post:
+      summary: SlackAgentsWebhook
+      tags:
+      - Integrations
+      description: 'Slack slash command webhook that lists agents triggerable from a channel
+
+
+        ### Required permissions
+
+        > []'
+      operationId: SlackAgentsWebhook
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SlackAgentsWebhookInput'
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SlackAgentsWebhookOutput'
+components:
+  schemas:
+    SlackEmailLookupOutput:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+      required:
+      - id
+      - name
+      additionalProperties: false
+    SlackAgentsWebhookInput:
+      type: object
+      properties:
+        token:
+          type: string
+        team_id:
+          type: string
+        team_domain:
+          type: string
+        channel_id:
+          type: string
+        channel_name:
+          type: string
+        user_id:
+          type: string
+        user_name:
+          type: string
+        command:
+          type: string
+        text:
+          type: string
+        response_url:
+          type: string
+        trigger_id:
+          type: string
+      required:
+      - channel_id
+      - team_id
+      - response_url
+      additionalProperties: true
+    SlackAgentsWebhookOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'

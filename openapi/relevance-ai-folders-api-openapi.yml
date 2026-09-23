@@ -1,0 +1,91 @@
+openapi: 3.2.0
+info:
+  description: Relevance AI Endpoints
+  title: Relevance AI Endpoints Folders API
+  version: latest
+  contact:
+    email: dev@tryrelevance.com
+servers:
+- url: /latest
+security:
+- AuthorizationHeader:
+  - Authorization
+tags:
+- name: Folders
+paths:
+  /folders/list:
+    get:
+      summary: ListFolders
+      tags:
+      - Folders
+      description: '### Required permissions
+
+        > []'
+      operationId: ListFolders
+      parameters:
+      - in: query
+        name: folder_type
+        schema:
+          type: string
+          enum:
+          - agent
+          - tool
+        description: ''
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFoldersOutput'
+components:
+  schemas:
+    ListFoldersOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              folder_id:
+                type: string
+                description: The ID of the folder to update. If not provided, a new folder will be created.
+              name:
+                type: string
+                description: The name of the folder
+              parent_folder_id:
+                type: string
+                description: The ID of the parent folder, if this is a nested folder
+              items:
+                type: array
+                items:
+                  type: string
+                description: IDs of agents or other folders contained in this folder
+              project:
+                type: string
+              folder_type:
+                type: string
+                enum:
+                - agent
+                - tool
+                description: Type of folder for entity-agnostic categorization (e.g., 'agent', 'tool')
+              created_at: {}
+              updated_at: {}
+            required:
+            - folder_id
+            - name
+            - items
+            - project
+            - created_at
+            - updated_at
+          description: List of folders for organizing agents/tools (only included when not in public listing mode)
+      additionalProperties: false
+      required:
+      - results
+  securitySchemes:
+    AuthorizationHeader:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: 'Authorization credentials. Header authorization should be in the form of: project:api_key'
