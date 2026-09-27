@@ -99,6 +99,10 @@ components:
       - id
       - name
       additionalProperties: false
+    SlackAgentsWebhookOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
     SlackAgentsWebhookInput:
       type: object
       properties:
@@ -129,10 +133,6 @@ components:
       - team_id
       - response_url
       additionalProperties: true
-    SlackAgentsWebhookOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
   securitySchemes:
     AuthorizationHeader:
       type: apiKey

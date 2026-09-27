@@ -306,6 +306,20 @@ paths:
                 $ref: '#/components/schemas/RejectSyncInviteOutput'
 components:
   schemas:
+    DeleteSyncTemplateInput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    RejectSyncInviteOutput:
+      type: object
+      properties:
+        invite_id:
+          type: string
+          description: Display ID of the rejected invite
+      required:
+      - invite_id
+      additionalProperties: false
+    RejectSyncInviteInput: {}
     GetPendingInvitesOutput:
       type: object
       properties:
@@ -1794,6 +1808,42 @@ components:
       - agent_invites
       - workforce_invites
       additionalProperties: false
+    InviteUsersToAgentTriggerInput:
+      type: object
+      properties:
+        emails:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          description: List of email addresses to invite
+      required:
+      - emails
+      additionalProperties: false
+    InviteUsersToAgentTriggerOutput:
+      type: object
+      properties:
+        invite_ids:
+          type: array
+          items:
+            type: string
+          description: IDs of the created invites
+        sync_template_id:
+          type: string
+          description: ID of the sync template used for these invites
+      required:
+      - invite_ids
+      - sync_template_id
+      additionalProperties: false
+    CancelSyncInviteOutput:
+      type: object
+      properties:
+        invite_id:
+          type: string
+          description: Display ID of the cancelled invite
+      required:
+      - invite_id
+      additionalProperties: false
     GetSyncTemplateInviteStatusOutput:
       type: object
       properties:
@@ -1828,21 +1878,6 @@ components:
       required:
       - invites
       additionalProperties: false
-    RejectSyncInviteInput: {}
-    DeleteSyncTemplateOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    CancelSyncInviteOutput:
-      type: object
-      properties:
-        invite_id:
-          type: string
-          description: Display ID of the cancelled invite
-      required:
-      - invite_id
-      additionalProperties: false
-    CancelSyncInviteInput: {}
     ListSyncConfigsOutput:
       type: object
       properties:
@@ -3469,31 +3504,7 @@ components:
       required:
       - results
       additionalProperties: false
-    DeleteSyncTemplateInput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    RejectSyncInviteOutput:
-      type: object
-      properties:
-        invite_id:
-          type: string
-          description: Display ID of the rejected invite
-      required:
-      - invite_id
-      additionalProperties: false
-    InviteUsersToAgentTriggerInput:
-      type: object
-      properties:
-        emails:
-          type: array
-          items:
-            type: string
-          minItems: 1
-          description: List of email addresses to invite
-      required:
-      - emails
-      additionalProperties: false
+    CancelSyncInviteInput: {}
     ListSyncTemplatesOutput:
       type: object
       properties:
@@ -4946,20 +4957,9 @@ components:
       required:
       - results
       additionalProperties: false
-    InviteUsersToAgentTriggerOutput:
+    DeleteSyncTemplateOutput:
       type: object
-      properties:
-        invite_ids:
-          type: array
-          items:
-            type: string
-          description: IDs of the created invites
-        sync_template_id:
-          type: string
-          description: ID of the sync template used for these invites
-      required:
-      - invite_ids
-      - sync_template_id
+      properties: {}
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

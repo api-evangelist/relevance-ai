@@ -285,16 +285,12 @@ paths:
                 $ref: '#/components/schemas/DeleteUserTagOutput'
 components:
   schemas:
-    DeleteAgentConversationInput:
-      type: object
-      additionalProperties: false
     DeleteAgentConversationOutput:
       type: object
       properties: {}
       additionalProperties: false
-    DeleteAgentConversationsOutput:
+    DeleteAgentConversationInput:
       type: object
-      properties: {}
       additionalProperties: false
     DeleteAgentConversationsInput:
       type: object
@@ -307,6 +303,42 @@ components:
           maxItems: 500
       required:
       - conversation_ids
+      additionalProperties: false
+    DeleteAgentConversationsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertUserTagOutput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserTagOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserAgentTagOutput:
+      type: object
+      properties: {}
       additionalProperties: false
     ListUserTagsOutput:
       type: object
@@ -340,50 +372,6 @@ components:
       required:
       - results
       additionalProperties: false
-    UpsertUserTagOutput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    UpsertUserAgentTagOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    UpsertUserAgentTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    DeleteUserTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    DeleteUserAgentTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    DeleteUserAgentTagOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    DeleteUserTagOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
     UpsertUserTagInput:
       type: object
       properties:
@@ -407,6 +395,18 @@ components:
       required:
       - name
       - colour
+      additionalProperties: false
+    DeleteUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    UpsertUserAgentTagOutput:
+      type: object
+      properties: {}
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

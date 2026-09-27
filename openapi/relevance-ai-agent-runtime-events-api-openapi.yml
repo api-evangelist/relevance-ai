@@ -162,6 +162,246 @@ paths:
                 $ref: '#/components/schemas/UpsertAgentRuntimeEventOutput'
 components:
   schemas:
+    UpsertAgentRuntimeEventOutput:
+      type: object
+      additionalProperties: false
+    UpsertAgentRuntimeEventInput:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            input:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - use_tool
+                  - record_tool_use
+                  - error
+                  - agent_message
+                  - run_until_end
+                  - run_one_step
+                  - user_message
+                  - finish
+                use_tool:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    agent_fills_inputs:
+                      type: boolean
+                      default: true
+                  required:
+                  - params
+                  - name
+                  additionalProperties: false
+                record_tool_use:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    output:
+                      type: object
+                      additionalProperties: true
+                  required:
+                  - params
+                  - name
+                  - output
+                  additionalProperties: false
+                error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                agent_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                user_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+              required:
+              - type
+              additionalProperties: false
+            output:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - success
+                requires_approval:
+                  type: boolean
+                output:
+                  type: object
+                  description: output of last tool ran
+                params:
+                  type: object
+                  description: params of last tool ran
+                name:
+                  type: string
+                  description: name of last tool ran
+          additionalProperties: false
+        insert_if_not_exists:
+          type: boolean
+          description: If true, will create the metadata if it does not exist. Defaults to true.
+        fields_to_remove:
+          type: array
+          items:
+            type: string
+          description: Fields to remove from the metadata.
+        fields_to_replace:
+          type: array
+          items:
+            type: string
+          description: Fields to replace in the metadata.
+        fields_to_increment:
+          type: object
+          additionalProperties:
+            type: number
+      additionalProperties: false
+      required:
+      - data
+    GetAgentRuntimeEventOutput:
+      type: object
+      properties:
+        insert_date_: {}
+        update_date: {}
+        expiry_date_: {}
+        project:
+          type: string
+        _id:
+          type: string
+        feature:
+          type: string
+        collection_id:
+          type: string
+        document_id:
+          type: string
+        data:
+          type: object
+          properties:
+            input:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - use_tool
+                  - record_tool_use
+                  - error
+                  - agent_message
+                  - run_until_end
+                  - run_one_step
+                  - user_message
+                  - finish
+                use_tool:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    agent_fills_inputs:
+                      type: boolean
+                      default: true
+                  required:
+                  - params
+                  - name
+                  additionalProperties: false
+                record_tool_use:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    output:
+                      type: object
+                      additionalProperties: true
+                  required:
+                  - params
+                  - name
+                  - output
+                  additionalProperties: false
+                error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                agent_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                user_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+              required:
+              - type
+              additionalProperties: false
+            output:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - success
+                requires_approval:
+                  type: boolean
+                output:
+                  type: object
+                  description: output of last tool ran
+                params:
+                  type: object
+                  description: params of last tool ran
+                name:
+                  type: string
+                  description: name of last tool ran
+          additionalProperties: false
+        deleted_date: {}
+      required:
+      - insert_date_
+      - update_date
+      - project
+      - _id
+      - feature
+      - collection_id
+      - document_id
+      - data
     ListAgentRuntimeEventOutput:
       type: object
       properties:
@@ -290,7 +530,7 @@ components:
       required:
       - results
       additionalProperties: false
-    DeleteAgentRuntimeEventOutput: {}
+    DeleteAgentRuntimeEventInput: {}
     ListAgentRuntimeEventInput:
       type: object
       properties:
@@ -352,247 +592,7 @@ components:
           description: Retrieve items after these sort values in the sort order.
         query:
           type: string
-    DeleteAgentRuntimeEventInput: {}
-    GetAgentRuntimeEventOutput:
-      type: object
-      properties:
-        insert_date_: {}
-        update_date: {}
-        expiry_date_: {}
-        project:
-          type: string
-        _id:
-          type: string
-        feature:
-          type: string
-        collection_id:
-          type: string
-        document_id:
-          type: string
-        data:
-          type: object
-          properties:
-            input:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                  - use_tool
-                  - record_tool_use
-                  - error
-                  - agent_message
-                  - run_until_end
-                  - run_one_step
-                  - user_message
-                  - finish
-                use_tool:
-                  type: object
-                  properties:
-                    params:
-                      type: object
-                      additionalProperties: true
-                    name:
-                      type: string
-                    agent_fills_inputs:
-                      type: boolean
-                      default: true
-                  required:
-                  - params
-                  - name
-                  additionalProperties: false
-                record_tool_use:
-                  type: object
-                  properties:
-                    params:
-                      type: object
-                      additionalProperties: true
-                    name:
-                      type: string
-                    output:
-                      type: object
-                      additionalProperties: true
-                  required:
-                  - params
-                  - name
-                  - output
-                  additionalProperties: false
-                error:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-                agent_message:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-                user_message:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-              required:
-              - type
-              additionalProperties: false
-            output:
-              type: object
-              properties:
-                status:
-                  type: string
-                  enum:
-                  - success
-                requires_approval:
-                  type: boolean
-                output:
-                  type: object
-                  description: output of last tool ran
-                params:
-                  type: object
-                  description: params of last tool ran
-                name:
-                  type: string
-                  description: name of last tool ran
-          additionalProperties: false
-        deleted_date: {}
-      required:
-      - insert_date_
-      - update_date
-      - project
-      - _id
-      - feature
-      - collection_id
-      - document_id
-      - data
-    UpsertAgentRuntimeEventInput:
-      type: object
-      properties:
-        data:
-          type: object
-          properties:
-            input:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                  - use_tool
-                  - record_tool_use
-                  - error
-                  - agent_message
-                  - run_until_end
-                  - run_one_step
-                  - user_message
-                  - finish
-                use_tool:
-                  type: object
-                  properties:
-                    params:
-                      type: object
-                      additionalProperties: true
-                    name:
-                      type: string
-                    agent_fills_inputs:
-                      type: boolean
-                      default: true
-                  required:
-                  - params
-                  - name
-                  additionalProperties: false
-                record_tool_use:
-                  type: object
-                  properties:
-                    params:
-                      type: object
-                      additionalProperties: true
-                    name:
-                      type: string
-                    output:
-                      type: object
-                      additionalProperties: true
-                  required:
-                  - params
-                  - name
-                  - output
-                  additionalProperties: false
-                error:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-                agent_message:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-                user_message:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-              required:
-              - type
-              additionalProperties: false
-            output:
-              type: object
-              properties:
-                status:
-                  type: string
-                  enum:
-                  - success
-                requires_approval:
-                  type: boolean
-                output:
-                  type: object
-                  description: output of last tool ran
-                params:
-                  type: object
-                  description: params of last tool ran
-                name:
-                  type: string
-                  description: name of last tool ran
-          additionalProperties: false
-        insert_if_not_exists:
-          type: boolean
-          description: If true, will create the metadata if it does not exist. Defaults to true.
-        fields_to_remove:
-          type: array
-          items:
-            type: string
-          description: Fields to remove from the metadata.
-        fields_to_replace:
-          type: array
-          items:
-            type: string
-          description: Fields to replace in the metadata.
-        fields_to_increment:
-          type: object
-          additionalProperties:
-            type: number
-      additionalProperties: false
-      required:
-      - data
-    UpsertAgentRuntimeEventOutput:
-      type: object
-      additionalProperties: false
+    DeleteAgentRuntimeEventOutput: {}
   securitySchemes:
     AuthorizationHeader:
       type: apiKey

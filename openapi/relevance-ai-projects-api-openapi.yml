@@ -1313,221 +1313,92 @@ paths:
                 $ref: '#/components/schemas/UnsetEntityJobPriorityOutput'
 components:
   schemas:
-    GetIsProjectBlockingOnUsageAlarmsOutput:
+    ListProjectSnippetsOutput:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+          name:
+            type: string
+          content:
+            type: string
+          title:
+            type: string
+          description:
+            type: string
+          order:
+            type: number
+          project:
+            type: string
+          referenced_in:
+            type: array
+            items:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - agent
+                  - studio
+                object_id:
+                  type: string
+                name:
+                  type: string
+                emoji:
+                  type: string
+              required:
+              - type
+              - object_id
+              additionalProperties: false
+        additionalProperties: false
+        required:
+        - content
+        - name
+        - order
+        - _id
+        - project
+    UpsertProjectSnippetOutput:
+      type: boolean
+    GetProjectsOrgInfoOutput:
       type: object
       properties:
-        organization_credit_breach:
-          type: boolean
-        organization_action_breach:
-          type: boolean
-        project_credit_breach:
-          type: boolean
-        project_action_breach:
-          type: boolean
-      required:
-      - organization_credit_breach
-      - organization_action_breach
-      - project_credit_breach
-      - project_action_breach
-      additionalProperties: false
-    SetProjectKeyInput:
-      type: object
-      properties:
-        key:
-          type: string
-        value:
-          type: string
-      additionalProperties: false
-      required:
-      - key
-      - value
-    SetEntityJobPriorityInput:
-      type: object
-      properties:
-        priority_entity:
-          type: string
-          enum:
-          - agent
-          - tool
-          - workforce
-          description: 'Which kind of builder entity this priority applies to: an Agent, a Tool or a Workforce.'
-        entity_id:
-          type: string
-          minLength: 1
-          description: Display id of the Agent / Tool / Workforce to prioritise. Must be a real entity of the given type in this project.
-        priority_tier:
-          type: integer
-          enum:
-          - 10
-          - 20
-          - 30
-          description: 'Priority tier: 10 = High, 20 = Medium (default), 30 = Low.'
-      required:
-      - priority_entity
-      - entity_id
-      - priority_tier
-      additionalProperties: false
-    ListProjectUsageAlarmsOutput:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              usage_type:
-                type: string
-                enum:
-                - credit
-                - action
-                description: Type of usage to monitor
-              usage_threshold:
-                type: number
-                minimum: 0
-                description: Threshold value to trigger the alarm
-              alarm_action:
-                type: string
-                enum:
-                - warn
-                - block
-                description: Action to take when threshold is exceeded
-              alarm_action_config:
-                type: object
-                properties:
-                  emails:
-                    type: array
-                    items:
-                      type: string
-                    description: Email addresses to notify when alarm is triggered
-                additionalProperties: false
-              alarm_status:
-                type: string
-                enum:
-                - ok
-                - alarm
-                description: Current status of the alarm
-              created_at:
-                type: string
-              updated_at:
-                type: string
-            required:
-            - usage_type
-            - usage_threshold
-            - alarm_action
-            - alarm_action_config
-            - alarm_status
-            - created_at
-            additionalProperties: false
-      required:
-      - results
-      additionalProperties: false
-    UpsertProjectUsageAlarmInput:
-      type: object
-      properties:
-        usage_type:
-          type: string
-          enum:
-          - credit
-          - action
-          description: Type of usage to monitor
-        usage_threshold:
+        credits:
           type: number
-          minimum: 0
-          description: Threshold value to trigger the alarm
-        alarm_action:
+        actions:
+          type: number
+        entitlement_plan:
           type: string
           enum:
-          - warn
-          - block
-          description: Action to take when threshold is exceeded
-        alarm_action_config:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        concurrency:
           type: object
           properties:
-            emails:
-              type: array
-              items:
-                type: string
-              description: Email addresses to notify when alarm is triggered
-          additionalProperties: false
-      required:
-      - usage_type
-      - usage_threshold
-      - alarm_action
-      additionalProperties: false
-    CreateProjectInput:
-      type: object
-      properties:
-        name:
+            limit:
+              type: number
+            active:
+              type: number
+            pending:
+              type: number
+          required:
+          - limit
+          - active
+          - pending
+        default_project_id:
           type: string
-          description: The name of the project
-        description:
-          type: string
-          description: The description of the project
-        organization_id:
-          type: string
-        datastore:
-          type: string
-          enum:
-          - redis
-          description: If set to redis, it expects a redis connection string set using project keys under the name "redis".
-        language:
-          type: string
-          description: The language to convert cluster labels output to.
       additionalProperties: false
       required:
-      - organization_id
-    UnsetEntityJobPriorityOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
-      additionalProperties: false
-    SetAssetAccessConfigurationInput:
-      oneOf:
-      - type: object
-        properties:
-          access_level:
-            type: string
-            description: Restrict access to only invited users
-        required:
-        - access_level
-        additionalProperties: false
-      - type: object
-        properties:
-          access_level:
-            type: string
-            description: Grant access to all project members
-          role:
-            type: string
-            enum:
-            - admin
-            - operator
-            - viewer
-            description: The role to grant for general access
-        required:
-        - access_level
-        - role
-        additionalProperties: false
-    ListProjectSettingsOutput:
-      type: object
-      properties:
-        permit_public_agents:
-          type: boolean
-        permit_public_workforces:
-          type: boolean
-        permit_public_tools:
-          type: boolean
-        permit_embeddable_agents:
-          type: boolean
-        permit_embeddable_tools:
-          type: boolean
-        permit_embeddable_workforces:
-          type: boolean
-        permit_invent:
-          type: boolean
-      additionalProperties: false
+      - credits
+      - actions
+      - concurrency
+    ListProjectMCPServersInput: {}
     ListProjectMCPServersOutput:
       type: array
       items:
@@ -1629,7 +1500,239 @@ components:
           additionalProperties: true
         additionalProperties: false
       description: List of MCP servers for the project
-    UpdateProjectOutput:
+    DeleteProjectSnippetInput:
+      type: object
+      properties:
+        id:
+          type: string
+      additionalProperties: false
+      required:
+      - id
+    CreateProjectOutput:
+      type: object
+      properties:
+        project_id:
+          type: string
+      required:
+      - project_id
+      additionalProperties: false
+    GetAssetAccessConfigurationOutput:
+      oneOf:
+      - type: object
+        properties:
+          access_level:
+            type: string
+        required:
+        - access_level
+        additionalProperties: false
+      - type: object
+        properties:
+          access_level:
+            type: string
+          role:
+            type: string
+            enum:
+            - admin
+            - operator
+            - viewer
+            description: The role to grant for general access
+        required:
+        - access_level
+        - role
+        additionalProperties: false
+    UpdateProjectSettingOutput: {}
+    ListProjectSettingsInput:
+      type: object
+      properties:
+        setting_names:
+          type: array
+          items:
+            type: string
+          minItems: 1
+      required:
+      - setting_names
+      additionalProperties: false
+    SetAssetAccessConfigurationInput:
+      oneOf:
+      - type: object
+        properties:
+          access_level:
+            type: string
+            description: Restrict access to only invited users
+        required:
+        - access_level
+        additionalProperties: false
+      - type: object
+        properties:
+          access_level:
+            type: string
+            description: Grant access to all project members
+          role:
+            type: string
+            enum:
+            - admin
+            - operator
+            - viewer
+            description: The role to grant for general access
+        required:
+        - access_level
+        - role
+        additionalProperties: false
+    UnsetEntityJobPriorityOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    CreateProjectDeleteJobOutput:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+        project_id:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+          - completed
+          - in_progress
+          - pending
+        created_at:
+          type: string
+        finished_at:
+          type: string
+        updated_at:
+          type: string
+        progress:
+          type: array
+          items:
+            type: object
+            additionalProperties: false
+            properties:
+              step:
+                type: string
+              success_count:
+                type: integer
+              failure_count:
+                type: integer
+            required:
+            - step
+            - success_count
+            - failure_count
+      required:
+      - id
+      - project_id
+      - status
+      - errors
+      - created_at
+      - updated_at
+      - progress
+    GetProjectMCPServerOutput:
+      type: object
+      properties:
+        display_id:
+          type: string
+          description: UUID for external references
+        label:
+          type: string
+          description: Display name for the MCP server
+        url:
+          type: string
+          description: MCP server URL
+        share_auth_with_project:
+          type: boolean
+          description: Share auth details with all users of this MCP in the project.
+        owner_user_display_id:
+          type:
+          - string
+          - 'null'
+          description: Display ID of the user who owns this MCP server. Null for existing servers without an owner.
+        custom_configuration:
+          oneOf:
+          - type: object
+            description: Custom configuration for the MCP server
+            properties:
+              type:
+                type: string
+                description: Configuration type (currently only 'headers' supported)
+              headers:
+                type: array
+                description: Array of custom headers to send with MCP requests
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      description: Header name
+                    value:
+                      type: string
+                      description: Header value
+                  required:
+                  - name
+                  - value
+                  additionalProperties: false
+            required:
+            - type
+            - headers
+            additionalProperties: false
+          - type: 'null'
+          description: Custom configuration for the MCP server
+      required:
+      - display_id
+      - label
+      - url
+      anyOf:
+      - properties:
+          authentication_type: {}
+          auth_details:
+            type: 'null'
+        required:
+        - authentication_type
+        - auth_details
+        additionalProperties: true
+      - properties:
+          authentication_type: {}
+          auth_details:
+            type: object
+            properties: {}
+            additionalProperties: false
+        required:
+        - authentication_type
+        - auth_details
+        additionalProperties: true
+      - properties:
+          authentication_type: {}
+          auth_details:
+            type: object
+            properties:
+              oauth_account_id:
+                type: string
+            required:
+            - oauth_account_id
+            additionalProperties: false
+        required:
+        - authentication_type
+        - auth_details
+        additionalProperties: true
+      - properties:
+          authentication_type: {}
+          auth_details:
+            type: object
+            properties: {}
+            additionalProperties: false
+        required:
+        - authentication_type
+        - auth_details
+        additionalProperties: true
+      additionalProperties: false
+    SetProjectKeyOutput:
       type: object
       properties:
         status:
@@ -1640,54 +1743,59 @@ components:
       - status
       - message
       additionalProperties: false
-    ListProjectMCPServersInput: {}
-    DeleteProjectSnippetInput:
+    ListProjectKeysOutput:
       type: object
       properties:
-        id:
-          type: string
-      additionalProperties: false
-      required:
-      - id
-    ListEntityJobPrioritiesOutput:
-      type: object
-      properties:
-        results:
+        keys:
           type: array
           items:
-            type: object
-            properties:
-              priority_entity:
-                type: string
-                enum:
-                - agent
-                - tool
-                - workforce
-                description: 'Which kind of builder entity this priority applies to: an Agent, a Tool or a Workforce.'
-              entity_id:
-                type: string
-                minLength: 1
-                description: Display id of the prioritised entity.
-              priority_tier:
-                type: integer
-                enum:
-                - 10
-                - 20
-                - 30
-                description: 'Priority tier: 10 = High, 20 = Medium (default), 30 = Low.'
-              created_at:
-                type: string
-                format: date-time
-              updated_at:
-                type: string
-                format: date-time
-            required:
-            - priority_entity
-            - entity_id
-            - priority_tier
-            additionalProperties: false
+            type: string
+      additionalProperties: false
       required:
-      - results
+      - keys
+    UpsertProjectUsageAlarmOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        id:
+          type: string
+      required:
+      - success
+      - id
+      additionalProperties: false
+    UpsertProjectUsageAlarmInput:
+      type: object
+      properties:
+        usage_type:
+          type: string
+          enum:
+          - credit
+          - action
+          description: Type of usage to monitor
+        usage_threshold:
+          type: number
+          minimum: 0
+          description: Threshold value to trigger the alarm
+        alarm_action:
+          type: string
+          enum:
+          - warn
+          - block
+          description: Action to take when threshold is exceeded
+        alarm_action_config:
+          type: object
+          properties:
+            emails:
+              type: array
+              items:
+                type: string
+              description: Email addresses to notify when alarm is triggered
+          additionalProperties: false
+      required:
+      - usage_type
+      - usage_threshold
+      - alarm_action
       additionalProperties: false
     UpsertProjectMCPServerInput:
       type: object
@@ -1776,28 +1884,29 @@ components:
             additionalProperties: false
         additionalProperties: true
       additionalProperties: true
-    UpsertProjectSnippetOutput:
-      type: boolean
-    DeleteProjectUsageAlarmInput:
+    CreateProjectInput:
       type: object
       properties:
-        usage_type:
+        name:
+          type: string
+          description: The name of the project
+        description:
+          type: string
+          description: The description of the project
+        organization_id:
+          type: string
+        datastore:
           type: string
           enum:
-          - credit
-          - action
-          description: Type of usage to monitor
-        alarm_action:
+          - redis
+          description: If set to redis, it expects a redis connection string set using project keys under the name "redis".
+        language:
           type: string
-          enum:
-          - warn
-          - block
-          description: Action to take when threshold is exceeded
-      required:
-      - usage_type
-      - alarm_action
+          description: The language to convert cluster labels output to.
       additionalProperties: false
-    ListProjectNativeApiKeysAvailabilityOutput:
+      required:
+      - organization_id
+    ListProjectKeyTypesOutput:
       type: object
       properties:
         results:
@@ -1805,35 +1914,45 @@ components:
           items:
             type: object
             properties:
-              key:
+              label:
                 type: string
-              project_context:
+              value:
+                type: string
+              type:
+                type: string
+                enum:
+                - llm
+                - datastore
+              logo_key:
+                type: string
+              api_onboarding:
                 type: object
                 properties:
-                  api_key_provided:
-                    type: boolean
+                  url:
+                    type: string
+                  description:
+                    type: string
                 required:
-                - api_key_provided
+                - url
                 additionalProperties: false
-              organization_context:
-                type: object
-                properties:
-                  api_key_provided:
-                    type: boolean
-                required:
-                - api_key_provided
-                additionalProperties: false
+              tags:
+                type: array
+                items:
+                  type: string
             required:
-            - key
-            - project_context
-            - organization_context
+            - label
+            - value
             additionalProperties: false
       additionalProperties: false
       required:
       - results
-    DeleteProjectUsageAlarmOutput:
+    SetEntityJobPriorityOutput:
       type: object
-      properties: {}
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
       additionalProperties: false
     ListProjectsOutput:
       type: object
@@ -1984,52 +2103,22 @@ components:
       required:
       - projects
       - count
-    CreateProjectDeleteJobInput: {}
-    GetProjectSettingOutput:
-      oneOf:
-      - type: boolean
-      - type: boolean
-      - type: boolean
-      - type: boolean
-      - type: boolean
-      - type: boolean
-      - type: boolean
-    CreateProjectOutput:
+    GetProjectStreamingTokenOutput:
       type: object
       properties:
-        project_id:
-          type: string
-      required:
-      - project_id
-      additionalProperties: false
-    GetProjectFeatureGatesOutput:
-      type: object
-      properties:
-        bulk_run:
-          type: boolean
-        scheduled_run:
-          type: boolean
-      required:
-      - bulk_run
-      - scheduled_run
-      additionalProperties: false
-    GetProjectDeletionMetadataOutput:
-      type: object
-      properties:
-        project_delete_job_id:
-          type:
-          - string
-          - 'null'
-          description: The latest project delete job ID for the project, or null if no delete job exists
-        resource_counts:
+        streaming_token:
           type: object
-          description: Counts of resources in the project.
-          additionalProperties:
-            type: integer
-            minimum: 0
+          properties:
+            token:
+              type: string
+            expiry_time_ms:
+              type: number
+          additionalProperties: false
+          required:
+          - token
+          - expiry_time_ms
       required:
-      - resource_counts
-      - project_delete_job_id
+      - streaming_token
       additionalProperties: false
     UpdateProjectSettingInput:
       type: object
@@ -2037,169 +2126,6 @@ components:
         payload: {}
       required:
       - payload
-      additionalProperties: false
-    ListProjectKeyTypesOutput:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              label:
-                type: string
-              value:
-                type: string
-              type:
-                type: string
-                enum:
-                - llm
-                - datastore
-              logo_key:
-                type: string
-              api_onboarding:
-                type: object
-                properties:
-                  url:
-                    type: string
-                  description:
-                    type: string
-                required:
-                - url
-                additionalProperties: false
-              tags:
-                type: array
-                items:
-                  type: string
-            required:
-            - label
-            - value
-            additionalProperties: false
-      additionalProperties: false
-      required:
-      - results
-    GetProjectsOrgInfoOutput:
-      type: object
-      properties:
-        credits:
-          type: number
-        actions:
-          type: number
-        entitlement_plan:
-          type: string
-          enum:
-          - free
-          - basic
-          - starter
-          - team
-          - business
-          - enterprise
-          - custom
-        concurrency:
-          type: object
-          properties:
-            limit:
-              type: number
-            active:
-              type: number
-            pending:
-              type: number
-          required:
-          - limit
-          - active
-          - pending
-        default_project_id:
-          type: string
-      additionalProperties: false
-      required:
-      - credits
-      - actions
-      - concurrency
-    ListProjectKeysOutput:
-      type: object
-      properties:
-        keys:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      required:
-      - keys
-    DeleteProjectKeyOutput:
-      type: object
-      properties:
-        status:
-          type: string
-        message:
-          type: string
-      required:
-      - status
-      - message
-      additionalProperties: false
-    SetEntityJobPriorityOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-      required:
-      - success
-      additionalProperties: false
-    UnsetEntityJobPriorityInput:
-      type: object
-      properties:
-        priority_entity:
-          type: string
-          enum:
-          - agent
-          - tool
-          - workforce
-          description: 'Which kind of builder entity this priority applies to: an Agent, a Tool or a Workforce.'
-        entity_id:
-          type: string
-          minLength: 1
-          description: Display id of the Agent / Tool / Workforce to reset to the default tier. Must be a real entity of the given type in this project.
-      required:
-      - priority_entity
-      - entity_id
-      additionalProperties: false
-    ListProjectSettingsInput:
-      type: object
-      properties:
-        setting_names:
-          type: array
-          items:
-            type: string
-          minItems: 1
-      required:
-      - setting_names
-      additionalProperties: false
-    DeleteProjectMCPServerInput:
-      type: object
-      properties:
-        display_id:
-          type: string
-          description: UUID of the MCP server to delete
-      required:
-      - display_id
-      additionalProperties: false
-    DeleteProjectKeyInput:
-      type: object
-      properties:
-        key:
-          type: string
-      additionalProperties: false
-      required:
-      - key
-    UpsertProjectUsageAlarmOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-        id:
-          type: string
-      required:
-      - success
-      - id
       additionalProperties: false
     UpsertProjectSnippetInput:
       type: object
@@ -2220,6 +2146,46 @@ components:
       - content
       - name
       - order
+      additionalProperties: false
+    ListEntityJobPrioritiesOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              priority_entity:
+                type: string
+                enum:
+                - agent
+                - tool
+                - workforce
+                description: 'Which kind of builder entity this priority applies to: an Agent, a Tool or a Workforce.'
+              entity_id:
+                type: string
+                minLength: 1
+                description: Display id of the prioritised entity.
+              priority_tier:
+                type: integer
+                enum:
+                - 10
+                - 20
+                - 30
+                description: 'Priority tier: 10 = High, 20 = Medium (default), 30 = Low.'
+              created_at:
+                type: string
+                format: date-time
+              updated_at:
+                type: string
+                format: date-time
+            required:
+            - priority_entity
+            - entity_id
+            - priority_tier
+            additionalProperties: false
+      required:
+      - results
       additionalProperties: false
     GetProjectDeleteJobOutput:
       type: object
@@ -2295,106 +2261,15 @@ components:
       required:
       - project_delete_job
       - resource_counts
-    GetProjectMCPServerOutput:
+    DeleteProjectMCPServerInput:
       type: object
       properties:
         display_id:
           type: string
-          description: UUID for external references
-        label:
-          type: string
-          description: Display name for the MCP server
-        url:
-          type: string
-          description: MCP server URL
-        share_auth_with_project:
-          type: boolean
-          description: Share auth details with all users of this MCP in the project.
-        owner_user_display_id:
-          type:
-          - string
-          - 'null'
-          description: Display ID of the user who owns this MCP server. Null for existing servers without an owner.
-        custom_configuration:
-          oneOf:
-          - type: object
-            description: Custom configuration for the MCP server
-            properties:
-              type:
-                type: string
-                description: Configuration type (currently only 'headers' supported)
-              headers:
-                type: array
-                description: Array of custom headers to send with MCP requests
-                items:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      description: Header name
-                    value:
-                      type: string
-                      description: Header value
-                  required:
-                  - name
-                  - value
-                  additionalProperties: false
-            required:
-            - type
-            - headers
-            additionalProperties: false
-          - type: 'null'
-          description: Custom configuration for the MCP server
+          description: UUID of the MCP server to delete
       required:
       - display_id
-      - label
-      - url
-      anyOf:
-      - properties:
-          authentication_type: {}
-          auth_details:
-            type: 'null'
-        required:
-        - authentication_type
-        - auth_details
-        additionalProperties: true
-      - properties:
-          authentication_type: {}
-          auth_details:
-            type: object
-            properties: {}
-            additionalProperties: false
-        required:
-        - authentication_type
-        - auth_details
-        additionalProperties: true
-      - properties:
-          authentication_type: {}
-          auth_details:
-            type: object
-            properties:
-              oauth_account_id:
-                type: string
-            required:
-            - oauth_account_id
-            additionalProperties: false
-        required:
-        - authentication_type
-        - auth_details
-        additionalProperties: true
-      - properties:
-          authentication_type: {}
-          auth_details:
-            type: object
-            properties: {}
-            additionalProperties: false
-        required:
-        - authentication_type
-        - auth_details
-        additionalProperties: true
       additionalProperties: false
-    DeleteProjectSnippetOutput:
-      type: boolean
     SetAssetAccessConfigurationOutput:
       type: object
       properties:
@@ -2403,31 +2278,118 @@ components:
       required:
       - success
       additionalProperties: false
-    GetAssetAccessConfigurationOutput:
+    SetEntityJobPriorityInput:
+      type: object
+      properties:
+        priority_entity:
+          type: string
+          enum:
+          - agent
+          - tool
+          - workforce
+          description: 'Which kind of builder entity this priority applies to: an Agent, a Tool or a Workforce.'
+        entity_id:
+          type: string
+          minLength: 1
+          description: Display id of the Agent / Tool / Workforce to prioritise. Must be a real entity of the given type in this project.
+        priority_tier:
+          type: integer
+          enum:
+          - 10
+          - 20
+          - 30
+          description: 'Priority tier: 10 = High, 20 = Medium (default), 30 = Low.'
+      required:
+      - priority_entity
+      - entity_id
+      - priority_tier
+      additionalProperties: false
+    SetProjectKeyInput:
+      type: object
+      properties:
+        key:
+          type: string
+        value:
+          type: string
+      additionalProperties: false
+      required:
+      - key
+      - value
+    GetProjectSettingOutput:
       oneOf:
-      - type: object
-        properties:
-          access_level:
-            type: string
-        required:
-        - access_level
-        additionalProperties: false
-      - type: object
-        properties:
-          access_level:
-            type: string
-          role:
-            type: string
-            enum:
-            - admin
-            - operator
-            - viewer
-            description: The role to grant for general access
-        required:
-        - access_level
-        - role
-        additionalProperties: false
-    SetProjectKeyOutput:
+      - type: boolean
+      - type: boolean
+      - type: boolean
+      - type: boolean
+      - type: boolean
+      - type: boolean
+      - type: boolean
+    ListProjectUsageAlarmsOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              usage_type:
+                type: string
+                enum:
+                - credit
+                - action
+                description: Type of usage to monitor
+              usage_threshold:
+                type: number
+                minimum: 0
+                description: Threshold value to trigger the alarm
+              alarm_action:
+                type: string
+                enum:
+                - warn
+                - block
+                description: Action to take when threshold is exceeded
+              alarm_action_config:
+                type: object
+                properties:
+                  emails:
+                    type: array
+                    items:
+                      type: string
+                    description: Email addresses to notify when alarm is triggered
+                additionalProperties: false
+              alarm_status:
+                type: string
+                enum:
+                - ok
+                - alarm
+                description: Current status of the alarm
+              created_at:
+                type: string
+              updated_at:
+                type: string
+            required:
+            - usage_type
+            - usage_threshold
+            - alarm_action
+            - alarm_action_config
+            - alarm_status
+            - created_at
+            additionalProperties: false
+      required:
+      - results
+      additionalProperties: false
+    GetProjectFeatureGatesOutput:
+      type: object
+      properties:
+        bulk_run:
+          type: boolean
+        scheduled_run:
+          type: boolean
+      required:
+      - bulk_run
+      - scheduled_run
+      additionalProperties: false
+    UpdateProjectOutput:
       type: object
       properties:
         status:
@@ -2437,6 +2399,101 @@ components:
       required:
       - status
       - message
+      additionalProperties: false
+    GetIsProjectBlockingOnUsageAlarmsOutput:
+      type: object
+      properties:
+        organization_credit_breach:
+          type: boolean
+        organization_action_breach:
+          type: boolean
+        project_credit_breach:
+          type: boolean
+        project_action_breach:
+          type: boolean
+      required:
+      - organization_credit_breach
+      - organization_action_breach
+      - project_credit_breach
+      - project_action_breach
+      additionalProperties: false
+    DeleteProjectKeyInput:
+      type: object
+      properties:
+        key:
+          type: string
+      additionalProperties: false
+      required:
+      - key
+    GetProjectDeletionMetadataOutput:
+      type: object
+      properties:
+        project_delete_job_id:
+          type:
+          - string
+          - 'null'
+          description: The latest project delete job ID for the project, or null if no delete job exists
+        resource_counts:
+          type: object
+          description: Counts of resources in the project.
+          additionalProperties:
+            type: integer
+            minimum: 0
+      required:
+      - resource_counts
+      - project_delete_job_id
+      additionalProperties: false
+    DeleteProjectMCPServerOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the MCP server was successfully deleted
+      required:
+      - success
+      additionalProperties: false
+    ListProjectNativeApiKeysAvailabilityOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type: string
+              project_context:
+                type: object
+                properties:
+                  api_key_provided:
+                    type: boolean
+                required:
+                - api_key_provided
+                additionalProperties: false
+              organization_context:
+                type: object
+                properties:
+                  api_key_provided:
+                    type: boolean
+                required:
+                - api_key_provided
+                additionalProperties: false
+            required:
+            - key
+            - project_context
+            - organization_context
+            additionalProperties: false
+      additionalProperties: false
+      required:
+      - results
+    GetProjectMCPServerInput:
+      type: object
+      properties:
+        display_id:
+          type: string
+          description: UUID of the MCP server to retrieve
+      required:
+      - display_id
       additionalProperties: false
     UpsertProjectMCPServerOutput:
       type: object
@@ -2536,70 +2593,75 @@ components:
         - auth_details
         additionalProperties: true
       additionalProperties: false
-    GetProjectMCPServerInput:
+    ListProjectSettingsOutput:
       type: object
       properties:
-        display_id:
-          type: string
-          description: UUID of the MCP server to retrieve
-      required:
-      - display_id
-      additionalProperties: false
-    DeleteProjectMCPServerOutput:
-      type: object
-      properties:
-        success:
+        permit_public_agents:
           type: boolean
-          description: Whether the MCP server was successfully deleted
-      required:
-      - success
+        permit_public_workforces:
+          type: boolean
+        permit_public_tools:
+          type: boolean
+        permit_embeddable_agents:
+          type: boolean
+        permit_embeddable_tools:
+          type: boolean
+        permit_embeddable_workforces:
+          type: boolean
+        permit_invent:
+          type: boolean
       additionalProperties: false
-    ListProjectSnippetsOutput:
-      type: array
-      items:
-        type: object
-        properties:
-          _id:
-            type: string
-          name:
-            type: string
-          content:
-            type: string
-          title:
-            type: string
-          description:
-            type: string
-          order:
-            type: number
-          project:
-            type: string
-          referenced_in:
-            type: array
-            items:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                  - agent
-                  - studio
-                object_id:
-                  type: string
-                name:
-                  type: string
-                emoji:
-                  type: string
-              required:
-              - type
-              - object_id
-              additionalProperties: false
-        additionalProperties: false
-        required:
-        - content
-        - name
-        - order
-        - _id
-        - project
+    DeleteProjectSnippetOutput:
+      type: boolean
+    UnsetEntityJobPriorityInput:
+      type: object
+      properties:
+        priority_entity:
+          type: string
+          enum:
+          - agent
+          - tool
+          - workforce
+          description: 'Which kind of builder entity this priority applies to: an Agent, a Tool or a Workforce.'
+        entity_id:
+          type: string
+          minLength: 1
+          description: Display id of the Agent / Tool / Workforce to reset to the default tier. Must be a real entity of the given type in this project.
+      required:
+      - priority_entity
+      - entity_id
+      additionalProperties: false
+    DeleteProjectUsageAlarmInput:
+      type: object
+      properties:
+        usage_type:
+          type: string
+          enum:
+          - credit
+          - action
+          description: Type of usage to monitor
+        alarm_action:
+          type: string
+          enum:
+          - warn
+          - block
+          description: Action to take when threshold is exceeded
+      required:
+      - usage_type
+      - alarm_action
+      additionalProperties: false
+    DeleteProjectKeyOutput:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      required:
+      - status
+      - message
+      additionalProperties: false
+    CreateProjectDeleteJobInput: {}
     UpdateProjectInput:
       type: object
       properties:
@@ -2618,72 +2680,10 @@ components:
           type: string
           description: The language to convert cluster labels output to.
       additionalProperties: false
-    CreateProjectDeleteJobOutput:
+    DeleteProjectUsageAlarmOutput:
       type: object
+      properties: {}
       additionalProperties: false
-      properties:
-        id:
-          type: string
-        project_id:
-          type: string
-        errors:
-          type: array
-          items:
-            type: string
-        status:
-          type: string
-          enum:
-          - completed
-          - in_progress
-          - pending
-        created_at:
-          type: string
-        finished_at:
-          type: string
-        updated_at:
-          type: string
-        progress:
-          type: array
-          items:
-            type: object
-            additionalProperties: false
-            properties:
-              step:
-                type: string
-              success_count:
-                type: integer
-              failure_count:
-                type: integer
-            required:
-            - step
-            - success_count
-            - failure_count
-      required:
-      - id
-      - project_id
-      - status
-      - errors
-      - created_at
-      - updated_at
-      - progress
-    GetProjectStreamingTokenOutput:
-      type: object
-      properties:
-        streaming_token:
-          type: object
-          properties:
-            token:
-              type: string
-            expiry_time_ms:
-              type: number
-          additionalProperties: false
-          required:
-          - token
-          - expiry_time_ms
-      required:
-      - streaming_token
-      additionalProperties: false
-    UpdateProjectSettingOutput: {}
   securitySchemes:
     AuthorizationHeader:
       type: apiKey

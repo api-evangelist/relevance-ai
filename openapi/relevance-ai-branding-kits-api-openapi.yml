@@ -209,14 +209,9 @@ paths:
                 $ref: '#/components/schemas/GenerateBrandKitFromImagesOutput'
 components:
   schemas:
-    CreateBrandingKitOutput:
+    DeleteBrandingKitInput: {}
+    UpdateBrandingKitOutput:
       type: object
-      properties:
-        branding_kit_id:
-          type: string
-      additionalProperties: false
-      required:
-      - branding_kit_id
     GenerateBrandKitFromImagesInput:
       type: object
       properties:
@@ -230,9 +225,314 @@ components:
       required:
       - image_urls
       additionalProperties: false
+    CreateBrandingKitOutput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+      additionalProperties: false
+      required:
+      - branding_kit_id
+    CreateBrandingKitInput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+        name:
+          type: string
+        logos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        inspiration_photos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        colors:
+          type: array
+          items:
+            type: object
+            properties:
+              hexcode:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        heading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        title:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subtitle:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subheading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        section_header:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        body:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        brand_tone:
+          type: string
+        brand_voice:
+          type: string
+        slide_instructions:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      additionalProperties: false
+    UpdateBrandingKitInput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+        name:
+          type: string
+        logos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        inspiration_photos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        colors:
+          type: array
+          items:
+            type: object
+            properties:
+              hexcode:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        heading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        title:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subtitle:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subheading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        section_header:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        body:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        brand_tone:
+          type: string
+        brand_voice:
+          type: string
+        slide_instructions:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      additionalProperties: false
     DeleteBrandingKitOutput:
       type: object
       properties: {}
+      additionalProperties: false
+    GenerateBrandKitFromImagesOutput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+        name:
+          type: string
+        logos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        inspiration_photos:
+          type: array
+          items:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        colors:
+          type: array
+          items:
+            type: object
+            properties:
+              hexcode:
+                type: string
+              description:
+                type: string
+            additionalProperties: false
+          default: []
+        heading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        title:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subtitle:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        subheading:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        section_header:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        body:
+          type: object
+          properties:
+            family:
+              type: string
+            size:
+              type: number
+          additionalProperties: false
+        brand_tone:
+          type: string
+        brand_voice:
+          type: string
+        slide_instructions:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
       additionalProperties: false
     ListBrandingKitsOutput:
       type: object
@@ -340,306 +640,6 @@ components:
             additionalProperties: false
       required:
       - branding_kits
-      additionalProperties: false
-    UpdateBrandingKitInput:
-      type: object
-      properties:
-        branding_kit_id:
-          type: string
-        name:
-          type: string
-        logos:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        inspiration_photos:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        colors:
-          type: array
-          items:
-            type: object
-            properties:
-              hexcode:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        heading:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        title:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        subtitle:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        subheading:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        section_header:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        body:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        brand_tone:
-          type: string
-        brand_voice:
-          type: string
-        slide_instructions:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-      additionalProperties: false
-    DeleteBrandingKitInput: {}
-    GenerateBrandKitFromImagesOutput:
-      type: object
-      properties:
-        branding_kit_id:
-          type: string
-        name:
-          type: string
-        logos:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        inspiration_photos:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        colors:
-          type: array
-          items:
-            type: object
-            properties:
-              hexcode:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        heading:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        title:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        subtitle:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        subheading:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        section_header:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        body:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        brand_tone:
-          type: string
-        brand_voice:
-          type: string
-        slide_instructions:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-      additionalProperties: false
-    UpdateBrandingKitOutput:
-      type: object
-    CreateBrandingKitInput:
-      type: object
-      properties:
-        branding_kit_id:
-          type: string
-        name:
-          type: string
-        logos:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        inspiration_photos:
-          type: array
-          items:
-            type: object
-            properties:
-              url:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        colors:
-          type: array
-          items:
-            type: object
-            properties:
-              hexcode:
-                type: string
-              description:
-                type: string
-            additionalProperties: false
-          default: []
-        heading:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        title:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        subtitle:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        subheading:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        section_header:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        body:
-          type: object
-          properties:
-            family:
-              type: string
-            size:
-              type: number
-          additionalProperties: false
-        brand_tone:
-          type: string
-        brand_voice:
-          type: string
-        slide_instructions:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

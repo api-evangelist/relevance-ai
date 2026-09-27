@@ -114,15 +114,6 @@ paths:
                 $ref: '#/components/schemas/GetReplicateModelSchemaOutput'
 components:
   schemas:
-    GetReplicateModelSchemaOutput:
-      type: object
-      properties:
-        input_schema: {}
-        output_schema: {}
-      required:
-      - input_schema
-      - output_schema
-      additionalProperties: false
     GetReplicateCollectionsOutput:
       type: object
       properties:
@@ -300,6 +291,15 @@ components:
       - page_size
       - total_pages
       - models
+      additionalProperties: false
+    GetReplicateModelSchemaOutput:
+      type: object
+      properties:
+        input_schema: {}
+        output_schema: {}
+      required:
+      - input_schema
+      - output_schema
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

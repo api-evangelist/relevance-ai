@@ -155,7 +155,7 @@ paths:
                 $ref: '#/components/schemas/GetInventorTaskUsageOutput'
 components:
   schemas:
-    UpdateInventorUserSettingsInput:
+    UpdateInventorUserSettingsOutput:
       type: object
       properties:
         settings:
@@ -225,7 +225,55 @@ components:
       required:
       - settings
       additionalProperties: false
-    UpdateInventorUserSettingsOutput:
+    GetInventorBootstrapOutput:
+      type: object
+      properties:
+        tools:
+          type: array
+          description: Every inventor tool with its read/write classification.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+              title:
+                type: string
+                minLength: 1
+                description: Human-friendly tool name for display (e.g. `Delete Agent`).
+              classification:
+                type: string
+                enum:
+                - read
+                - run
+                - write
+                - destructive
+                description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
+              default_approval_tier:
+                type: string
+                enum:
+                - auto
+                - ask
+                - always_ask
+                description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
+            required:
+            - name
+            - title
+            - classification
+            - default_approval_tier
+            additionalProperties: false
+        invent_enabled:
+          type: boolean
+          description: 'Whether Invent is available to this caller in this project: the project''s `permit_invent` setting, or the caller being an admin of the project''s organization. False means the frontend hides every Invent entry point. Always true while the backend toggle flag is off.'
+        plan_mode_enabled:
+          type: boolean
+          description: Whether this caller may start a conversation in `plan` mode. Backend-driven rather than a separate frontend flag, so the toggle can never be offered while the backend would ignore `mode`.
+      required:
+      - tools
+      - invent_enabled
+      - plan_mode_enabled
+      additionalProperties: false
+    UpdateInventorUserSettingsInput:
       type: object
       properties:
         settings:
@@ -389,54 +437,6 @@ components:
           additionalProperties: false
       required:
       - settings
-      additionalProperties: false
-    GetInventorBootstrapOutput:
-      type: object
-      properties:
-        tools:
-          type: array
-          description: Every inventor tool with its read/write classification.
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-              title:
-                type: string
-                minLength: 1
-                description: Human-friendly tool name for display (e.g. `Delete Agent`).
-              classification:
-                type: string
-                enum:
-                - read
-                - run
-                - write
-                - destructive
-                description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
-              default_approval_tier:
-                type: string
-                enum:
-                - auto
-                - ask
-                - always_ask
-                description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
-            required:
-            - name
-            - title
-            - classification
-            - default_approval_tier
-            additionalProperties: false
-        invent_enabled:
-          type: boolean
-          description: 'Whether Invent is available to this caller in this project: the project''s `permit_invent` setting, or the caller being an admin of the project''s organization. False means the frontend hides every Invent entry point. Always true while the backend toggle flag is off.'
-        plan_mode_enabled:
-          type: boolean
-          description: Whether this caller may start a conversation in `plan` mode. Backend-driven rather than a separate frontend flag, so the toggle can never be offered while the backend would ignore `mode`.
-      required:
-      - tools
-      - invent_enabled
-      - plan_mode_enabled
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

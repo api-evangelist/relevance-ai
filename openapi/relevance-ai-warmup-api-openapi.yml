@@ -181,6 +181,16 @@ paths:
                 $ref: '#/components/schemas/StopEmailWarmupOutput'
 components:
   schemas:
+    StopEmailWarmupOutput:
+      type: object
+      properties: {}
+    StartEmailWarmupInput:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+      - email
     StopEmailWarmupInput:
       type: object
       properties:
@@ -188,12 +198,6 @@ components:
           type: string
       required:
       - email
-    StartEmailWarmupOutput:
-      type: object
-      properties: {}
-    CreateEmailWarmupInboxOutput:
-      type: object
-      properties: {}
     GetEmailWarmupStatsOutput:
       type: object
       properties:
@@ -281,16 +285,12 @@ components:
       - from_name
       - email
       - password
-    StopEmailWarmupOutput:
+    StartEmailWarmupOutput:
       type: object
       properties: {}
-    StartEmailWarmupInput:
+    CreateEmailWarmupInboxOutput:
       type: object
-      properties:
-        email:
-          type: string
-      required:
-      - email
+      properties: {}
   securitySchemes:
     AuthorizationHeader:
       type: apiKey

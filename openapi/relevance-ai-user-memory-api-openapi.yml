@@ -126,21 +126,59 @@ paths:
                 $ref: '#/components/schemas/ListUserMemoriesOutput'
 components:
   schemas:
-    ListUserMemoriesInput:
+    UpsertUserMemoryInput:
       type: object
       properties:
         agent_id:
           type: string
           description: Agent ID
-        page:
-          type: number
-          default: 1
-        page_size:
-          type: number
-          default: 50
-          maximum: 100
+        memory_id:
+          type: string
+          description: Memory ID (optional, will generate UUID if not provided)
+        text:
+          type: string
+          minLength: 1
+          description: Memory content
+        category:
+          type: string
+          enum:
+          - preference
+          - fact
+          - instruction
+          default: fact
+        importance:
+          type: string
+          enum:
+          - high
+          - medium
+          - low
+          default: medium
+        reasoning:
+          type: string
+          description: Why this memory is being saved
       required:
       - agent_id
+      - text
+      additionalProperties: false
+    UpsertUserMemoryOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        memory_id:
+          type: string
+      required:
+      - success
+      - memory_id
+      additionalProperties: false
+    DeleteUserMemoryInput:
+      type: object
+      properties:
+        memory_id:
+          type: string
+          description: Memory ID to delete
+      required:
+      - memory_id
       additionalProperties: false
     ListUserMemoriesOutput:
       type: object
@@ -189,25 +227,21 @@ components:
       - memories
       - total
       additionalProperties: false
-    DeleteUserMemoryInput:
+    ListUserMemoriesInput:
       type: object
       properties:
-        memory_id:
+        agent_id:
           type: string
-          description: Memory ID to delete
+          description: Agent ID
+        page:
+          type: number
+          default: 1
+        page_size:
+          type: number
+          default: 50
+          maximum: 100
       required:
-      - memory_id
-      additionalProperties: false
-    UpsertUserMemoryOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-        memory_id:
-          type: string
-      required:
-      - success
-      - memory_id
+      - agent_id
       additionalProperties: false
     DeleteUserMemoryOutput:
       type: object
@@ -216,40 +250,6 @@ components:
           type: boolean
       required:
       - success
-      additionalProperties: false
-    UpsertUserMemoryInput:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: Agent ID
-        memory_id:
-          type: string
-          description: Memory ID (optional, will generate UUID if not provided)
-        text:
-          type: string
-          minLength: 1
-          description: Memory content
-        category:
-          type: string
-          enum:
-          - preference
-          - fact
-          - instruction
-          default: fact
-        importance:
-          type: string
-          enum:
-          - high
-          - medium
-          - low
-          default: medium
-        reasoning:
-          type: string
-          description: Why this memory is being saved
-      required:
-      - agent_id
-      - text
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

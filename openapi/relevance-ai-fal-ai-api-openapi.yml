@@ -108,6 +108,14 @@ paths:
                 $ref: '#/components/schemas/GetFalAiModelSchemaOutput'
 components:
   schemas:
+    GetFalAiModelSchemaOutput:
+      type: object
+      properties:
+        input_schema:
+          type: object
+      required:
+      - input_schema
+      additionalProperties: false
     GetFalAiModelsOutput:
       type: object
       properties:
@@ -138,14 +146,6 @@ components:
           - 'null'
       required:
       - models
-      additionalProperties: false
-    GetFalAiModelSchemaOutput:
-      type: object
-      properties:
-        input_schema:
-          type: object
-      required:
-      - input_schema
       additionalProperties: false
     GetFalAiCategoriesOutput:
       type: object

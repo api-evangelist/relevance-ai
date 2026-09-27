@@ -3173,47 +3173,31 @@ paths:
                 $ref: '#/components/schemas/DeleteAutoRechargeConfigOutput'
 components:
   schemas:
-    UpdateOrganizationDefaultIntegrationPermissionOutput: {}
-    BulkUpsertOrganizationIntegrationPermissionOverridesOutput: {}
-    SetOrganizationNativeApiKeyOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ListOrganizationNativeApiKeysOutput:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type: string
-              is_shared:
-                type: boolean
-            required:
-            - key
-            - is_shared
-            additionalProperties: false
-      additionalProperties: false
     DeleteOrganizationNativeApiKeyOutput:
       type: object
       properties: {}
       additionalProperties: false
-    UpdateOrganizationDefaultIntegrationPermissionInput:
+    BulkUpsertOrganizationIntegrationPermissionOverridesInput:
       type: object
       properties:
-        integrations_permission_status:
-          type: string
-          enum:
-          - enable_all
-          - disable_all
+        overrides:
+          type: array
+          items:
+            type: object
+            properties:
+              provider_value:
+                type: string
+              permission_status:
+                type: string
+                enum:
+                - enabled
+                - disabled
+            required:
+            - provider_value
+            - permission_status
+            additionalProperties: false
       required:
-      - integrations_permission_status
-      additionalProperties: false
-    ListOrganizationNativeApiKeysInput:
-      type: object
-      properties: {}
+      - overrides
       additionalProperties: false
     ListOrganizationIntegrationProvidersOutput:
       type: object
@@ -3442,29 +3426,47 @@ components:
       additionalProperties: false
       required:
       - results
-    BulkUpsertOrganizationIntegrationPermissionOverridesInput:
+    SetOrganizationNativeApiKeyOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListOrganizationNativeApiKeysInput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    SetOrganizationNativeApiKeyInput:
       type: object
       properties:
-        overrides:
+        key:
+          type: string
+        value:
+          type: string
+        is_shared:
+          type: boolean
+          description: Whether the key is shared with all projects in the organization. If not provided and key is being created for the first time, it will be set to true
+      additionalProperties: false
+      required:
+      - key
+      - value
+    UpdateOrganizationDefaultIntegrationPermissionOutput: {}
+    ListOrganizationNativeApiKeysOutput:
+      type: object
+      properties:
+        results:
           type: array
           items:
             type: object
             properties:
-              provider_value:
+              key:
                 type: string
-              permission_status:
-                type: string
-                enum:
-                - enabled
-                - disabled
+              is_shared:
+                type: boolean
             required:
-            - provider_value
-            - permission_status
+            - key
+            - is_shared
             additionalProperties: false
-      required:
-      - overrides
       additionalProperties: false
-    GetOrganizationDefaultIntegrationPermissionOutput:
+    UpdateOrganizationDefaultIntegrationPermissionInput:
       type: object
       properties:
         integrations_permission_status:
@@ -3483,6 +3485,18 @@ components:
       additionalProperties: false
       required:
       - key
+    BulkUpsertOrganizationIntegrationPermissionOverridesOutput: {}
+    GetOrganizationDefaultIntegrationPermissionOutput:
+      type: object
+      properties:
+        integrations_permission_status:
+          type: string
+          enum:
+          - enable_all
+          - disable_all
+      required:
+      - integrations_permission_status
+      additionalProperties: false
     ListOrganizationIntegrationProvidersInput:
       type: object
       properties:
@@ -3524,41 +3538,256 @@ components:
           - enabled
           additionalProperties: false
       additionalProperties: false
-    SetOrganizationNativeApiKeyInput:
+    UpdateOrganizationBillingOutput:
       type: object
       properties:
-        key:
-          type: string
-        value:
-          type: string
-        is_shared:
-          type: boolean
-          description: Whether the key is shared with all projects in the organization. If not provided and key is being created for the first time, it will be set to true
+        next_action:
+          type: object
+          properties:
+            type:
+              type: string
+            data:
+              type: object
+              properties:
+                payment_intent_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+              - client_secret
+              - payment_intent_id
+              additionalProperties: false
+          required:
+          - type
+          - data
+          additionalProperties: false
+      additionalProperties: false
+    ListProjectsInOrganizationOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              project_id:
+                type: string
+              organization_name:
+                type: string
+              name:
+                type: string
+              description:
+                type: string
+              permissions:
+                type: object
+                properties:
+                  items:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        resources:
+                          type: object
+                          properties:
+                            datasets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            deployables:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            users:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            agents:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            knowledge_sets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            chains:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            syncs:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            workforces:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                        actions:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                      additionalProperties: false
+                  role_context:
+                    oneOf:
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - organization
+                        role:
+                          type: string
+                          enum:
+                          - owner
+                          - admin
+                          - operator
+                          - viewer
+                          description: User's effective (actual) FGA role for this organization.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - project
+                        is_inherited:
+                          type: boolean
+                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                        most_permissive_inherited_role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                        role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                required:
+                - items
+                additionalProperties: false
+              organization_id:
+                type: string
+              updated_at:
+                type: string
+              created_by_user_id:
+                type: string
+              keys:
+                type: object
+              datastore:
+                type: string
+                enum:
+                - redis
+                description: If set to redis, it expects a redis connection string set using project keys under the name "redis".
+              language:
+                type: string
+                description: The language to convert cluster labels output to.
+            required:
+            - _id
+            - project_id
+            - permissions
+            - organization_name
+            - name
+            - description
+            - organization_id
+            - created_by_user_id
       additionalProperties: false
       required:
-      - key
-      - value
-    ChangeBillingSubscriptionOutput:
+      - results
+    DeleteOrganizationOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    CheckOrganizationEntitlementLimitsInput:
       type: object
       properties:
-        client_secret:
-          type: string
-        checkout_session_id:
+        entitlements:
+          type: array
+          items:
+            type: string
+            enum:
+            - users
+            - projects
+            - workflows_gpu
+            - negative_credits
+            - negative_actions
+            - workflows_seconds_per_year
+            - documents
+            - documents_per_dataset
+            - premium_llm_generation
+            - sandbox_gpu_usage
+            - max_rows_at_once
+            - knowledge_bytes
+            - file_storage_bytes
+            - organization_credit_alarm_breach
+            - organization_action_alarm_breach
+            - project_credit_alarm_breach
+            - project_action_alarm_breach
+      required:
+      - entitlements
+      additionalProperties: false
+    GetBillingCheckoutSessionOutput:
+      type: object
+      properties:
+        link:
           type: string
       required:
-      - client_secret
-      - checkout_session_id
+      - link
+      additionalProperties: false
+    RemoveGroupAssetPermissionOutput: {}
+    ListAvailableRolesByScopeOutput:
+      type: object
+      properties:
+        entity_type:
+          type: string
+          enum:
+          - organization
+          - project
+          description: The type of entity to list roles for.
+        is_fga_enabled:
+          type: boolean
+        roles:
+          type: array
+          items:
+            type: string
+      additionalProperties: false
+      required:
+      - roles
+    DeleteAutoRechargeConfigOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
     AssignGroupToProjectOutput: {}
-    SyncSubscriptionInput: {}
-    IsUsageBasedBillingEnabledOutput:
+    GetCreditCostOutput:
       type: object
       properties:
-        is_usage_based_billing_enabled:
-          type: boolean
+        credits:
+          type: number
       required:
-      - is_usage_based_billing_enabled
+      - credits
+    UpdateOrganizationOutput:
+      type: object
+      properties: {}
       additionalProperties: false
-    ListPendingUsersInGroupOutput:
+    ListUsersInGroupOutput:
       type: object
       properties:
         members:
@@ -3566,17 +3795,41 @@ components:
           items:
             type: object
             properties:
-              email:
+              id:
                 type: string
+                description: The user's display_id
+              email:
+                type:
+                - string
+                - 'null'
                 description: The user's email address
+              first_name:
+                type:
+                - string
+                - 'null'
+                description: The user's first name
+              last_name:
+                type:
+                - string
+                - 'null'
+                description: The user's last name
+              profile_picture_url:
+                type:
+                - string
+                - 'null'
+                description: The user's profile picture
             required:
+            - id
             - email
+            - first_name
+            - last_name
+            - profile_picture_url
             additionalProperties: false
-          description: List of users who are pending members of the group
+          description: List of users who are members of the group
       required:
       - members
       additionalProperties: false
-    ListAssetGroupPermissionsOutput:
+    ListOrganizationGroupsOutput:
       type: object
       properties:
         groups:
@@ -3584,10 +3837,10 @@ components:
           items:
             type: object
             properties:
-              group_id:
+              id:
                 type: string
                 description: The group's unique identifier
-              group_name:
+              name:
                 type: string
                 description: The group's name
               source:
@@ -3599,59 +3852,42 @@ components:
               user_count:
                 type: number
                 description: The number of users in the group
-              permission:
-                type: string
-                enum:
-                - admin
-                - operator
-                - viewer
-                description: The permission/role the group has on the asset
+              projects:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    project_id:
+                      type: string
+                      description: The project's display id
+                    project_name:
+                      type: string
+                      description: The project's name
+                    permission:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: The permission/role the group has on the project
+                  required:
+                  - project_id
+                  - project_name
+                  - permission
+                  additionalProperties: false
+                description: List of projects that the group belongs to with their permissions
             required:
-            - group_id
-            - group_name
+            - id
             - source
+            - name
             - user_count
-            - permission
+            - projects
             additionalProperties: false
-          description: List of groups with their permissions on the asset
+          description: List of groups in the organization
       required:
       - groups
-      additionalProperties: false
-    DeleteOrganizationDataRetentionConfigOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    CancelDowngradeOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    UpdateOverageConfigInput:
-      type: object
-      properties:
-        credits:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-        actions:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-        concurrency:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
       additionalProperties: false
     ListOrganizationPlansOutput:
       type: object
@@ -3721,6 +3957,28 @@ components:
       required:
       - plans
       additionalProperties: false
+    DeleteOrganizationDataRetentionConfigOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    RemoveGroupAssetPermissionInput: {}
+    AddGroupAssetPermissionInput:
+      type: object
+      properties:
+        group_id:
+          type: string
+          description: The ID of the group to grant permissions to
+        permission:
+          type: string
+          enum:
+          - admin
+          - operator
+          - viewer
+          description: The permission/role the group should have on the asset
+      required:
+      - group_id
+      - permission
+      additionalProperties: false
     CreateOrganizationOutput:
       type: object
       properties:
@@ -3729,395 +3987,82 @@ components:
       additionalProperties: false
       required:
       - organization_id
-    GetCreditCostOutput:
+    UpdateOrganizationInput:
       type: object
       properties:
-        credits:
-          type: number
-      required:
-      - credits
-    UpdateOrganizationBillingInput:
-      type: object
-      properties:
-        plan:
+        name:
           type: string
-          enum:
-          - free
-          - basic
-          - starter
-          - team
-          - business
-          - enterprise
-          - custom
-        billing_cycle:
-          type: string
-          enum:
-          - monthly
-          - yearly
-          description: The billing cycle of a Stripe subscription plan
-        idempotency_key:
-          type: string
-      required:
-      - plan
-      - billing_cycle
       additionalProperties: false
-    ListUsersInOrganizationOutput:
+    AssignGroupToProjectInput:
+      type: object
+      properties:
+        project_display_id:
+          type: string
+          description: The display ID of the project to assign the group to
+        permission:
+          type: string
+          enum:
+          - admin
+          - editor
+          - operator
+          - viewer
+          - chat
+          description: The permission/role the group should have on the project
+      required:
+      - project_display_id
+      - permission
+      additionalProperties: false
+    ListAvailableRolesByScopeInput:
+      type: object
+      properties:
+        entity_type:
+          type: string
+          enum:
+          - organization
+          - project
+          description: The type of entity to list roles for.
+      required:
+      - entity_type
+      additionalProperties: false
+    AcceptRetentionOfferOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+      - success
+      - message
+      additionalProperties: false
+    CheckSSOEnforcementOutput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SSO_REQUIRED
+          - SSO_REQUIRED_ORG_SETUP_INCOMPLETE
+          - SSO_NOT_REQUIRED
+          description: The SSO enforcement status for this email domain
+      required:
+      - status
+      additionalProperties: false
+    ListBillingEventsOutput:
       type: object
       properties:
         results:
           type: array
-          items:
-            type: object
-            properties:
-              profile_picture_url:
-                type: string
-              onboarded:
-                type: boolean
-              first_name:
-                type: string
-              last_name:
-                type: string
-              role:
-                type: string
-              company:
-                type: string
-              label:
-                type: string
-              notes:
-                type: string
-              tags:
-                type: object
-              permissions:
-                type: object
-                properties:
-                  projects:
-                    type: object
-                    additionalProperties:
-                      type: object
-                      properties:
-                        items:
-                          type: object
-                          additionalProperties:
-                            type: object
-                            properties:
-                              resources:
-                                type: object
-                                properties:
-                                  datasets:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  deployables:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  users:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  agents:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  knowledge_sets:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  chains:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  syncs:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  workforces:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                              actions:
-                                type: object
-                                additionalProperties:
-                                  type: boolean
-                            additionalProperties: false
-                        role_context:
-                          oneOf:
-                          - type: object
-                            properties:
-                              entity_type:
-                                type: string
-                                enum:
-                                - organization
-                              role:
-                                type: string
-                                enum:
-                                - owner
-                                - admin
-                                - operator
-                                - viewer
-                                description: User's effective (actual) FGA role for this organization.
-                            required:
-                            - entity_type
-                            additionalProperties: false
-                          - type: object
-                            properties:
-                              entity_type:
-                                type: string
-                                enum:
-                                - project
-                              is_inherited:
-                                type: boolean
-                                description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                              most_permissive_inherited_role:
-                                type: string
-                                enum:
-                                - admin
-                                - editor
-                                - operator
-                                - viewer
-                                - chat
-                                description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                              role:
-                                type: string
-                                enum:
-                                - admin
-                                - editor
-                                - operator
-                                - viewer
-                                - chat
-                                description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                            required:
-                            - entity_type
-                            additionalProperties: false
-                      required:
-                      - items
-                      additionalProperties: false
-                  organizations:
-                    type: object
-                    additionalProperties:
-                      type: object
-                      properties:
-                        items:
-                          type: object
-                          additionalProperties:
-                            type: object
-                            properties:
-                              resources:
-                                type: object
-                                properties:
-                                  datasets:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  deployables:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  users:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  agents:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  knowledge_sets:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  chains:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  syncs:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                                  workforces:
-                                    type: object
-                                    additionalProperties:
-                                      type: boolean
-                              actions:
-                                type: object
-                                additionalProperties:
-                                  type: boolean
-                            additionalProperties: false
-                        role_context:
-                          oneOf:
-                          - type: object
-                            properties:
-                              entity_type:
-                                type: string
-                                enum:
-                                - organization
-                              role:
-                                type: string
-                                enum:
-                                - owner
-                                - admin
-                                - operator
-                                - viewer
-                                description: User's effective (actual) FGA role for this organization.
-                            required:
-                            - entity_type
-                            additionalProperties: false
-                          - type: object
-                            properties:
-                              entity_type:
-                                type: string
-                                enum:
-                                - project
-                              is_inherited:
-                                type: boolean
-                                description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                              most_permissive_inherited_role:
-                                type: string
-                                enum:
-                                - admin
-                                - editor
-                                - operator
-                                - viewer
-                                - chat
-                                description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                              role:
-                                type: string
-                                enum:
-                                - admin
-                                - editor
-                                - operator
-                                - viewer
-                                - chat
-                                description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                            required:
-                            - entity_type
-                            additionalProperties: false
-                      required:
-                      - items
-                      additionalProperties: false
-                  administrator:
-                    type: object
-                    properties:
-                      items:
-                        type: object
-                        additionalProperties:
-                          type: object
-                          properties:
-                            resources:
-                              type: object
-                              properties:
-                                datasets:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                                deployables:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                                users:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                                agents:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                                knowledge_sets:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                                chains:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                                syncs:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                                workforces:
-                                  type: object
-                                  additionalProperties:
-                                    type: boolean
-                            actions:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                          additionalProperties: false
-                      role_context:
-                        oneOf:
-                        - type: object
-                          properties:
-                            entity_type:
-                              type: string
-                              enum:
-                              - organization
-                            role:
-                              type: string
-                              enum:
-                              - owner
-                              - admin
-                              - operator
-                              - viewer
-                              description: User's effective (actual) FGA role for this organization.
-                          required:
-                          - entity_type
-                          additionalProperties: false
-                        - type: object
-                          properties:
-                            entity_type:
-                              type: string
-                              enum:
-                              - project
-                            is_inherited:
-                              type: boolean
-                              description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                            most_permissive_inherited_role:
-                              type: string
-                              enum:
-                              - admin
-                              - editor
-                              - operator
-                              - viewer
-                              - chat
-                              description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                            role:
-                              type: string
-                              enum:
-                              - admin
-                              - editor
-                              - operator
-                              - viewer
-                              - chat
-                              description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                          required:
-                          - entity_type
-                          additionalProperties: false
-                    required:
-                    - items
-                    additionalProperties: false
-                required:
-                - projects
-                additionalProperties: false
-              type:
-                type: string
-                enum:
-                - user
-                - machine
-                - agent-embed
-                - workforce-embed
-              _id:
-                type: string
-              email:
-                type: string
-              creator_user_id:
-                type: string
-            required:
-            - permissions
-            - type
-            - _id
+          items: {}
       additionalProperties: false
+    IsUsageBasedBillingEnabledOutput:
+      type: object
+      properties:
+        is_usage_based_billing_enabled:
+          type: boolean
       required:
-      - results
-    DeleteOrganizationDataRetentionConfigInput: {}
+      - is_usage_based_billing_enabled
+      additionalProperties: false
     GetOrganizationConfigurationValueOutput:
       oneOf:
       - type: object
@@ -4527,112 +4472,58 @@ components:
         required:
         - overage_concurrency
         additionalProperties: false
-    AcceptRetentionOfferOutput:
+    BuyCreditsInput:
       type: object
       properties:
-        success:
-          type: boolean
-        message:
+        quantity:
+          type: number
+          minimum: 10000
+        idempotency_key:
           type: string
       required:
-      - success
-      - message
+      - idempotency_key
+      - quantity
       additionalProperties: false
-    GetOrganizationDataRetentionConfigOutput:
+    ListAssetGroupPermissionsOutput:
       type: object
       properties:
-        config:
-          type: object
-          properties:
-            settings:
-              type: object
-              properties:
-                delete_agent_versions:
-                  type: boolean
-                delete_conversations:
-                  type: boolean
-                delete_files:
-                  type: boolean
-                delete_meeting_transcripts:
-                  type: boolean
-                delete_tool_runs:
-                  type: boolean
-                delete_tool_versions:
-                  type: boolean
-                delete_workforce_versions:
-                  type: boolean
-              required:
-              - delete_agent_versions
-              - delete_conversations
-              - delete_files
-              - delete_meeting_transcripts
-              - delete_tool_runs
-              - delete_tool_versions
-              - delete_workforce_versions
-              additionalProperties: false
-            retention_period_days:
-              type: number
-          required:
-          - settings
-          - retention_period_days
-          additionalProperties: false
-      additionalProperties: false
-    CheckOrganizationEntitlementLimitsInput:
-      type: object
-      properties:
-        entitlements:
+        groups:
           type: array
           items:
-            type: string
-            enum:
-            - users
-            - projects
-            - workflows_gpu
-            - negative_credits
-            - negative_actions
-            - workflows_seconds_per_year
-            - documents
-            - documents_per_dataset
-            - premium_llm_generation
-            - sandbox_gpu_usage
-            - max_rows_at_once
-            - knowledge_bytes
-            - file_storage_bytes
-            - organization_credit_alarm_breach
-            - organization_action_alarm_breach
-            - project_credit_alarm_breach
-            - project_action_alarm_breach
+            type: object
+            properties:
+              group_id:
+                type: string
+                description: The group's unique identifier
+              group_name:
+                type: string
+                description: The group's name
+              source:
+                type: string
+                enum:
+                - directory_sync
+                - relevance
+                description: The source of the group (directory sync or relevance)
+              user_count:
+                type: number
+                description: The number of users in the group
+              permission:
+                type: string
+                enum:
+                - admin
+                - operator
+                - viewer
+                description: The permission/role the group has on the asset
+            required:
+            - group_id
+            - group_name
+            - source
+            - user_count
+            - permission
+            additionalProperties: false
+          description: List of groups with their permissions on the asset
       required:
-      - entitlements
-      additionalProperties: false
-    CreditPurchaseCheckoutSessionOutput:
-      type: object
-      properties:
-        client_secret:
-          type: string
-        checkout_session_id:
-          type: string
-      required:
-      - client_secret
-      - checkout_session_id
-    AssignGroupToProjectInput:
-      type: object
-      properties:
-        project_display_id:
-          type: string
-          description: The display ID of the project to assign the group to
-        permission:
-          type: string
-          enum:
-          - admin
-          - editor
-          - operator
-          - viewer
-          - chat
-          description: The permission/role the group should have on the project
-      required:
-      - project_display_id
-      - permission
+      - groups
       additionalProperties: false
     UpdateOverageConfigOutput:
       type: object
@@ -4662,1041 +4553,16 @@ components:
           - enabled
           additionalProperties: false
       additionalProperties: false
-    ListAvailableRolesByScopeOutput:
+    CreditPurchaseCheckoutSessionOutput:
       type: object
       properties:
-        entity_type:
+        client_secret:
           type: string
-          enum:
-          - organization
-          - project
-          description: The type of entity to list roles for.
-        is_fga_enabled:
-          type: boolean
-        roles:
-          type: array
-          items:
-            type: string
-      additionalProperties: false
-      required:
-      - roles
-    AcceptRetentionOfferInput:
-      type: object
-      properties:
-        cancellation_reason:
-          type: string
-        experiment_variant:
-          type: string
-          enum:
-          - test_30
-          - test_50
-      additionalProperties: false
-    CheckSSOEnforcementInput:
-      type: object
-      properties:
-        email:
-          type: string
-          description: The email address to check SSO enforcement for
-      required:
-      - email
-      additionalProperties: false
-    CancelSubscriptionOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ListProjectGroupPermissionsOutput:
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            type: object
-            properties:
-              group_id:
-                type: string
-                description: The group's unique identifier
-              group_name:
-                type: string
-                description: The group's name
-              source:
-                type: string
-                enum:
-                - directory_sync
-                - relevance
-                description: The source of the group (directory sync or relevance)
-              user_count:
-                type: number
-                description: The number of users in the group
-              permission:
-                type: string
-                enum:
-                - admin
-                - editor
-                - operator
-                - viewer
-                - chat
-                description: The permission/role the group has on the project
-            required:
-            - group_id
-            - group_name
-            - source
-            - user_count
-            - permission
-            additionalProperties: false
-          description: List of groups with their permissions on the project
-      required:
-      - groups
-      additionalProperties: false
-    UpsertAutoRechargeConfigOutput:
-      type: object
-      properties:
-        threshold:
-          type: number
-        amount:
-          type: number
-      required:
-      - threshold
-      - amount
-      additionalProperties: false
-    CheckDomainEnterpriseStatusInput:
-      type: object
-      properties:
-        id_token:
-          type: string
-          description: The id token for a signed in account containing the user's email
-      required:
-      - id_token
-      additionalProperties: false
-    UpsertOrganizationDataRetentionConfigInput:
-      type: object
-      properties:
-        settings:
-          type: object
-          properties:
-            delete_agent_versions:
-              type: boolean
-            delete_conversations:
-              type: boolean
-            delete_files:
-              type: boolean
-            delete_meeting_transcripts:
-              type: boolean
-            delete_tool_runs:
-              type: boolean
-            delete_tool_versions:
-              type: boolean
-            delete_workforce_versions:
-              type: boolean
-          additionalProperties: false
-        retention_period_days:
-          type: number
-      required:
-      - settings
-      - retention_period_days
-      additionalProperties: false
-    UpsertOrganizationUsageAlarmInput:
-      type: object
-      properties:
-        usage_type:
-          type: string
-          enum:
-          - credit
-          - action
-          description: Type of usage to monitor
-        usage_threshold:
-          type: number
-          minimum: 0
-          description: Threshold value to trigger the alarm
-        alarm_action:
-          type: string
-          enum:
-          - warn
-          - block
-          description: Action to take when threshold is exceeded
-        alarm_action_config:
-          type: object
-          properties:
-            emails:
-              type: array
-              items:
-                type: string
-              description: Email addresses to notify when alarm is triggered
-          additionalProperties: false
-      required:
-      - usage_type
-      - usage_threshold
-      - alarm_action
-      additionalProperties: false
-    ListOrganizationUsageAlarmsOutput:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              usage_type:
-                type: string
-                enum:
-                - credit
-                - action
-                description: Type of usage to monitor
-              usage_threshold:
-                type: number
-                minimum: 0
-                description: Threshold value to trigger the alarm
-              alarm_action:
-                type: string
-                enum:
-                - warn
-                - block
-                description: Action to take when threshold is exceeded
-              alarm_action_config:
-                type: object
-                properties:
-                  emails:
-                    type: array
-                    items:
-                      type: string
-                    description: Email addresses to notify when alarm is triggered
-                additionalProperties: false
-              alarm_status:
-                type: string
-                enum:
-                - ok
-                - alarm
-                description: Current status of the alarm
-              created_at:
-                type: string
-              updated_at:
-                type: string
-            required:
-            - usage_type
-            - usage_threshold
-            - alarm_action
-            - alarm_action_config
-            - alarm_status
-            - created_at
-            additionalProperties: false
-      required:
-      - results
-      additionalProperties: false
-    DowngradeSubscriptionOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    GetBillingTotalsOutput:
-      type: object
-      properties:
-        total_cost:
-          type: number
-      required:
-      - total_cost
-      additionalProperties: false
-    GetAutoRechargeConfigOutput:
-      type: object
-      properties:
-        config:
-          oneOf:
-          - type: object
-            properties:
-              threshold:
-                type: number
-              amount:
-                type: number
-            required:
-            - threshold
-            - amount
-            additionalProperties: false
-          - type: 'null'
-      required:
-      - config
-      additionalProperties: false
-    AddGroupAssetPermissionOutput: {}
-    GetBillingFrontendLinkOutput:
-      type: object
-      properties:
-        link:
+        checkout_session_id:
           type: string
       required:
-      - link
-      additionalProperties: false
-    DeleteOrganizationInput: {}
-    CheckSSOEnforcementOutput:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - SSO_REQUIRED
-          - SSO_REQUIRED_ORG_SETUP_INCOMPLETE
-          - SSO_NOT_REQUIRED
-          description: The SSO enforcement status for this email domain
-      required:
-      - status
-      additionalProperties: false
-    ChangeBillingSubscriptionInput:
-      type: object
-      properties:
-        new_plan_name:
-          type: string
-          enum:
-          - free
-          - starter
-          - team
-          - business
-          - enterprise
-          - custom
-        billing_cycle:
-          type: string
-          enum:
-          - monthly
-          - yearly
-          description: The billing cycle of a Stripe subscription plan
-        idempotency_key:
-          type: string
-        feedback:
-          type: object
-          properties:
-            reason:
-              type: string
-              enum:
-              - too-expensive
-              - price-increase
-              - low-usage
-              - missing-features
-              - integration-issues
-              - switching-tool
-              - support-issues
-              - no-longer-needed
-              - other
-              description: The reason for the billing change
-            explanation:
-              type: string
-              description: Additional explanation for the billing change
-          required:
-          - reason
-          additionalProperties: false
-        coupon_code:
-          type: string
-      required:
-      - idempotency_key
-      - new_plan_name
-      - billing_cycle
-      additionalProperties: false
-    UpdateOrganizationEnabledFeaturesInput:
-      type: object
-      properties:
-        features:
-          type: array
-          items:
-            type: object
-            properties:
-              feature:
-                type: string
-                enum:
-                - natural_language_errors
-                description: The identifier of an organization feature
-              enabled:
-                type: boolean
-                description: Whether this feature should be enabled for this organization
-            required:
-            - feature
-            - enabled
-            additionalProperties: false
-          description: List of features to update with their enabled status
-      required:
-      - features
-      additionalProperties: false
-    ListUsersInGroupOutput:
-      type: object
-      properties:
-        members:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The user's display_id
-              email:
-                type:
-                - string
-                - 'null'
-                description: The user's email address
-              first_name:
-                type:
-                - string
-                - 'null'
-                description: The user's first name
-              last_name:
-                type:
-                - string
-                - 'null'
-                description: The user's last name
-              profile_picture_url:
-                type:
-                - string
-                - 'null'
-                description: The user's profile picture
-            required:
-            - id
-            - email
-            - first_name
-            - last_name
-            - profile_picture_url
-            additionalProperties: false
-          description: List of users who are members of the group
-      required:
-      - members
-      additionalProperties: false
-    GetOverageConfigOutput:
-      type: object
-      properties:
-        credits:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-        actions:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-        concurrency:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-            allocation:
-              type: number
-            limit:
-              type: number
-          required:
-          - enabled
-          - allocation
-          - limit
-          additionalProperties: false
-      additionalProperties: false
-    UpdateOrganizationBillingOutput:
-      type: object
-      properties:
-        next_action:
-          type: object
-          properties:
-            type:
-              type: string
-            data:
-              type: object
-              properties:
-                payment_intent_id:
-                  type: string
-                client_secret:
-                  type: string
-              required:
-              - client_secret
-              - payment_intent_id
-              additionalProperties: false
-          required:
-          - type
-          - data
-          additionalProperties: false
-      additionalProperties: false
-    UpsertOrganizationDataRetentionConfigOutput:
-      type: object
-      properties:
-        config:
-          type: object
-          properties:
-            settings:
-              type: object
-              properties:
-                delete_agent_versions:
-                  type: boolean
-                delete_conversations:
-                  type: boolean
-                delete_files:
-                  type: boolean
-                delete_meeting_transcripts:
-                  type: boolean
-                delete_tool_runs:
-                  type: boolean
-                delete_tool_versions:
-                  type: boolean
-                delete_workforce_versions:
-                  type: boolean
-              required:
-              - delete_agent_versions
-              - delete_conversations
-              - delete_files
-              - delete_meeting_transcripts
-              - delete_tool_runs
-              - delete_tool_versions
-              - delete_workforce_versions
-              additionalProperties: false
-            retention_period_days:
-              type: number
-          required:
-          - settings
-          - retention_period_days
-          additionalProperties: false
-      required:
-      - config
-      additionalProperties: false
-    CancelDowngradeInput:
-      type: object
-      properties:
-        idempotency_key:
-          type: string
-      required:
-      - idempotency_key
-      additionalProperties: false
-    CreditPurchaseCheckoutSessionInput:
-      type: object
-      properties:
-        credits_quantity:
-          type: number
-        actions_quantity:
-          type: number
-      required:
-      - credits_quantity
-      - actions_quantity
-      additionalProperties: false
-    UpsertAutoRechargeConfigInput:
-      type: object
-      properties:
-        threshold:
-          type: number
-          description: The auto-recharge threshold will be triggered when the balance drops below this amount.
-        amount:
-          type: number
-          description: This amount is NOT the amount that will be auto-recharged. The actual recharge amount is (threshold + amount) - (current balance), i.e. the amount required to bring the balance up.
-      required:
-      - threshold
-      - amount
-      additionalProperties: false
-    TriggerOrganizationPlanTrialInput:
-      type: object
-      properties:
-        idempotency_key:
-          type: string
-      additionalProperties: false
-    ListOrganizationsOutput:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              organization_id:
-                type: string
-      additionalProperties: false
-      required:
-      - results
-    GetCheckoutCompletionStatusOutput:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - pending
-          - success
-          - fail
-      required:
-      - status
-      additionalProperties: false
-    AddGroupAssetPermissionInput:
-      type: object
-      properties:
-        group_id:
-          type: string
-          description: The ID of the group to grant permissions to
-        permission:
-          type: string
-          enum:
-          - admin
-          - operator
-          - viewer
-          description: The permission/role the group should have on the asset
-      required:
-      - group_id
-      - permission
-      additionalProperties: false
-    ListOrganizationGroupsOutput:
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                description: The group's unique identifier
-              name:
-                type: string
-                description: The group's name
-              source:
-                type: string
-                enum:
-                - directory_sync
-                - relevance
-                description: The source of the group (directory sync or relevance)
-              user_count:
-                type: number
-                description: The number of users in the group
-              projects:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    project_id:
-                      type: string
-                      description: The project's display id
-                    project_name:
-                      type: string
-                      description: The project's name
-                    permission:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: The permission/role the group has on the project
-                  required:
-                  - project_id
-                  - project_name
-                  - permission
-                  additionalProperties: false
-                description: List of projects that the group belongs to with their permissions
-            required:
-            - id
-            - source
-            - name
-            - user_count
-            - projects
-            additionalProperties: false
-          description: List of groups in the organization
-      required:
-      - groups
-      additionalProperties: false
-    BuyCreditsInput:
-      type: object
-      properties:
-        quantity:
-          type: number
-          minimum: 10000
-        idempotency_key:
-          type: string
-      required:
-      - idempotency_key
-      - quantity
-      additionalProperties: false
-    UpdateOrganizationEnabledFeaturesOutput:
-      type: object
-      properties:
-        features:
-          type: array
-          items:
-            type: object
-            properties:
-              title:
-                type: string
-                description: The feature title
-              display_name:
-                type: string
-                description: The feature display name
-              description:
-                type: string
-                description: The feature description
-              feature:
-                type: string
-                enum:
-                - natural_language_errors
-                description: The identifier of an organization feature
-              enabled:
-                type: boolean
-                description: Whether this feature should be enabled for this organization
-            required:
-            - title
-            - display_name
-            - description
-            - feature
-            - enabled
-          description: List of all organization features with their status and metadata after the update
-      required:
-      - features
-      additionalProperties: false
-    DeleteOrganizationUsageAlarmOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    UpsertOrganizationUsageAlarmOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-        id:
-          type: string
-      required:
-      - success
-      - id
-      additionalProperties: false
-    BuyCreditsOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    GetOrganizationUsageOutput:
-      type: object
-      properties:
-        usage:
-          type: object
-          properties:
-            users:
-              type: object
-              properties:
-                limit:
-                  type: number
-            projects:
-              type: object
-              properties:
-                limit:
-                  type: number
-            workflows_gpu:
-              type: object
-              properties:
-                enabled:
-                  type: boolean
-            negative_credits:
-              type: object
-              properties:
-                limit:
-                  type: number
-            negative_actions:
-              type: object
-              properties:
-                limit:
-                  type: number
-            workflows_seconds_per_year:
-              type: object
-              properties:
-                limit:
-                  type: number
-            documents:
-              type: object
-              properties:
-                limit:
-                  type: number
-            documents_per_dataset:
-              type: object
-              properties:
-                limit:
-                  type: number
-            premium_llm_generation:
-              type: object
-              properties:
-                limit:
-                  type: boolean
-            sandbox_gpu_usage:
-              type: object
-              properties:
-                limit:
-                  type: boolean
-            max_rows_at_once:
-              type: object
-              properties:
-                limit:
-                  type: number
-            knowledge_bytes:
-              type: object
-              properties:
-                limit:
-                  type: number
-            file_storage_bytes:
-              type: object
-              properties:
-                limit:
-                  type: number
-          additionalProperties: false
-        limit:
-          type: object
-          properties:
-            users:
-              type: object
-              properties:
-                limit:
-                  type: number
-            projects:
-              type: object
-              properties:
-                limit:
-                  type: number
-            workflows_gpu:
-              type: object
-              properties:
-                enabled:
-                  type: boolean
-            negative_credits:
-              type: object
-              properties:
-                limit:
-                  type: number
-            negative_actions:
-              type: object
-              properties:
-                limit:
-                  type: number
-            workflows_seconds_per_year:
-              type: object
-              properties:
-                limit:
-                  type: number
-            documents:
-              type: object
-              properties:
-                limit:
-                  type: number
-            documents_per_dataset:
-              type: object
-              properties:
-                limit:
-                  type: number
-            premium_llm_generation:
-              type: object
-              properties:
-                limit:
-                  type: boolean
-            sandbox_gpu_usage:
-              type: object
-              properties:
-                limit:
-                  type: boolean
-            max_rows_at_once:
-              type: object
-              properties:
-                limit:
-                  type: number
-            knowledge_bytes:
-              type: object
-              properties:
-                limit:
-                  type: number
-            file_storage_bytes:
-              type: object
-              properties:
-                limit:
-                  type: number
-          additionalProperties: false
-      required:
-      - usage
-      - limit
-      additionalProperties: false
-    GetOrganizationOutput:
-      type: object
-      properties:
-        organization_id:
-          type: string
-          description: Just `_id` but optional because why not
-        _id:
-          type: string
-        name:
-          type: string
-        entitlements:
-          type: object
-          properties:
-            users:
-              type: object
-              properties:
-                limit:
-                  type: number
-            projects:
-              type: object
-              properties:
-                limit:
-                  type: number
-            workflows_gpu:
-              type: object
-              properties:
-                enabled:
-                  type: boolean
-            negative_credits:
-              type: object
-              properties:
-                limit:
-                  type: number
-            negative_actions:
-              type: object
-              properties:
-                limit:
-                  type: number
-            workflows_seconds_per_year:
-              type: object
-              properties:
-                limit:
-                  type: number
-            documents:
-              type: object
-              properties:
-                limit:
-                  type: number
-            documents_per_dataset:
-              type: object
-              properties:
-                limit:
-                  type: number
-            premium_llm_generation:
-              type: object
-              properties:
-                limit:
-                  type: boolean
-            sandbox_gpu_usage:
-              type: object
-              properties:
-                limit:
-                  type: boolean
-            max_rows_at_once:
-              type: object
-              properties:
-                limit:
-                  type: number
-            knowledge_bytes:
-              type: object
-              properties:
-                limit:
-                  type: number
-            file_storage_bytes:
-              type: object
-              properties:
-                limit:
-                  type: number
-          additionalProperties: false
-        entitlement_plan:
-          type: string
-          enum:
-          - free
-          - basic
-          - starter
-          - team
-          - business
-          - enterprise
-          - custom
-        credits:
-          type: number
-        actions:
-          type: number
-        external_billing_id:
-          type: string
-        billing_period_start_date:
-          type: string
-        billing_period_end_date: {}
-        billing_period:
-          type: string
-          enum:
-          - monthly
-          - yearly
-          description: The billing cycle of a Stripe subscription plan
-        billing_cycle:
-          type: string
-          enum:
-          - monthly
-          - yearly
-          description: The billing cycle of a Stripe subscription plan
-        downgrading_to:
-          type: string
-          enum:
-          - free
-          - basic
-          - starter
-          - team
-          - business
-          - enterprise
-          - custom
-          description: The plan the organization is downgrading to at the end of the current billing cycle (legacy)
-        scheduled_downgrade:
-          type: object
-          properties:
-            plan:
-              type: string
-              enum:
-              - free
-              - basic
-              - starter
-              - team
-              - business
-              - enterprise
-              - custom
-            billing_cycle:
-              type: string
-              enum:
-              - monthly
-              - yearly
-              description: The billing cycle of a Stripe subscription plan
-          description: The plan and billing cycle the organization is downgrading to at the end of the current billing cycle. Replaces `downgrading_to`.
-          additionalProperties: false
-        fixed_allocation:
-          type: object
-          properties:
-            credits:
-              type: number
-            actions:
-              type: number
-          additionalProperties: false
-        total_allocation:
-          type: object
-          properties:
-            credits:
-              type: number
-            actions:
-              type: number
-          additionalProperties: false
-        relevance_orb_customer:
-          type: object
-          properties:
-            id:
-              type: string
-            portal_url:
-              type:
-              - string
-              - 'null'
-            timezone:
-              type: string
-          description: Usage-based billing object that contains information about the customer set up in Orb billing.
-          additionalProperties: true
-      required:
-      - _id
-    TriggerOrganizationPlanTrialOutput:
-      type: object
-      properties:
-        next_action:
-          type: object
-          properties:
-            type:
-              type: string
-            data:
-              type: object
-              properties:
-                payment_intent_id:
-                  type: string
-                client_secret:
-                  type: string
-              required:
-              - client_secret
-              - payment_intent_id
-              additionalProperties: false
-          required:
-          - type
-          - data
-          additionalProperties: false
-      additionalProperties: false
+      - client_secret
+      - checkout_session_id
     GetCreditCostInput:
       type: object
       properties:
@@ -5922,149 +4788,457 @@ components:
       - type
       - units
       additionalProperties: false
-    RemoveGroupAssetPermissionOutput: {}
-    DeleteAutoRechargeConfigOutput:
+    UpsertAutoRechargeConfigInput:
       type: object
       properties:
-        success:
-          type: boolean
+        threshold:
+          type: number
+          description: The auto-recharge threshold will be triggered when the balance drops below this amount.
+        amount:
+          type: number
+          description: This amount is NOT the amount that will be auto-recharged. The actual recharge amount is (threshold + amount) - (current balance), i.e. the amount required to bring the balance up.
       required:
-      - success
+      - threshold
+      - amount
       additionalProperties: false
-    UpdateOrganizationOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ListBillingEventsOutput:
+    ListOrganizationUsageAlarmsOutput:
       type: object
       properties:
         results:
           type: array
-          items: {}
+          items:
+            type: object
+            properties:
+              usage_type:
+                type: string
+                enum:
+                - credit
+                - action
+                description: Type of usage to monitor
+              usage_threshold:
+                type: number
+                minimum: 0
+                description: Threshold value to trigger the alarm
+              alarm_action:
+                type: string
+                enum:
+                - warn
+                - block
+                description: Action to take when threshold is exceeded
+              alarm_action_config:
+                type: object
+                properties:
+                  emails:
+                    type: array
+                    items:
+                      type: string
+                    description: Email addresses to notify when alarm is triggered
+                additionalProperties: false
+              alarm_status:
+                type: string
+                enum:
+                - ok
+                - alarm
+                description: Current status of the alarm
+              created_at:
+                type: string
+              updated_at:
+                type: string
+            required:
+            - usage_type
+            - usage_threshold
+            - alarm_action
+            - alarm_action_config
+            - alarm_status
+            - created_at
+            additionalProperties: false
+      required:
+      - results
       additionalProperties: false
-    DeleteAutoRechargeConfigInput: {}
-    UpdateOrganizationInput:
+    ListUsersInOrganizationOutput:
       type: object
       properties:
-        name:
-          type: string
-      additionalProperties: false
-    CreateOrganizationInput:
-      type: object
-      properties:
-        name:
-          type: string
-      additionalProperties: false
-    RemoveGroupFromProjectOutput: {}
-    ListBillingEventsInput:
-      type: object
-      properties:
-        filters:
+        results:
           type: array
           items:
             type: object
             properties:
-              condition:
+              profile_picture_url:
                 type: string
-              case_insensitive:
+              onboarded:
                 type: boolean
-              field:
+              first_name:
                 type: string
-              filter_type:
+              last_name:
+                type: string
+              role:
+                type: string
+              company:
+                type: string
+              label:
+                type: string
+              notes:
+                type: string
+              tags:
+                type: object
+              permissions:
+                type: object
+                properties:
+                  projects:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        items:
+                          type: object
+                          additionalProperties:
+                            type: object
+                            properties:
+                              resources:
+                                type: object
+                                properties:
+                                  datasets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  deployables:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  users:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  agents:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  knowledge_sets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  chains:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  syncs:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  workforces:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                              actions:
+                                type: object
+                                additionalProperties:
+                                  type: boolean
+                            additionalProperties: false
+                        role_context:
+                          oneOf:
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - organization
+                              role:
+                                type: string
+                                enum:
+                                - owner
+                                - admin
+                                - operator
+                                - viewer
+                                description: User's effective (actual) FGA role for this organization.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - project
+                              is_inherited:
+                                type: boolean
+                                description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                              most_permissive_inherited_role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                              role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                      required:
+                      - items
+                      additionalProperties: false
+                  organizations:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        items:
+                          type: object
+                          additionalProperties:
+                            type: object
+                            properties:
+                              resources:
+                                type: object
+                                properties:
+                                  datasets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  deployables:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  users:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  agents:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  knowledge_sets:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  chains:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  syncs:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                                  workforces:
+                                    type: object
+                                    additionalProperties:
+                                      type: boolean
+                              actions:
+                                type: object
+                                additionalProperties:
+                                  type: boolean
+                            additionalProperties: false
+                        role_context:
+                          oneOf:
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - organization
+                              role:
+                                type: string
+                                enum:
+                                - owner
+                                - admin
+                                - operator
+                                - viewer
+                                description: User's effective (actual) FGA role for this organization.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                          - type: object
+                            properties:
+                              entity_type:
+                                type: string
+                                enum:
+                                - project
+                              is_inherited:
+                                type: boolean
+                                description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                              most_permissive_inherited_role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                              role:
+                                type: string
+                                enum:
+                                - admin
+                                - editor
+                                - operator
+                                - viewer
+                                - chat
+                                description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                            required:
+                            - entity_type
+                            additionalProperties: false
+                      required:
+                      - items
+                      additionalProperties: false
+                  administrator:
+                    type: object
+                    properties:
+                      items:
+                        type: object
+                        additionalProperties:
+                          type: object
+                          properties:
+                            resources:
+                              type: object
+                              properties:
+                                datasets:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                deployables:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                users:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                agents:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                knowledge_sets:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                chains:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                syncs:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                                workforces:
+                                  type: object
+                                  additionalProperties:
+                                    type: boolean
+                            actions:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                          additionalProperties: false
+                      role_context:
+                        oneOf:
+                        - type: object
+                          properties:
+                            entity_type:
+                              type: string
+                              enum:
+                              - organization
+                            role:
+                              type: string
+                              enum:
+                              - owner
+                              - admin
+                              - operator
+                              - viewer
+                              description: User's effective (actual) FGA role for this organization.
+                          required:
+                          - entity_type
+                          additionalProperties: false
+                        - type: object
+                          properties:
+                            entity_type:
+                              type: string
+                              enum:
+                              - project
+                            is_inherited:
+                              type: boolean
+                              description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                            most_permissive_inherited_role:
+                              type: string
+                              enum:
+                              - admin
+                              - editor
+                              - operator
+                              - viewer
+                              - chat
+                              description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                            role:
+                              type: string
+                              enum:
+                              - admin
+                              - editor
+                              - operator
+                              - viewer
+                              - chat
+                              description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                          required:
+                          - entity_type
+                          additionalProperties: false
+                    required:
+                    - items
+                    additionalProperties: false
+                required:
+                - projects
+                additionalProperties: false
+              type:
                 type: string
                 enum:
-                - exact_match
-                - exists
-                - ilike
-                - regexp
-                - ids
-                - date
-                - numeric
-                - or
-                - and
-                - size
-                - array_object_match
-              condition_value: {}
-        select_fields:
-          type: array
-          items:
-            type: string
-          description: Fields to include in the search results, empty array/list means all fields.
-        page_size:
-          type: integer
-          description: Size of each page of results
-        page:
-          type: integer
-          description: Page of the results
-        sort:
-          type: array
-          items:
-            oneOf:
-            - type: string
-            - type: object
-              additionalProperties:
+                - user
+                - machine
+                - agent-embed
+                - workforce-embed
+              _id:
                 type: string
-                enum:
-                - asc
-                - desc
-          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
-        include_vector:
-          type: boolean
-          description: Include vectors in the search results.
-        after_id:
-          type: array
-          items: {}
-          description: Retrieve items after these sort values in the sort order.
-        query:
-          type: string
-    DowngradeSubscriptionInput:
+              email:
+                type: string
+              creator_user_id:
+                type: string
+            required:
+            - permissions
+            - type
+            - _id
+      additionalProperties: false
+      required:
+      - results
+    ChangeBillingSubscriptionOutput:
       type: object
       properties:
-        plan:
+        client_secret:
           type: string
-          enum:
-          - free
-          - basic
-          - starter
-          - team
-          - business
-          - enterprise
-          - custom
-        billing_cycle:
+        checkout_session_id:
           type: string
-          enum:
-          - monthly
-          - yearly
-          description: The billing cycle of a Stripe subscription plan
+      required:
+      - client_secret
+      - checkout_session_id
+    GetBillingFrontendLinkOutput:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+      - link
+      additionalProperties: false
+    TriggerOrganizationPlanTrialInput:
+      type: object
+      properties:
         idempotency_key:
           type: string
-        feedback:
-          type: object
-          properties:
-            reason:
-              type: string
-              enum:
-              - too-expensive
-              - price-increase
-              - low-usage
-              - missing-features
-              - integration-issues
-              - switching-tool
-              - support-issues
-              - no-longer-needed
-              - other
-              description: The reason for the billing change
-            explanation:
-              type: string
-              description: Additional explanation for the billing change
-          required:
-          - reason
-          additionalProperties: false
-      required:
-      - idempotency_key
-      - plan
       additionalProperties: false
-    RemoveGroupFromProjectInput: {}
+    BuyCreditsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
     CheckOrganizationEntitlementLimitsOutput:
       type: object
       properties: {}
@@ -6073,70 +5247,16 @@ components:
         enum:
         - limit_reached
         - limit_not_reached
-    CheckDomainEnterpriseStatusOutput:
+    CreditPurchaseCheckoutSessionInput:
       type: object
       properties:
-        domain:
-          type: string
-          description: Domain extracted from the authenticated user's email
-        is_enterprise:
-          type: boolean
-          description: Whether the domain belongs to an enterprise organization
+        credits_quantity:
+          type: number
+        actions_quantity:
+          type: number
       required:
-      - domain
-      - is_enterprise
-      additionalProperties: false
-    ListAvailableRolesByScopeInput:
-      type: object
-      properties:
-        entity_type:
-          type: string
-          enum:
-          - organization
-          - project
-          description: The type of entity to list roles for.
-      required:
-      - entity_type
-      additionalProperties: false
-    CancelSubscriptionInput:
-      type: object
-      properties:
-        idempotency_key:
-          type: string
-    GetOrganizationEnabledFeaturesOutput:
-      type: object
-      properties:
-        features:
-          type: array
-          items:
-            type: object
-            properties:
-              title:
-                type: string
-                description: The feature title
-              display_name:
-                type: string
-                description: The feature display name
-              description:
-                type: string
-                description: The feature description
-              feature:
-                type: string
-                enum:
-                - natural_language_errors
-                description: The identifier of an organization feature
-              enabled:
-                type: boolean
-                description: Whether this feature should be enabled for this organization
-            required:
-            - title
-            - display_name
-            - description
-            - feature
-            - enabled
-          description: List of all organization features with their status and metadata
-      required:
-      - features
+      - credits_quantity
+      - actions_quantity
       additionalProperties: false
     ListInvitesInOrganizationOutput:
       type: object
@@ -6284,152 +5404,597 @@ components:
       additionalProperties: false
       required:
       - results
-    ListProjectsInOrganizationOutput:
+    RemoveGroupFromProjectOutput: {}
+    CheckDomainEnterpriseStatusOutput:
       type: object
       properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              _id:
-                type: string
-              project_id:
-                type: string
-              organization_name:
-                type: string
-              name:
-                type: string
-              description:
-                type: string
-              permissions:
-                type: object
-                properties:
-                  items:
-                    type: object
-                    additionalProperties:
-                      type: object
-                      properties:
-                        resources:
-                          type: object
-                          properties:
-                            datasets:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            deployables:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            users:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            agents:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            knowledge_sets:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            chains:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            syncs:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            workforces:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                        actions:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                      additionalProperties: false
-                  role_context:
-                    oneOf:
-                    - type: object
-                      properties:
-                        entity_type:
-                          type: string
-                          enum:
-                          - organization
-                        role:
-                          type: string
-                          enum:
-                          - owner
-                          - admin
-                          - operator
-                          - viewer
-                          description: User's effective (actual) FGA role for this organization.
-                      required:
-                      - entity_type
-                      additionalProperties: false
-                    - type: object
-                      properties:
-                        entity_type:
-                          type: string
-                          enum:
-                          - project
-                        is_inherited:
-                          type: boolean
-                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                        most_permissive_inherited_role:
-                          type: string
-                          enum:
-                          - admin
-                          - editor
-                          - operator
-                          - viewer
-                          - chat
-                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                        role:
-                          type: string
-                          enum:
-                          - admin
-                          - editor
-                          - operator
-                          - viewer
-                          - chat
-                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                      required:
-                      - entity_type
-                      additionalProperties: false
-                required:
-                - items
-                additionalProperties: false
-              organization_id:
-                type: string
-              updated_at:
-                type: string
-              created_by_user_id:
-                type: string
-              keys:
-                type: object
-              datastore:
-                type: string
-                enum:
-                - redis
-                description: If set to redis, it expects a redis connection string set using project keys under the name "redis".
-              language:
-                type: string
-                description: The language to convert cluster labels output to.
-            required:
-            - _id
-            - project_id
-            - permissions
-            - organization_name
-            - name
-            - description
-            - organization_id
-            - created_by_user_id
-      additionalProperties: false
+        domain:
+          type: string
+          description: Domain extracted from the authenticated user's email
+        is_enterprise:
+          type: boolean
+          description: Whether the domain belongs to an enterprise organization
       required:
-      - results
+      - domain
+      - is_enterprise
+      additionalProperties: false
+    GetOrganizationDataRetentionConfigOutput:
+      type: object
+      properties:
+        config:
+          type: object
+          properties:
+            settings:
+              type: object
+              properties:
+                delete_agent_versions:
+                  type: boolean
+                delete_conversations:
+                  type: boolean
+                delete_files:
+                  type: boolean
+                delete_meeting_transcripts:
+                  type: boolean
+                delete_tool_runs:
+                  type: boolean
+                delete_tool_versions:
+                  type: boolean
+                delete_workforce_versions:
+                  type: boolean
+              required:
+              - delete_agent_versions
+              - delete_conversations
+              - delete_files
+              - delete_meeting_transcripts
+              - delete_tool_runs
+              - delete_tool_versions
+              - delete_workforce_versions
+              additionalProperties: false
+            retention_period_days:
+              type: number
+          required:
+          - settings
+          - retention_period_days
+          additionalProperties: false
+      additionalProperties: false
+    CheckDomainEnterpriseStatusInput:
+      type: object
+      properties:
+        id_token:
+          type: string
+          description: The id token for a signed in account containing the user's email
+      required:
+      - id_token
+      additionalProperties: false
+    SyncSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertAutoRechargeConfigOutput:
+      type: object
+      properties:
+        threshold:
+          type: number
+        amount:
+          type: number
+      required:
+      - threshold
+      - amount
+      additionalProperties: false
+    GetOrganizationOutput:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          description: Just `_id` but optional because why not
+        _id:
+          type: string
+        name:
+          type: string
+        entitlements:
+          type: object
+          properties:
+            users:
+              type: object
+              properties:
+                limit:
+                  type: number
+            projects:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_gpu:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+            negative_credits:
+              type: object
+              properties:
+                limit:
+                  type: number
+            negative_actions:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_seconds_per_year:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents_per_dataset:
+              type: object
+              properties:
+                limit:
+                  type: number
+            premium_llm_generation:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            sandbox_gpu_usage:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            max_rows_at_once:
+              type: object
+              properties:
+                limit:
+                  type: number
+            knowledge_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+            file_storage_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+          additionalProperties: false
+        entitlement_plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        credits:
+          type: number
+        actions:
+          type: number
+        external_billing_id:
+          type: string
+        billing_period_start_date:
+          type: string
+        billing_period_end_date: {}
+        billing_period:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        downgrading_to:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+          description: The plan the organization is downgrading to at the end of the current billing cycle (legacy)
+        scheduled_downgrade:
+          type: object
+          properties:
+            plan:
+              type: string
+              enum:
+              - free
+              - basic
+              - starter
+              - team
+              - business
+              - enterprise
+              - custom
+            billing_cycle:
+              type: string
+              enum:
+              - monthly
+              - yearly
+              description: The billing cycle of a Stripe subscription plan
+          description: The plan and billing cycle the organization is downgrading to at the end of the current billing cycle. Replaces `downgrading_to`.
+          additionalProperties: false
+        fixed_allocation:
+          type: object
+          properties:
+            credits:
+              type: number
+            actions:
+              type: number
+          additionalProperties: false
+        total_allocation:
+          type: object
+          properties:
+            credits:
+              type: number
+            actions:
+              type: number
+          additionalProperties: false
+        relevance_orb_customer:
+          type: object
+          properties:
+            id:
+              type: string
+            portal_url:
+              type:
+              - string
+              - 'null'
+            timezone:
+              type: string
+          description: Usage-based billing object that contains information about the customer set up in Orb billing.
+          additionalProperties: true
+      required:
+      - _id
+    UpdateOrganizationBillingInput:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+      required:
+      - plan
+      - billing_cycle
+      additionalProperties: false
+    DeleteOrganizationDataRetentionConfigInput: {}
+    GetOrganizationUsageOutput:
+      type: object
+      properties:
+        usage:
+          type: object
+          properties:
+            users:
+              type: object
+              properties:
+                limit:
+                  type: number
+            projects:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_gpu:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+            negative_credits:
+              type: object
+              properties:
+                limit:
+                  type: number
+            negative_actions:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_seconds_per_year:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents_per_dataset:
+              type: object
+              properties:
+                limit:
+                  type: number
+            premium_llm_generation:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            sandbox_gpu_usage:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            max_rows_at_once:
+              type: object
+              properties:
+                limit:
+                  type: number
+            knowledge_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+            file_storage_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+          additionalProperties: false
+        limit:
+          type: object
+          properties:
+            users:
+              type: object
+              properties:
+                limit:
+                  type: number
+            projects:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_gpu:
+              type: object
+              properties:
+                enabled:
+                  type: boolean
+            negative_credits:
+              type: object
+              properties:
+                limit:
+                  type: number
+            negative_actions:
+              type: object
+              properties:
+                limit:
+                  type: number
+            workflows_seconds_per_year:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents:
+              type: object
+              properties:
+                limit:
+                  type: number
+            documents_per_dataset:
+              type: object
+              properties:
+                limit:
+                  type: number
+            premium_llm_generation:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            sandbox_gpu_usage:
+              type: object
+              properties:
+                limit:
+                  type: boolean
+            max_rows_at_once:
+              type: object
+              properties:
+                limit:
+                  type: number
+            knowledge_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+            file_storage_bytes:
+              type: object
+              properties:
+                limit:
+                  type: number
+          additionalProperties: false
+      required:
+      - usage
+      - limit
+      additionalProperties: false
+    DeleteAutoRechargeConfigInput: {}
+    DowngradeSubscriptionInput:
+      type: object
+      properties:
+        plan:
+          type: string
+          enum:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+        feedback:
+          type: object
+          properties:
+            reason:
+              type: string
+              enum:
+              - too-expensive
+              - price-increase
+              - low-usage
+              - missing-features
+              - integration-issues
+              - switching-tool
+              - support-issues
+              - no-longer-needed
+              - other
+              description: The reason for the billing change
+            explanation:
+              type: string
+              description: Additional explanation for the billing change
+          required:
+          - reason
+          additionalProperties: false
+      required:
+      - idempotency_key
+      - plan
+      additionalProperties: false
+    CancelDowngradeOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    CancelSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    CancelDowngradeInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+      required:
+      - idempotency_key
+      additionalProperties: false
+    UpsertOrganizationUsageAlarmOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        id:
+          type: string
+      required:
+      - success
+      - id
+      additionalProperties: false
+    DeleteOrganizationUsageAlarmInput:
+      type: object
+      properties:
+        usage_type:
+          type: string
+          enum:
+          - credit
+          - action
+          description: Type of usage to monitor
+        alarm_action:
+          type: string
+          enum:
+          - warn
+          - block
+          description: Action to take when threshold is exceeded
+      required:
+      - usage_type
+      - alarm_action
+      additionalProperties: false
+    UpsertOrganizationDataRetentionConfigInput:
+      type: object
+      properties:
+        settings:
+          type: object
+          properties:
+            delete_agent_versions:
+              type: boolean
+            delete_conversations:
+              type: boolean
+            delete_files:
+              type: boolean
+            delete_meeting_transcripts:
+              type: boolean
+            delete_tool_runs:
+              type: boolean
+            delete_tool_versions:
+              type: boolean
+            delete_workforce_versions:
+              type: boolean
+          additionalProperties: false
+        retention_period_days:
+          type: number
+      required:
+      - settings
+      - retention_period_days
+      additionalProperties: false
+    ChangeBillingSubscriptionInput:
+      type: object
+      properties:
+        new_plan_name:
+          type: string
+          enum:
+          - free
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
+          type: string
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
+        idempotency_key:
+          type: string
+        feedback:
+          type: object
+          properties:
+            reason:
+              type: string
+              enum:
+              - too-expensive
+              - price-increase
+              - low-usage
+              - missing-features
+              - integration-issues
+              - switching-tool
+              - support-issues
+              - no-longer-needed
+              - other
+              description: The reason for the billing change
+            explanation:
+              type: string
+              description: Additional explanation for the billing change
+          required:
+          - reason
+          additionalProperties: false
+        coupon_code:
+          type: string
+      required:
+      - idempotency_key
+      - new_plan_name
+      - billing_cycle
+      additionalProperties: false
     GetRetentionOfferEligibilityOutput:
       type: object
       properties:
@@ -6454,15 +6019,89 @@ components:
       required:
       - eligible
       additionalProperties: false
-    GetBillingCheckoutSessionOutput:
+    UpdateOrganizationEnabledFeaturesInput:
       type: object
       properties:
-        link:
-          type: string
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              feature:
+                type: string
+                enum:
+                - natural_language_errors
+                description: The identifier of an organization feature
+              enabled:
+                type: boolean
+                description: Whether this feature should be enabled for this organization
+            required:
+            - feature
+            - enabled
+            additionalProperties: false
+          description: List of features to update with their enabled status
       required:
-      - link
+      - features
       additionalProperties: false
-    DeleteOrganizationUsageAlarmInput:
+    GetOrganizationEnabledFeaturesOutput:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: The feature title
+              display_name:
+                type: string
+                description: The feature display name
+              description:
+                type: string
+                description: The feature description
+              feature:
+                type: string
+                enum:
+                - natural_language_errors
+                description: The identifier of an organization feature
+              enabled:
+                type: boolean
+                description: Whether this feature should be enabled for this organization
+            required:
+            - title
+            - display_name
+            - description
+            - feature
+            - enabled
+          description: List of all organization features with their status and metadata
+      required:
+      - features
+      additionalProperties: false
+    ListPendingUsersInGroupOutput:
+      type: object
+      properties:
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                description: The user's email address
+            required:
+            - email
+            additionalProperties: false
+          description: List of users who are pending members of the group
+      required:
+      - members
+      additionalProperties: false
+    CancelSubscriptionInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+    UpsertOrganizationUsageAlarmInput:
       type: object
       properties:
         usage_type:
@@ -6471,25 +6110,386 @@ components:
           - credit
           - action
           description: Type of usage to monitor
+        usage_threshold:
+          type: number
+          minimum: 0
+          description: Threshold value to trigger the alarm
         alarm_action:
           type: string
           enum:
           - warn
           - block
           description: Action to take when threshold is exceeded
+        alarm_action_config:
+          type: object
+          properties:
+            emails:
+              type: array
+              items:
+                type: string
+              description: Email addresses to notify when alarm is triggered
+          additionalProperties: false
       required:
       - usage_type
+      - usage_threshold
       - alarm_action
       additionalProperties: false
-    DeleteOrganizationOutput:
+    CreateOrganizationInput:
+      type: object
+      properties:
+        name:
+          type: string
+      additionalProperties: false
+    DeleteOrganizationUsageAlarmOutput:
       type: object
       properties: {}
       additionalProperties: false
-    RemoveGroupAssetPermissionInput: {}
-    SyncSubscriptionOutput:
+    GetAutoRechargeConfigOutput:
+      type: object
+      properties:
+        config:
+          oneOf:
+          - type: object
+            properties:
+              threshold:
+                type: number
+              amount:
+                type: number
+            required:
+            - threshold
+            - amount
+            additionalProperties: false
+          - type: 'null'
+      required:
+      - config
+      additionalProperties: false
+    ListProjectGroupPermissionsOutput:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              group_id:
+                type: string
+                description: The group's unique identifier
+              group_name:
+                type: string
+                description: The group's name
+              source:
+                type: string
+                enum:
+                - directory_sync
+                - relevance
+                description: The source of the group (directory sync or relevance)
+              user_count:
+                type: number
+                description: The number of users in the group
+              permission:
+                type: string
+                enum:
+                - admin
+                - editor
+                - operator
+                - viewer
+                - chat
+                description: The permission/role the group has on the project
+            required:
+            - group_id
+            - group_name
+            - source
+            - user_count
+            - permission
+            additionalProperties: false
+          description: List of groups with their permissions on the project
+      required:
+      - groups
+      additionalProperties: false
+    GetCheckoutCompletionStatusOutput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          - success
+          - fail
+      required:
+      - status
+      additionalProperties: false
+    GetBillingTotalsOutput:
+      type: object
+      properties:
+        total_cost:
+          type: number
+      required:
+      - total_cost
+      additionalProperties: false
+    UpsertOrganizationDataRetentionConfigOutput:
+      type: object
+      properties:
+        config:
+          type: object
+          properties:
+            settings:
+              type: object
+              properties:
+                delete_agent_versions:
+                  type: boolean
+                delete_conversations:
+                  type: boolean
+                delete_files:
+                  type: boolean
+                delete_meeting_transcripts:
+                  type: boolean
+                delete_tool_runs:
+                  type: boolean
+                delete_tool_versions:
+                  type: boolean
+                delete_workforce_versions:
+                  type: boolean
+              required:
+              - delete_agent_versions
+              - delete_conversations
+              - delete_files
+              - delete_meeting_transcripts
+              - delete_tool_runs
+              - delete_tool_versions
+              - delete_workforce_versions
+              additionalProperties: false
+            retention_period_days:
+              type: number
+          required:
+          - settings
+          - retention_period_days
+          additionalProperties: false
+      required:
+      - config
+      additionalProperties: false
+    CheckSSOEnforcementInput:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email address to check SSO enforcement for
+      required:
+      - email
+      additionalProperties: false
+    UpdateOrganizationEnabledFeaturesOutput:
+      type: object
+      properties:
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                description: The feature title
+              display_name:
+                type: string
+                description: The feature display name
+              description:
+                type: string
+                description: The feature description
+              feature:
+                type: string
+                enum:
+                - natural_language_errors
+                description: The identifier of an organization feature
+              enabled:
+                type: boolean
+                description: Whether this feature should be enabled for this organization
+            required:
+            - title
+            - display_name
+            - description
+            - feature
+            - enabled
+          description: List of all organization features with their status and metadata after the update
+      required:
+      - features
+      additionalProperties: false
+    TriggerOrganizationPlanTrialOutput:
+      type: object
+      properties:
+        next_action:
+          type: object
+          properties:
+            type:
+              type: string
+            data:
+              type: object
+              properties:
+                payment_intent_id:
+                  type: string
+                client_secret:
+                  type: string
+              required:
+              - client_secret
+              - payment_intent_id
+              additionalProperties: false
+          required:
+          - type
+          - data
+          additionalProperties: false
+      additionalProperties: false
+    GetOverageConfigOutput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+            allocation:
+              type: number
+            limit:
+              type: number
+          required:
+          - enabled
+          - allocation
+          - limit
+          additionalProperties: false
+      additionalProperties: false
+    AcceptRetentionOfferInput:
+      type: object
+      properties:
+        cancellation_reason:
+          type: string
+        experiment_variant:
+          type: string
+          enum:
+          - test_30
+          - test_50
+      additionalProperties: false
+    UpdateOverageConfigInput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+      additionalProperties: false
+    ListOrganizationsOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              organization_id:
+                type: string
+      additionalProperties: false
+      required:
+      - results
+    SyncSubscriptionInput: {}
+    DeleteOrganizationInput: {}
+    DowngradeSubscriptionOutput:
       type: object
       properties: {}
       additionalProperties: false
+    ListBillingEventsInput:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+        select_fields:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        page_size:
+          type: integer
+          description: Size of each page of results
+        page:
+          type: integer
+          description: Page of the results
+        sort:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: object
+              additionalProperties:
+                type: string
+                enum:
+                - asc
+                - desc
+          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
+        include_vector:
+          type: boolean
+          description: Include vectors in the search results.
+        after_id:
+          type: array
+          items: {}
+          description: Retrieve items after these sort values in the sort order.
+        query:
+          type: string
+    AddGroupAssetPermissionOutput: {}
+    RemoveGroupFromProjectInput: {}
   securitySchemes:
     AuthorizationHeader:
       type: apiKey
