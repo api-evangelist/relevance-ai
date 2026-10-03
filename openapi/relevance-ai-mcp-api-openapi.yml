@@ -91,52 +91,14 @@ paths:
                 $ref: '#/components/schemas/DeleteUserMCPAuthOutput'
 components:
   schemas:
-    UpsertUserMCPAuthInput:
+    DeleteUserMCPAuthInput:
       type: object
       properties:
         mcp_server_display_id:
           type: string
-          description: The display_id (UUID) of the MCP server configuration to authenticate with
-        auth_details:
-          oneOf:
-          - type: object
-            properties:
-              api_key:
-                type: string
-                description: API key for authentication
-            required:
-            - api_key
-            additionalProperties: false
-          - type: object
-            properties:
-              headers:
-                type: object
-                additionalProperties:
-                  type: string
-                description: Custom headers for authentication
-            required:
-            - headers
-            additionalProperties: false
-          - type: object
-            properties:
-              oauth_account_id:
-                type: string
-                description: OAuth account ID to link to this MCP server.
-            required:
-            - oauth_account_id
-            additionalProperties: false
+          description: The display_id (UUID) of the MCP server to remove authentication for
       required:
       - mcp_server_display_id
-      - auth_details
-      additionalProperties: false
-    DeleteUserMCPAuthOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the user's authentication was successfully removed
-      required:
-      - success
       additionalProperties: false
     AgentMCPAuthRequiredUserAccountsOutput:
       type: object
@@ -176,6 +138,15 @@ components:
       required:
       - mcps_requiring_user_auth
       additionalProperties: false
+    DeleteUserMCPAuthOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the user's authentication was successfully removed
+      required:
+      - success
+      additionalProperties: false
     UpsertUserMCPAuthOutput:
       type: object
       properties:
@@ -203,14 +174,43 @@ components:
       - created_at
       - updated_at
       additionalProperties: false
-    DeleteUserMCPAuthInput:
+    UpsertUserMCPAuthInput:
       type: object
       properties:
         mcp_server_display_id:
           type: string
-          description: The display_id (UUID) of the MCP server to remove authentication for
+          description: The display_id (UUID) of the MCP server configuration to authenticate with
+        auth_details:
+          oneOf:
+          - type: object
+            properties:
+              api_key:
+                type: string
+                description: API key for authentication
+            required:
+            - api_key
+            additionalProperties: false
+          - type: object
+            properties:
+              headers:
+                type: object
+                additionalProperties:
+                  type: string
+                description: Custom headers for authentication
+            required:
+            - headers
+            additionalProperties: false
+          - type: object
+            properties:
+              oauth_account_id:
+                type: string
+                description: OAuth account ID to link to this MCP server.
+            required:
+            - oauth_account_id
+            additionalProperties: false
       required:
       - mcp_server_display_id
+      - auth_details
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

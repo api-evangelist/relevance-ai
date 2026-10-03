@@ -126,51 +126,6 @@ paths:
                 $ref: '#/components/schemas/ListUserMemoriesOutput'
 components:
   schemas:
-    UpsertUserMemoryInput:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: Agent ID
-        memory_id:
-          type: string
-          description: Memory ID (optional, will generate UUID if not provided)
-        text:
-          type: string
-          minLength: 1
-          description: Memory content
-        category:
-          type: string
-          enum:
-          - preference
-          - fact
-          - instruction
-          default: fact
-        importance:
-          type: string
-          enum:
-          - high
-          - medium
-          - low
-          default: medium
-        reasoning:
-          type: string
-          description: Why this memory is being saved
-      required:
-      - agent_id
-      - text
-      additionalProperties: false
-    UpsertUserMemoryOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-        memory_id:
-          type: string
-      required:
-      - success
-      - memory_id
-      additionalProperties: false
     DeleteUserMemoryInput:
       type: object
       properties:
@@ -227,6 +182,25 @@ components:
       - memories
       - total
       additionalProperties: false
+    DeleteUserMemoryOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    UpsertUserMemoryOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        memory_id:
+          type: string
+      required:
+      - success
+      - memory_id
+      additionalProperties: false
     ListUserMemoriesInput:
       type: object
       properties:
@@ -243,13 +217,39 @@ components:
       required:
       - agent_id
       additionalProperties: false
-    DeleteUserMemoryOutput:
+    UpsertUserMemoryInput:
       type: object
       properties:
-        success:
-          type: boolean
+        agent_id:
+          type: string
+          description: Agent ID
+        memory_id:
+          type: string
+          description: Memory ID (optional, will generate UUID if not provided)
+        text:
+          type: string
+          minLength: 1
+          description: Memory content
+        category:
+          type: string
+          enum:
+          - preference
+          - fact
+          - instruction
+          default: fact
+        importance:
+          type: string
+          enum:
+          - high
+          - medium
+          - low
+          default: medium
+        reasoning:
+          type: string
+          description: Why this memory is being saved
       required:
-      - success
+      - agent_id
+      - text
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

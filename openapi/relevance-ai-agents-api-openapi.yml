@@ -285,13 +285,6 @@ paths:
                 $ref: '#/components/schemas/DeleteUserTagOutput'
 components:
   schemas:
-    DeleteAgentConversationOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    DeleteAgentConversationInput:
-      type: object
-      additionalProperties: false
     DeleteAgentConversationsInput:
       type: object
       properties:
@@ -304,29 +297,20 @@ components:
       required:
       - conversation_ids
       additionalProperties: false
+    DeleteAgentConversationInput:
+      type: object
+      additionalProperties: false
+    DeleteAgentConversationOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
     DeleteAgentConversationsOutput:
       type: object
       properties: {}
       additionalProperties: false
-    UpsertUserTagOutput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
     DeleteUserTagOutput:
       type: object
       properties: {}
-      additionalProperties: false
-    UpsertUserAgentTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
       additionalProperties: false
     DeleteUserTagInput:
       type: object
@@ -336,9 +320,45 @@ components:
       required:
       - tag_id
       additionalProperties: false
-    DeleteUserAgentTagOutput:
+    DeleteUserAgentTagInput:
       type: object
-      properties: {}
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    UpsertUserTagOutput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    UpsertUserTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+          description: If provided, updates an existing tag. If omitted, creates a new tag.
+        name:
+          type: string
+        colour:
+          type: string
+          enum:
+          - gray
+          - red
+          - orange
+          - yellow
+          - green
+          - blue
+          - indigo
+          - purple
+          - violet
+      required:
+      - name
+      - colour
       additionalProperties: false
     ListUserTagsOutput:
       type: object
@@ -372,41 +392,21 @@ components:
       required:
       - results
       additionalProperties: false
-    UpsertUserTagInput:
+    UpsertUserAgentTagOutput:
       type: object
-      properties:
-        tag_id:
-          type: string
-          description: If provided, updates an existing tag. If omitted, creates a new tag.
-        name:
-          type: string
-        colour:
-          type: string
-          enum:
-          - gray
-          - red
-          - orange
-          - yellow
-          - green
-          - blue
-          - indigo
-          - purple
-          - violet
-      required:
-      - name
-      - colour
+      properties: {}
       additionalProperties: false
-    DeleteUserAgentTagInput:
+    DeleteUserAgentTagOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertUserAgentTagInput:
       type: object
       properties:
         tag_id:
           type: string
       required:
       - tag_id
-      additionalProperties: false
-    UpsertUserAgentTagOutput:
-      type: object
-      properties: {}
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

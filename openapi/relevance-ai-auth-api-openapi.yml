@@ -1793,779 +1793,6 @@ paths:
                 $ref: '#/components/schemas/ConfirmExternalAssociationOutput'
 components:
   schemas:
-    ListSlackUsersOutput:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-          name:
-            type: string
-    DeleteUserKeyInput:
-      type: object
-      properties:
-        id:
-          type: string
-      required:
-      - id
-      additionalProperties: false
-    UpdateOAuthAccountNamespaceOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ListTeamsUsersOutput:
-      type: object
-      properties:
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              displayName:
-                type: string
-            required:
-            - id
-            - displayName
-            additionalProperties: false
-        next_cursor:
-          type:
-          - string
-          - 'null'
-      required:
-      - users
-      additionalProperties: false
-    ListUserKeysInput: {}
-    GetOAuthMCPUrlInput:
-      type: object
-      properties:
-        url:
-          type: string
-        redirect_url:
-          type: string
-        sharing_permission:
-          type: string
-          enum:
-          - project
-          - user-private
-          default: project
-          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
-        project:
-          type: string
-        mcp_name:
-          type: string
-          description: The name of the MCP server
-        client_id:
-          type: string
-          description: Optional OAuth client ID. If provided, client_secret must also be provided and DCR will be bypassed.
-        client_secret:
-          type: string
-          description: Optional OAuth client secret. If provided, client_id must also be provided and DCR will be bypassed.
-        reconnect:
-          type: boolean
-          description: When true, renew the connector's Dynamic Client Registration before starting OAuth (purge the stored client_id and re-register), recovering from an expired MCP client registration without removing the connector. Defaults to false.
-      required:
-      - url
-      - redirect_url
-      - project
-      - mcp_name
-      additionalProperties: false
-    ListOAuthOptionsOutput:
-      type: object
-      properties:
-        providers:
-          type: array
-          items:
-            type: object
-            properties:
-              label:
-                type: string
-              value:
-                type: string
-              img_src:
-                type: string
-              custom_fields_schema:
-                type: object
-                additionalProperties: true
-            required:
-            - label
-            - value
-            additionalProperties: false
-        permission_types:
-          type: array
-          items:
-            type: object
-            properties:
-              label:
-                type: string
-              value:
-                type: string
-            required:
-            - label
-            - value
-            additionalProperties: false
-        provider_to_permission_types:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              permission_types:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    label:
-                      type: string
-                    value:
-                      type: string
-                  required:
-                  - label
-                  - value
-                  additionalProperties: false
-      required:
-      - providers
-      - permission_types
-      - provider_to_permission_types
-      additionalProperties: false
-    DeleteProjectInviteInput:
-      type: object
-      properties:
-        permissions:
-          type: object
-          properties:
-            items:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  resources:
-                    type: object
-                    properties:
-                      datasets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      deployables:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      users:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      agents:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      knowledge_sets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      chains:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      syncs:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      workforces:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                  actions:
-                    type: object
-                    additionalProperties:
-                      type: boolean
-                additionalProperties: false
-            role_context:
-              oneOf:
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - organization
-                  role:
-                    type: string
-                    enum:
-                    - owner
-                    - admin
-                    - operator
-                    - viewer
-                    description: User's effective (actual) FGA role for this organization.
-                required:
-                - entity_type
-                additionalProperties: false
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - project
-                  is_inherited:
-                    type: boolean
-                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                  most_permissive_inherited_role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                  role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                required:
-                - entity_type
-                additionalProperties: false
-          required:
-          - items
-          additionalProperties: false
-        organization_permissions:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              items:
-                type: object
-                additionalProperties:
-                  type: object
-                  properties:
-                    resources:
-                      type: object
-                      properties:
-                        datasets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        deployables:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        users:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        agents:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        knowledge_sets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        chains:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        syncs:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        workforces:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                    actions:
-                      type: object
-                      additionalProperties:
-                        type: boolean
-                  additionalProperties: false
-              role_context:
-                oneOf:
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - organization
-                    role:
-                      type: string
-                      enum:
-                      - owner
-                      - admin
-                      - operator
-                      - viewer
-                      description: User's effective (actual) FGA role for this organization.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - project
-                    is_inherited:
-                      type: boolean
-                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                    most_permissive_inherited_role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                    role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-            required:
-            - items
-            additionalProperties: false
-        object:
-          type: string
-        relationship:
-          type: string
-          enum:
-          - admin
-          - editor
-          - operator
-          - viewer
-          - owning_organization
-          - owning_project
-          - can_clone
-          - can_trigger
-          - chat
-          - member
-        invite_code:
-          type: string
-      required:
-      - invite_code
-    ConfirmExternalAssociationInput:
-      type: object
-      properties:
-        token:
-          type: string
-          minLength: 1
-          maxLength: 8192
-          description: Association JWT minted by the magic-link endpoint and delivered to the user via the originating external surface.
-      required:
-      - token
-      additionalProperties: false
-    UpsertUserDefaultOAuthAccountInput:
-      type: object
-      properties:
-        provider:
-          type: string
-        external_account_id:
-          type: string
-        tool_id:
-          type: string
-        agent_id:
-          type: string
-        param_id:
-          type: string
-      required:
-      - provider
-      - external_account_id
-      additionalProperties: false
-    UpsertOAuthAccountToolLinkInput:
-      type: object
-      properties:
-        tool_id:
-          type: string
-          description: Tool/studio ID to link the oauth account
-        link_type:
-          type: string
-          enum:
-          - share
-      required:
-      - tool_id
-      - link_type
-      additionalProperties: false
-    GetUserOutput:
-      type: object
-      properties:
-        profile_picture_url:
-          type: string
-        onboarded:
-          type: boolean
-        first_name:
-          type: string
-        last_name:
-          type: string
-        role:
-          type: string
-        company:
-          type: string
-        label:
-          type: string
-        notes:
-          type: string
-        tags:
-          type: object
-        permissions:
-          type: object
-          properties:
-            projects:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  items:
-                    type: object
-                    additionalProperties:
-                      type: object
-                      properties:
-                        resources:
-                          type: object
-                          properties:
-                            datasets:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            deployables:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            users:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            agents:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            knowledge_sets:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            chains:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            syncs:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            workforces:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                        actions:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                      additionalProperties: false
-                  role_context:
-                    oneOf:
-                    - type: object
-                      properties:
-                        entity_type:
-                          type: string
-                          enum:
-                          - organization
-                        role:
-                          type: string
-                          enum:
-                          - owner
-                          - admin
-                          - operator
-                          - viewer
-                          description: User's effective (actual) FGA role for this organization.
-                      required:
-                      - entity_type
-                      additionalProperties: false
-                    - type: object
-                      properties:
-                        entity_type:
-                          type: string
-                          enum:
-                          - project
-                        is_inherited:
-                          type: boolean
-                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                        most_permissive_inherited_role:
-                          type: string
-                          enum:
-                          - admin
-                          - editor
-                          - operator
-                          - viewer
-                          - chat
-                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                        role:
-                          type: string
-                          enum:
-                          - admin
-                          - editor
-                          - operator
-                          - viewer
-                          - chat
-                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                      required:
-                      - entity_type
-                      additionalProperties: false
-                required:
-                - items
-                additionalProperties: false
-            organizations:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  items:
-                    type: object
-                    additionalProperties:
-                      type: object
-                      properties:
-                        resources:
-                          type: object
-                          properties:
-                            datasets:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            deployables:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            users:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            agents:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            knowledge_sets:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            chains:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            syncs:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                            workforces:
-                              type: object
-                              additionalProperties:
-                                type: boolean
-                        actions:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                      additionalProperties: false
-                  role_context:
-                    oneOf:
-                    - type: object
-                      properties:
-                        entity_type:
-                          type: string
-                          enum:
-                          - organization
-                        role:
-                          type: string
-                          enum:
-                          - owner
-                          - admin
-                          - operator
-                          - viewer
-                          description: User's effective (actual) FGA role for this organization.
-                      required:
-                      - entity_type
-                      additionalProperties: false
-                    - type: object
-                      properties:
-                        entity_type:
-                          type: string
-                          enum:
-                          - project
-                        is_inherited:
-                          type: boolean
-                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                        most_permissive_inherited_role:
-                          type: string
-                          enum:
-                          - admin
-                          - editor
-                          - operator
-                          - viewer
-                          - chat
-                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                        role:
-                          type: string
-                          enum:
-                          - admin
-                          - editor
-                          - operator
-                          - viewer
-                          - chat
-                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                      required:
-                      - entity_type
-                      additionalProperties: false
-                required:
-                - items
-                additionalProperties: false
-            administrator:
-              type: object
-              properties:
-                items:
-                  type: object
-                  additionalProperties:
-                    type: object
-                    properties:
-                      resources:
-                        type: object
-                        properties:
-                          datasets:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                          deployables:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                          users:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                          agents:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                          knowledge_sets:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                          chains:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                          syncs:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                          workforces:
-                            type: object
-                            additionalProperties:
-                              type: boolean
-                      actions:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                    additionalProperties: false
-                role_context:
-                  oneOf:
-                  - type: object
-                    properties:
-                      entity_type:
-                        type: string
-                        enum:
-                        - organization
-                      role:
-                        type: string
-                        enum:
-                        - owner
-                        - admin
-                        - operator
-                        - viewer
-                        description: User's effective (actual) FGA role for this organization.
-                    required:
-                    - entity_type
-                    additionalProperties: false
-                  - type: object
-                    properties:
-                      entity_type:
-                        type: string
-                        enum:
-                        - project
-                      is_inherited:
-                        type: boolean
-                        description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                      most_permissive_inherited_role:
-                        type: string
-                        enum:
-                        - admin
-                        - editor
-                        - operator
-                        - viewer
-                        - chat
-                        description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                      role:
-                        type: string
-                        enum:
-                        - admin
-                        - editor
-                        - operator
-                        - viewer
-                        - chat
-                        description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                    required:
-                    - entity_type
-                    additionalProperties: false
-              required:
-              - items
-              additionalProperties: false
-          required:
-          - projects
-          additionalProperties: false
-        type:
-          type: string
-          enum:
-          - user
-          - machine
-          - agent-embed
-          - workforce-embed
-        _id:
-          type: string
-        email:
-          type: string
-        creator_user_id:
-          type: string
-      required:
-      - permissions
-      - type
-      - _id
-    UpsertUserDefaultOAuthAccountOutput:
-      type: object
-      properties:
-        account_id:
-          type: string
-      required:
-      - account_id
-      additionalProperties: false
-    GetPipedreamConnectTokenInput: {}
-    AcceptProjectInviteOutput:
-      type: object
-      properties:
-        project_id:
-          type: string
-        role:
-          type: string
-      required:
-      - project_id
-      additionalProperties: false
-    DeleteUserOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
     ListAssetUserPermissionsOutput:
       type: object
       properties:
@@ -2640,565 +1867,29 @@ components:
       required:
       - results
       additionalProperties: false
-    UpsertOAuthAccountToolLinkOutput:
-      type: object
-      additionalProperties: false
-    UpdateOAuthAccountNamespaceInput:
+    AcceptProjectInviteOutput:
       type: object
       properties:
-        namespace:
+        project_id:
           type: string
-          enum:
-          - project
-          - user-private
-          default: project
-          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
-      required:
-      - namespace
-      additionalProperties: false
-    CreateApiKeyUserInput:
-      type: object
-      properties:
-        permissions:
-          type: object
-          properties:
-            items:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  resources:
-                    type: object
-                    properties:
-                      datasets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      deployables:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      users:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      agents:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      knowledge_sets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      chains:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      syncs:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      workforces:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                  actions:
-                    type: object
-                    additionalProperties:
-                      type: boolean
-                additionalProperties: false
-            role_context:
-              oneOf:
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - organization
-                  role:
-                    type: string
-                    enum:
-                    - owner
-                    - admin
-                    - operator
-                    - viewer
-                    description: User's effective (actual) FGA role for this organization.
-                required:
-                - entity_type
-                additionalProperties: false
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - project
-                  is_inherited:
-                    type: boolean
-                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                  most_permissive_inherited_role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                  role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                required:
-                - entity_type
-                additionalProperties: false
-          required:
-          - items
-          additionalProperties: false
-        label:
-          type: string
-        tags:
-          type: object
-          additionalProperties:
-            oneOf:
-            - type: string
-            - type: boolean
-      required:
-      - permissions
-      - label
-      - tags
-      additionalProperties: false
-    DeleteOAuthTokenDataInput:
-      type: object
-      properties:
-        account_id:
-          type: string
-      required:
-      - account_id
-      additionalProperties: false
-    ListProjectInvitesInput: {}
-    GetOAuthAccessTokenInput:
-      type: object
-      properties:
-        provider:
-          type: string
-          description: The OAuth provider name
-        account_id:
-          type: string
-          description: The OAuth account ID
-      required:
-      - provider
-      - account_id
-      additionalProperties: false
-    ResendProjectInviteInput:
-      type: object
-      properties:
-        permissions:
-          type: object
-          properties:
-            items:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  resources:
-                    type: object
-                    properties:
-                      datasets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      deployables:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      users:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      agents:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      knowledge_sets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      chains:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      syncs:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      workforces:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                  actions:
-                    type: object
-                    additionalProperties:
-                      type: boolean
-                additionalProperties: false
-            role_context:
-              oneOf:
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - organization
-                  role:
-                    type: string
-                    enum:
-                    - owner
-                    - admin
-                    - operator
-                    - viewer
-                    description: User's effective (actual) FGA role for this organization.
-                required:
-                - entity_type
-                additionalProperties: false
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - project
-                  is_inherited:
-                    type: boolean
-                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                  most_permissive_inherited_role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                  role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                required:
-                - entity_type
-                additionalProperties: false
-          required:
-          - items
-          additionalProperties: false
-        organization_permissions:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              items:
-                type: object
-                additionalProperties:
-                  type: object
-                  properties:
-                    resources:
-                      type: object
-                      properties:
-                        datasets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        deployables:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        users:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        agents:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        knowledge_sets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        chains:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        syncs:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        workforces:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                    actions:
-                      type: object
-                      additionalProperties:
-                        type: boolean
-                  additionalProperties: false
-              role_context:
-                oneOf:
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - organization
-                    role:
-                      type: string
-                      enum:
-                      - owner
-                      - admin
-                      - operator
-                      - viewer
-                      description: User's effective (actual) FGA role for this organization.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - project
-                    is_inherited:
-                      type: boolean
-                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                    most_permissive_inherited_role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                    role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-            required:
-            - items
-            additionalProperties: false
-        object:
-          type: string
-        relationship:
-          type: string
-          enum:
-          - admin
-          - editor
-          - operator
-          - viewer
-          - owning_organization
-          - owning_project
-          - can_clone
-          - can_trigger
-          - chat
-          - member
-        invite_code:
-          type: string
-      required:
-      - invite_code
-    AcceptProjectInviteInput:
-      type: object
-      properties:
-        invite_code:
-          type: string
-      required:
-      - invite_code
-      additionalProperties: false
-    GetOAuthUrlOutput:
-      type: object
-      properties:
-        auth_url:
-          type: string
-        scopes:
-          type: array
-          items:
-            type: string
-      required:
-      - auth_url
-      additionalProperties: false
-    RequestAccountDeletionInput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ConnectPipedreamAccountFailedInput:
-      type: object
-      properties:
-        name:
-          type: string
-        message:
-          type: string
-        provider:
-          type: string
-      required:
-      - name
-      - message
-      - provider
-      additionalProperties: true
-    DeleteUserKeyOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    GetPipedreamAppOutput:
-      type: object
-      properties:
-        app_data:
-          type: object
-          properties:
-            slug_name:
-              type: string
-            label:
-              type: string
-            img_src:
-              type: string
-          required:
-          - slug_name
-          - label
-      additionalProperties: false
-      required:
-      - app_data
-    RenameAccountInput:
-      type: object
-      properties:
-        label:
-          type: string
-      required:
-      - label
-      additionalProperties: false
-    VerifyExternalAssociationTokenOutput:
-      type: object
-      properties:
-        display:
-          type: object
-          properties:
-            provider:
-              type: string
-              enum:
-              - slack
-              - slack-ent
-              - teams
-              description: The external surface the association is being made with.
-            provider_display_name:
-              type: string
-              description: Human-readable name of the provider for the consent UI.
-            external_user_id:
-              type: string
-              description: 'Provider-specific identifier of the external user: Slack `user` ID for workspace and Enterprise Grid, Teams `aadObjectId`. The tenant (Slack `team_id` / `enterprise_id`) is carried separately on `workspace`.'
-            workspace:
-              type: string
-              description: 'Provider tenant identifier: Slack `team_id` for workspace installs, Slack `enterprise_id` for Enterprise Grid. Omitted for providers without a workspace concept (Teams).'
-          required:
-          - provider
-          - provider_display_name
-          - external_user_id
-          additionalProperties: false
-      required:
-      - display
-      additionalProperties: false
-    ListTeamsGroupsOutput:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-          topic:
-            type:
-            - string
-            - 'null'
-          members:
-            type: array
-            items:
-              type: object
-              properties:
-                id:
-                  type: string
-                displayName:
-                  type: string
-              required:
-              - id
-              - displayName
-              additionalProperties: false
-        required:
-        - id
-        - members
-        additionalProperties: false
-    CreateUserKeyInput:
-      type: object
-      properties:
-        label:
-          type: string
-        notes:
-          type: string
-        ttl_hours:
-          type: number
-    UpdateOrganizationUserPermissionsOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    UpdateUserDetailsInput:
-      type: object
-      properties:
-        first_name:
-          type: string
-        last_name:
-          type: string
-        profile_picture_url:
-          type: string
-        company:
-          type: string
-        email:
-          type: string
-      additionalProperties: false
-    TwitterOauthCallbackOutput:
-      type: object
-      properties:
-        oauth_account_id:
-          type: string
-        status:
-          type: string
-          enum:
-          - success
-          - error
-          - pending
-      required:
-      - status
-      additionalProperties: false
-    UpdateUserOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    UpdateAssetUserPermissionsInput:
-      type: object
-      properties:
         role:
           type: string
-          enum:
-          - admin
-          - operator
-          - viewer
-          - no_role
+      required:
+      - project_id
+      additionalProperties: false
+    RequestAccountDeletionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListAssetUserPermissionsInput:
+      type: object
+      properties:
+        page:
+          type: number
+          default: 1
+        page_size:
+          type: number
+          default: 30
         asset_context:
           type: object
           properties:
@@ -3216,262 +1907,9 @@ components:
           - asset_type
           - asset_id
           additionalProperties: false
+          description: The asset to list permissions for
       required:
-      - role
       - asset_context
-      additionalProperties: false
-    UpdateUserInput:
-      type: object
-      properties:
-        profile_picture_url:
-          type: string
-        onboarded:
-          type: boolean
-        first_name:
-          type: string
-        last_name:
-          type: string
-        role:
-          type: string
-        company:
-          type: string
-        label:
-          type: string
-        notes:
-          type: string
-        tags:
-          type: object
-        permissions:
-          type: object
-          properties:
-            items:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  resources:
-                    type: object
-                    properties:
-                      datasets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      deployables:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      users:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      agents:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      knowledge_sets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      chains:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      syncs:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      workforces:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                  actions:
-                    type: object
-                    additionalProperties:
-                      type: boolean
-                additionalProperties: false
-            role_context:
-              oneOf:
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - organization
-                  role:
-                    type: string
-                    enum:
-                    - owner
-                    - admin
-                    - operator
-                    - viewer
-                    description: User's effective (actual) FGA role for this organization.
-                required:
-                - entity_type
-                additionalProperties: false
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - project
-                  is_inherited:
-                    type: boolean
-                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                  most_permissive_inherited_role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                  role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                required:
-                - entity_type
-                additionalProperties: false
-          required:
-          - items
-          additionalProperties: false
-        organization_permissions:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              items:
-                type: object
-                additionalProperties:
-                  type: object
-                  properties:
-                    resources:
-                      type: object
-                      properties:
-                        datasets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        deployables:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        users:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        agents:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        knowledge_sets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        chains:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        syncs:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        workforces:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                    actions:
-                      type: object
-                      additionalProperties:
-                        type: boolean
-                  additionalProperties: false
-              role_context:
-                oneOf:
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - organization
-                    role:
-                      type: string
-                      enum:
-                      - owner
-                      - admin
-                      - operator
-                      - viewer
-                      description: User's effective (actual) FGA role for this organization.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - project
-                    is_inherited:
-                      type: boolean
-                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                    most_permissive_inherited_role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                    role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-            required:
-            - items
-            additionalProperties: false
-        object:
-          type: string
-        relationship:
-          type: string
-          enum:
-          - admin
-          - editor
-          - operator
-          - viewer
-          - owning_organization
-          - owning_project
-          - can_clone
-          - can_trigger
-          - chat
-          - member
-        id_token:
-          type: string
-          description: The id token for a signed in account. This attaches the sign in account to the user.
-        overwrite:
-          type: boolean
-          default: false
-          description: Set this to true to replace users permissions for project, rather than upserting
-    UpdateUserDetailsOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    DeleteOAuthTokenDataOutput:
-      type: object
-      properties: {}
       additionalProperties: false
     ListUsersInput:
       type: object
@@ -3553,22 +1991,19 @@ components:
               additionalProperties: false
           description: 'Fields to sort by; valid fields are: email. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
       additionalProperties: false
-    CreateProjectInviteOutput:
+    TwitterOauthCallbackOutput:
       type: object
       properties:
-        invite_code:
+        oauth_account_id:
           type: string
-        email_status:
+        status:
           type: string
           enum:
+          - success
+          - error
           - pending
-          - sent
-          - failed
       required:
-      - invite_code
-      additionalProperties: false
-    DeleteOAuthAccountToolLinkOutput:
-      type: object
+      - status
       additionalProperties: false
     GetAssetUserCapabilityOutput:
       type: object
@@ -3924,207 +2359,11 @@ components:
       required:
       - results
       additionalProperties: false
-    ListUserKeysOutput:
+    ConnectPipedreamAccountSuccessCallbackOutput:
       type: object
       properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              _id:
-                type: string
-              label:
-                type: string
-              notes:
-                type: string
-              ttl_hours:
-                type: number
-            required:
-            - _id
-            additionalProperties: false
-      required:
-      - results
-      additionalProperties: false
-    RequestAccountDeletionOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    GetOAuthUrlInput:
-      type: object
-      properties:
-        provider:
+        oauth_account_id:
           type: string
-        types:
-          type: array
-          items:
-            type: string
-        existing_oauth_account_id:
-          type: string
-          description: The id of the existing OAuth account to refresh. If provided, the OAuth flow will be refreshed for the existing account.
-        redirect_url:
-          type: string
-        extra_state:
-          type: object
-          additionalProperties: true
-        sharing_permission:
-          type: string
-          enum:
-          - project
-          - user-private
-          default: project
-          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
-      required:
-      - provider
-      - types
-      - redirect_url
-      additionalProperties: false
-    ListOAuthTokenDataInput:
-      type: object
-      properties:
-        filters:
-          type: array
-          items:
-            type: object
-            properties:
-              condition:
-                type: string
-              case_insensitive:
-                type: boolean
-              field:
-                type: string
-              filter_type:
-                type: string
-                enum:
-                - exact_match
-                - exists
-                - ilike
-                - regexp
-                - ids
-                - date
-                - numeric
-                - or
-                - and
-                - size
-                - array_object_match
-              condition_value: {}
-          description: Currently limited to exact_match, ids, exists, regexp filter_type
-        asset_context:
-          type: object
-          properties:
-            asset_type:
-              type: string
-              enum:
-              - tool
-            asset_id:
-              type: string
-          required:
-          - asset_type
-          - asset_id
-          additionalProperties: false
-          description: Provide this context to only list accounts that can be used on a given asset. The returned list depends on the user's asset privileges.
-        page:
-          type: number
-          default: 1
-        page_size:
-          type: number
-          default: 20
-      additionalProperties: false
-    ListAssetUserPermissionsInput:
-      type: object
-      properties:
-        page:
-          type: number
-          default: 1
-        page_size:
-          type: number
-          default: 30
-        asset_context:
-          type: object
-          properties:
-            asset_type:
-              type: string
-              enum:
-              - tool
-              - agent
-              - knowledge
-              - table
-              - workforce
-            asset_id:
-              type: string
-          required:
-          - asset_type
-          - asset_id
-          additionalProperties: false
-          description: The asset to list permissions for
-      required:
-      - asset_context
-      additionalProperties: false
-    DeleteOAuthAccountToolLinkInput:
-      type: object
-      properties:
-        tool_id:
-          type: string
-          description: Tool/studio ID linked to the oauth account
-      required:
-      - tool_id
-      additionalProperties: false
-    ListProviderAccountsDataOutput:
-      type: array
-      items:
-        type: object
-        properties:
-          label:
-            type: string
-          value:
-            type: string
-          img_src:
-            type: string
-          provider_source:
-            type: string
-            enum:
-            - native
-            - pipedream
-            description: Source of the provider — 'native' for first-party integrations, 'pipedream' for Pipedream-backed ones.
-          api_onboarding:
-            type: object
-            properties:
-              url:
-                type: string
-              description:
-                type: string
-            required:
-            - url
-            additionalProperties: false
-          tags:
-            type: array
-            items:
-              type: string
-          accounts:
-            type: array
-            items:
-              type: object
-              properties:
-                account_id:
-                  type: string
-                contains_invalid_refresh_token:
-                  type: boolean
-              required:
-              - account_id
-              - contains_invalid_refresh_token
-              additionalProperties: false
-        required:
-        - label
-        - value
-        - accounts
-        additionalProperties: false
-    UpdateAssetUserPermissionsOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    ConnectPipedreamAccountFailedOutput:
-      type: object
-      properties:
         status:
           type: string
           enum:
@@ -4133,39 +2372,12 @@ components:
       required:
       - status
       additionalProperties: false
-    GetOAuthAccessTokenOutput:
+    UpsertOAuthAccountToolLinkOutput:
       type: object
-      properties:
-        access_token:
-          type: string
-        expires_at:
-          type: string
-      required:
-      - access_token
-      - expires_at
       additionalProperties: false
-    GetTwitterURLOutput:
+    ResendProjectInviteInput:
       type: object
       properties:
-        url:
-          type: string
-        arcade_id_key:
-          type: string
-      required:
-      - url
-      - arcade_id_key
-      additionalProperties: false
-    CreateUserInput:
-      type: object
-      properties:
-        first_name:
-          type: string
-        last_name:
-          type: string
-        role:
-          type: string
-        company:
-          type: string
         permissions:
           type: object
           properties:
@@ -4266,53 +2478,500 @@ components:
           required:
           - items
           additionalProperties: false
-        referral_code:
+        organization_permissions:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              items:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    resources:
+                      type: object
+                      properties:
+                        datasets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        deployables:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        users:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        agents:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        knowledge_sets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        chains:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        syncs:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        workforces:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                    actions:
+                      type: object
+                      additionalProperties:
+                        type: boolean
+                  additionalProperties: false
+              role_context:
+                oneOf:
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - organization
+                    role:
+                      type: string
+                      enum:
+                      - owner
+                      - admin
+                      - operator
+                      - viewer
+                      description: User's effective (actual) FGA role for this organization.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - project
+                    is_inherited:
+                      type: boolean
+                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                    most_permissive_inherited_role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                    role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+            required:
+            - items
+            additionalProperties: false
+        object:
           type: string
-        organization_name:
+        relationship:
           type: string
-        project_name:
-          type: string
-        project:
-          type: string
-          description: The name of the project. This will contain all your datasets.
-        id_token:
-          type: string
-          description: The id token for a signed in account. This attaches the sign in account to the user.
+          enum:
+          - admin
+          - editor
+          - operator
+          - viewer
+          - owning_organization
+          - owning_project
+          - can_clone
+          - can_trigger
+          - chat
+          - member
         invite_code:
           type: string
-        is_usage_based_billing_enabled:
+      required:
+      - invite_code
+    GetOAuthMCPUrlInput:
+      type: object
+      properties:
+        url:
+          type: string
+        redirect_url:
+          type: string
+        sharing_permission:
+          type: string
+          enum:
+          - project
+          - user-private
+          default: project
+          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
+        project:
+          type: string
+        mcp_name:
+          type: string
+          description: The name of the MCP server
+        client_id:
+          type: string
+          description: Optional OAuth client ID. If provided, client_secret must also be provided and DCR will be bypassed.
+        client_secret:
+          type: string
+          description: Optional OAuth client secret. If provided, client_id must also be provided and DCR will be bypassed.
+        reconnect:
           type: boolean
-          description: When true, newly created organizations will be on usage based billing
-        where_did_you_hear_about_us:
+          description: When true, renew the connector's Dynamic Client Registration before starting OAuth (purge the stored client_id and re-register), recovering from an expired MCP client registration without removing the connector. Defaults to false.
+      required:
+      - url
+      - redirect_url
+      - project
+      - mcp_name
+      additionalProperties: false
+    ListProviderAccountsDataInput:
+      type: object
+      properties:
+        query:
           type: string
-        what_are_you_here_for:
+        sort_by:
+          type: string
+          enum:
+          - alphabetical
+          - usage
+        page_size:
+          type: number
+        page:
+          type: number
+        is_connected:
+          type: boolean
+        tags:
           type: array
           items:
             type: string
             enum:
-            - build_agents
-            - use_agents
-        referral:
-          type: string
-        rewardful_referral_code:
-          type: string
-        technical_ability:
+            - AI Models
+            - Communication
+            - CRM
+            - Data
+            - Development
+            - Knowledge
+            - Marketing
+            - Media
+            - Analytics
+            - Calendar
+            - Code Generation
+            - Communications
+            - Contact Management
+            - Data Enrichment
+            - Data Scraper
+            - Database
+            - Development Environment
+            - Document Management
+            - Email
+            - Email Marketing
+            - File Management
+            - Image Generation
+            - Issue Tracking
+            - Lead Generation
+            - Notes
+            - SEO
+            - Sales
+            - Search
+            - Social Media
+            - Video
+            - Voice
+            - Website Building
+        include_tags:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+          description: Set enabled to true to include tags in the response
+        statuses:
           type: array
           items:
             type: string
             enum:
-            - not_technical
-            - tech_savvy
-            - advanced
+            - native
+            - legacy
+          description: Filter by provider status. 'native' = verified native providers, 'legacy' = Pipedream providers with a native replacement. Multiple values are OR'd.
+        provider_source:
+          type: string
+          enum:
+          - native
+          - pipedream
+          description: 'Deprecated: use ''statuses'' array instead. Filter providers by source type.'
+      required:
+      - page_size
+      - page
+      - sort_by
+      additionalProperties: false
+    CreateProjectInviteInput:
+      type: object
+      properties:
+        permissions:
+          type: object
+          properties:
+            items:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  resources:
+                    type: object
+                    properties:
+                      datasets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      deployables:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      users:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      agents:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      knowledge_sets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      chains:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      syncs:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      workforces:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                  actions:
+                    type: object
+                    additionalProperties:
+                      type: boolean
+                additionalProperties: false
+            role_context:
+              oneOf:
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - organization
+                  role:
+                    type: string
+                    enum:
+                    - owner
+                    - admin
+                    - operator
+                    - viewer
+                    description: User's effective (actual) FGA role for this organization.
+                required:
+                - entity_type
+                additionalProperties: false
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - project
+                  is_inherited:
+                    type: boolean
+                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                  most_permissive_inherited_role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                  role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                required:
+                - entity_type
+                additionalProperties: false
+          required:
+          - items
+          additionalProperties: false
+        organization_permissions:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              items:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    resources:
+                      type: object
+                      properties:
+                        datasets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        deployables:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        users:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        agents:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        knowledge_sets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        chains:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        syncs:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        workforces:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                    actions:
+                      type: object
+                      additionalProperties:
+                        type: boolean
+                  additionalProperties: false
+              role_context:
+                oneOf:
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - organization
+                    role:
+                      type: string
+                      enum:
+                      - owner
+                      - admin
+                      - operator
+                      - viewer
+                      description: User's effective (actual) FGA role for this organization.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - project
+                    is_inherited:
+                      type: boolean
+                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                    most_permissive_inherited_role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                    role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+            required:
+            - items
+            additionalProperties: false
+        object:
+          type: string
+        relationship:
+          type: string
+          enum:
+          - admin
+          - editor
+          - operator
+          - viewer
+          - owning_organization
+          - owning_project
+          - can_clone
+          - can_trigger
+          - chat
+          - member
+        email:
+          type: string
+        user_id:
+          type: string
         type:
           type: string
           enum:
-          - user
-          - machine
-        onboarded:
-          type: boolean
+          - deployable
+          - project
+        role:
+          type: string
+    DeleteUserInput:
+      type: object
+      properties: {}
       additionalProperties: false
-    DeleteProjectInviteOutput:
+    ListUserKeysOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              label:
+                type: string
+              notes:
+                type: string
+              ttl_hours:
+                type: number
+            required:
+            - _id
+            additionalProperties: false
+      required:
+      - results
+      additionalProperties: false
+    UpdateUserOutput:
       type: object
       properties: {}
       additionalProperties: false
@@ -4675,86 +3334,66 @@ components:
       required:
       - results
       additionalProperties: false
-    ListProviderAccountsDataInput:
+    ConnectPipedreamAccountFailedInput:
       type: object
       properties:
-        query:
+        name:
           type: string
-        sort_by:
+        message:
           type: string
-          enum:
-          - alphabetical
-          - usage
-        page_size:
-          type: number
-        page:
-          type: number
-        is_connected:
-          type: boolean
-        tags:
-          type: array
-          items:
-            type: string
-            enum:
-            - AI Models
-            - Communication
-            - CRM
-            - Data
-            - Development
-            - Knowledge
-            - Marketing
-            - Media
-            - Analytics
-            - Calendar
-            - Code Generation
-            - Communications
-            - Contact Management
-            - Data Enrichment
-            - Data Scraper
-            - Database
-            - Development Environment
-            - Document Management
-            - Email
-            - Email Marketing
-            - File Management
-            - Image Generation
-            - Issue Tracking
-            - Lead Generation
-            - Notes
-            - SEO
-            - Sales
-            - Search
-            - Social Media
-            - Video
-            - Voice
-            - Website Building
-        include_tags:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-          description: Set enabled to true to include tags in the response
-        statuses:
-          type: array
-          items:
-            type: string
-            enum:
-            - native
-            - legacy
-          description: Filter by provider status. 'native' = verified native providers, 'legacy' = Pipedream providers with a native replacement. Multiple values are OR'd.
-        provider_source:
+        provider:
           type: string
-          enum:
-          - native
-          - pipedream
-          description: 'Deprecated: use ''statuses'' array instead. Filter providers by source type.'
       required:
-      - page_size
-      - page
-      - sort_by
+      - name
+      - message
+      - provider
+      additionalProperties: true
+    VerifyExternalAssociationTokenInput:
+      type: object
+      properties:
+        token:
+          type: string
+          minLength: 1
+          maxLength: 8192
+          description: Association JWT minted by the magic-link endpoint and delivered to the user via the originating external surface.
+      required:
+      - token
+      additionalProperties: false
+    GetPipedreamConnectTokenInput: {}
+    RenameAccountInput:
+      type: object
+      properties:
+        label:
+          type: string
+      required:
+      - label
+      additionalProperties: false
+    RenameAccountOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    GetOAuthMCPUrlOutput:
+      type: object
+      properties:
+        auth_url:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+      required:
+      - auth_url
+      additionalProperties: false
+    GetTwitterURLOutput:
+      type: object
+      properties:
+        url:
+          type: string
+        arcade_id_key:
+          type: string
+      required:
+      - url
+      - arcade_id_key
       additionalProperties: false
     ConfirmExternalAssociationOutput:
       type: object
@@ -4768,6 +3407,267 @@ components:
       - association_id
       - created
       additionalProperties: false
+    ListSlackChannelsOutput:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+        required:
+        - id
+        - name
+        additionalProperties: false
+    ListTeamsGroupsV2Output:
+      type: object
+      properties:
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              topic:
+                type:
+                - string
+                - 'null'
+              members:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    displayName:
+                      type: string
+                  required:
+                  - id
+                  - displayName
+                  additionalProperties: false
+            required:
+            - id
+            - members
+            additionalProperties: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - groups
+      additionalProperties: false
+    OpenSlackDmChannelsOutput:
+      type: array
+      items:
+        type: object
+        properties:
+          email:
+            type: string
+          channel_id:
+            type: string
+          name:
+            type: string
+          error:
+            type: string
+        required:
+        - email
+        additionalProperties: false
+    OAuthCallbackOutput:
+      type: object
+      properties:
+        redirect_url:
+          type: string
+      required:
+      - redirect_url
+    DeleteOAuthTokenDataOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListOAuthTokenDataInput:
+      type: object
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+          description: Currently limited to exact_match, ids, exists, regexp filter_type
+        asset_context:
+          type: object
+          properties:
+            asset_type:
+              type: string
+              enum:
+              - tool
+            asset_id:
+              type: string
+          required:
+          - asset_type
+          - asset_id
+          additionalProperties: false
+          description: Provide this context to only list accounts that can be used on a given asset. The returned list depends on the user's asset privileges.
+        page:
+          type: number
+          default: 1
+        page_size:
+          type: number
+          default: 20
+      additionalProperties: false
+    GetOAuthUrlOutput:
+      type: object
+      properties:
+        auth_url:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+      required:
+      - auth_url
+      additionalProperties: false
+    GetPipedreamConnectTokenOutput:
+      type: object
+      properties:
+        token:
+          type: string
+        expires_at:
+          type: string
+        external_user_id:
+          type: string
+      required:
+      - token
+      - expires_at
+      - external_user_id
+      additionalProperties: false
+    UpdateOrganizationUserPermissionsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListTeamsGroupsOutput:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          topic:
+            type:
+            - string
+            - 'null'
+          members:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: string
+                displayName:
+                  type: string
+              required:
+              - id
+              - displayName
+              additionalProperties: false
+        required:
+        - id
+        - members
+        additionalProperties: false
+    DeleteOAuthTokenDataInput:
+      type: object
+      properties:
+        account_id:
+          type: string
+      required:
+      - account_id
+      additionalProperties: false
+    UpsertUserDefaultOAuthAccountInput:
+      type: object
+      properties:
+        provider:
+          type: string
+        external_account_id:
+          type: string
+        tool_id:
+          type: string
+        agent_id:
+          type: string
+        param_id:
+          type: string
+      required:
+      - provider
+      - external_account_id
+      additionalProperties: false
+    CreateUserKeyInput:
+      type: object
+      properties:
+        label:
+          type: string
+        notes:
+          type: string
+        ttl_hours:
+          type: number
+    UpsertOAuthAccountToolLinkInput:
+      type: object
+      properties:
+        tool_id:
+          type: string
+          description: Tool/studio ID to link the oauth account
+        link_type:
+          type: string
+          enum:
+          - share
+      required:
+      - tool_id
+      - link_type
+      additionalProperties: false
+    OpenSlackDmChannelsInput:
+      type: object
+      properties:
+        emails:
+          type: array
+          items:
+            type: string
+            minLength: 1
+            maxLength: 320
+          minItems: 1
+          maxItems: 200
+      required:
+      - emails
+      additionalProperties: false
+    UpsertUserDefaultOAuthAccountOutput:
+      type: object
+      properties:
+        account_id:
+          type: string
+      required:
+      - account_id
+      additionalProperties: false
+    RequestAccountDeletionInput:
+      type: object
+      properties: {}
+      additionalProperties: false
     ResendProjectInviteOutput:
       type: object
       properties:
@@ -4776,19 +3676,311 @@ components:
       required:
       - invite_code
       additionalProperties: false
-    ListProjectInvitesOutput:
+    ConnectPipedreamAccountSuccessCallbackInput:
       type: object
       properties:
-        results:
+        account_id:
+          type: string
+        external_user_id:
+          type: string
+        sharing_permission:
+          type: string
+          enum:
+          - project
+          - user-private
+          default: project
+          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
+      required:
+      - account_id
+      - external_user_id
+      additionalProperties: false
+    ListProjectInvitesInput: {}
+    UpdateAssetUserPermissionsInput:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+          - admin
+          - operator
+          - viewer
+          - no_role
+        asset_context:
+          type: object
+          properties:
+            asset_type:
+              type: string
+              enum:
+              - tool
+              - agent
+              - knowledge
+              - table
+              - workforce
+            asset_id:
+              type: string
+          required:
+          - asset_type
+          - asset_id
+          additionalProperties: false
+      required:
+      - role
+      - asset_context
+      additionalProperties: false
+    ListTeamsChannelsOutput:
+      type: object
+      properties:
+        teamsWithChannels:
           type: array
           items:
             type: object
             properties:
-              _id:
+              teamId:
                 type: string
-              user_id:
+              teamName:
                 type: string
-              permissions:
+              teamDescription:
+                type:
+                - string
+                - 'null'
+              channels:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                  required:
+                  - id
+                  - name
+                  additionalProperties: false
+            required:
+            - teamId
+            - teamName
+            - channels
+            additionalProperties: false
+      required:
+      - teamsWithChannels
+      additionalProperties: false
+    UpdateOrganizationUserPermissionsInput:
+      type: object
+      properties:
+        role:
+          type: string
+          enum:
+          - admin
+          - operator
+          - viewer
+        admin:
+          type: boolean
+      required:
+      - admin
+      additionalProperties: false
+    UpdateOAuthAccountNamespaceInput:
+      type: object
+      properties:
+        namespace:
+          type: string
+          enum:
+          - project
+          - user-private
+          default: project
+          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
+      required:
+      - namespace
+      additionalProperties: false
+    GetUserDefaultOAuthAccountOutput:
+      type: object
+      properties:
+        account_id:
+          type: string
+      additionalProperties: true
+    ListOAuthOptionsOutput:
+      type: object
+      properties:
+        providers:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+              img_src:
+                type: string
+              custom_fields_schema:
+                type: object
+                additionalProperties: true
+            required:
+            - label
+            - value
+            additionalProperties: false
+        permission_types:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+              value:
+                type: string
+            required:
+            - label
+            - value
+            additionalProperties: false
+        provider_to_permission_types:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              permission_types:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    label:
+                      type: string
+                    value:
+                      type: string
+                  required:
+                  - label
+                  - value
+                  additionalProperties: false
+      required:
+      - providers
+      - permission_types
+      - provider_to_permission_types
+      additionalProperties: false
+    ConnectPipedreamAccountFailedOutput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - success
+          - error
+      required:
+      - status
+      additionalProperties: false
+    DeleteUserKeyInput:
+      type: object
+      properties:
+        id:
+          type: string
+      required:
+      - id
+      additionalProperties: false
+    GetOAuthAccessTokenInput:
+      type: object
+      properties:
+        provider:
+          type: string
+          description: The OAuth provider name
+        account_id:
+          type: string
+          description: The OAuth account ID
+      required:
+      - provider
+      - account_id
+      additionalProperties: false
+    UpdateOAuthAccountNamespaceOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    GetMissingScopesForOAuthAccountOutput:
+      type: object
+      properties:
+        missing_scopes:
+          type: object
+          additionalProperties:
+            type: array
+            items:
+              type: string
+        admin_consent_url:
+          type: string
+      required:
+      - missing_scopes
+      additionalProperties: false
+    ListSlackUsersOutput:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+    GetOAuthUrlInput:
+      type: object
+      properties:
+        provider:
+          type: string
+        types:
+          type: array
+          items:
+            type: string
+        existing_oauth_account_id:
+          type: string
+          description: The id of the existing OAuth account to refresh. If provided, the OAuth flow will be refreshed for the existing account.
+        redirect_url:
+          type: string
+        extra_state:
+          type: object
+          additionalProperties: true
+        sharing_permission:
+          type: string
+          enum:
+          - project
+          - user-private
+          default: project
+          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
+      required:
+      - provider
+      - types
+      - redirect_url
+      additionalProperties: false
+    DeleteProjectInviteOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteOAuthAccountToolLinkInput:
+      type: object
+      properties:
+        tool_id:
+          type: string
+          description: Tool/studio ID linked to the oauth account
+      required:
+      - tool_id
+      additionalProperties: false
+    GetUserOutput:
+      type: object
+      properties:
+        profile_picture_url:
+          type: string
+        onboarded:
+          type: boolean
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+        company:
+          type: string
+        label:
+          type: string
+        notes:
+          type: string
+        tags:
+          type: object
+        permissions:
+          type: object
+          properties:
+            projects:
+              type: object
+              additionalProperties:
                 type: object
                 properties:
                   items:
@@ -4888,110 +4080,228 @@ components:
                 required:
                 - items
                 additionalProperties: false
-              email:
-                type: string
-              project:
-                type: string
-              email_status:
-                type: string
-                enum:
-                - pending
-                - sent
-                - failed
-                - delivered
-                - bounced
-                - spam_complaint
-              email_sent_at:
-                type: string
-              email_error:
-                type: string
-              email_attempts:
-                type: number
-              last_email_attempt_at:
-                type: string
-              delivered_at:
-                type: string
-              bounce_type:
-                type: string
-                enum:
-                - hard
-                - soft
-            required:
-            - _id
-            additionalProperties: false
-      required:
-      - results
-      additionalProperties: false
-    ListTeamsGroupsV2Output:
-      type: object
-      properties:
-        groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-              topic:
-                type:
-                - string
-                - 'null'
-              members:
-                type: array
+            organizations:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  items:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        resources:
+                          type: object
+                          properties:
+                            datasets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            deployables:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            users:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            agents:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            knowledge_sets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            chains:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            syncs:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            workforces:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                        actions:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                      additionalProperties: false
+                  role_context:
+                    oneOf:
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - organization
+                        role:
+                          type: string
+                          enum:
+                          - owner
+                          - admin
+                          - operator
+                          - viewer
+                          description: User's effective (actual) FGA role for this organization.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - project
+                        is_inherited:
+                          type: boolean
+                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                        most_permissive_inherited_role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                        role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                required:
+                - items
+                additionalProperties: false
+            administrator:
+              type: object
+              properties:
                 items:
                   type: object
-                  properties:
-                    id:
-                      type: string
-                    displayName:
-                      type: string
-                  required:
-                  - id
-                  - displayName
-                  additionalProperties: false
-            required:
-            - id
-            - members
-            additionalProperties: false
-        next_cursor:
-          type:
-          - string
-          - 'null'
+                  additionalProperties:
+                    type: object
+                    properties:
+                      resources:
+                        type: object
+                        properties:
+                          datasets:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                          deployables:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                          users:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                          agents:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                          knowledge_sets:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                          chains:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                          syncs:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                          workforces:
+                            type: object
+                            additionalProperties:
+                              type: boolean
+                      actions:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                    additionalProperties: false
+                role_context:
+                  oneOf:
+                  - type: object
+                    properties:
+                      entity_type:
+                        type: string
+                        enum:
+                        - organization
+                      role:
+                        type: string
+                        enum:
+                        - owner
+                        - admin
+                        - operator
+                        - viewer
+                        description: User's effective (actual) FGA role for this organization.
+                    required:
+                    - entity_type
+                    additionalProperties: false
+                  - type: object
+                    properties:
+                      entity_type:
+                        type: string
+                        enum:
+                        - project
+                      is_inherited:
+                        type: boolean
+                        description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                      most_permissive_inherited_role:
+                        type: string
+                        enum:
+                        - admin
+                        - editor
+                        - operator
+                        - viewer
+                        - chat
+                        description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                      role:
+                        type: string
+                        enum:
+                        - admin
+                        - editor
+                        - operator
+                        - viewer
+                        - chat
+                        description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                    required:
+                    - entity_type
+                    additionalProperties: false
+              required:
+              - items
+              additionalProperties: false
+          required:
+          - projects
+          additionalProperties: false
+        type:
+          type: string
+          enum:
+          - user
+          - machine
+          - agent-embed
+          - workforce-embed
+        _id:
+          type: string
+        email:
+          type: string
+        creator_user_id:
+          type: string
       required:
-      - groups
-      additionalProperties: false
-    CreateUserKeyOutput:
-      type: object
-      properties:
-        api_key:
-          type: string
-        id:
-          type: string
-      required:
-      - api_key
-      - id
-      additionalProperties: false
-    RenameAccountOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    GetUserDefaultOAuthAccountOutput:
-      type: object
-      properties:
-        account_id:
-          type: string
-      additionalProperties: true
-    VerifyExternalAssociationTokenInput:
-      type: object
-      properties:
-        token:
-          type: string
-          minLength: 1
-          maxLength: 8192
-          description: Association JWT minted by the magic-link endpoint and delivered to the user via the originating external surface.
-      required:
-      - token
-      additionalProperties: false
+      - permissions
+      - type
+      - _id
     IsUserAuthorizedInput:
       type: object
       properties:
@@ -5212,6 +4522,167 @@ components:
           - can_trigger
           - chat
           - member
+    ListProjectInvitesOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              user_id:
+                type: string
+              permissions:
+                type: object
+                properties:
+                  items:
+                    type: object
+                    additionalProperties:
+                      type: object
+                      properties:
+                        resources:
+                          type: object
+                          properties:
+                            datasets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            deployables:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            users:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            agents:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            knowledge_sets:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            chains:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            syncs:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                            workforces:
+                              type: object
+                              additionalProperties:
+                                type: boolean
+                        actions:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                      additionalProperties: false
+                  role_context:
+                    oneOf:
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - organization
+                        role:
+                          type: string
+                          enum:
+                          - owner
+                          - admin
+                          - operator
+                          - viewer
+                          description: User's effective (actual) FGA role for this organization.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                    - type: object
+                      properties:
+                        entity_type:
+                          type: string
+                          enum:
+                          - project
+                        is_inherited:
+                          type: boolean
+                          description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                        most_permissive_inherited_role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                        role:
+                          type: string
+                          enum:
+                          - admin
+                          - editor
+                          - operator
+                          - viewer
+                          - chat
+                          description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                      required:
+                      - entity_type
+                      additionalProperties: false
+                required:
+                - items
+                additionalProperties: false
+              email:
+                type: string
+              project:
+                type: string
+              email_status:
+                type: string
+                enum:
+                - pending
+                - sent
+                - failed
+                - delivered
+                - bounced
+                - spam_complaint
+              email_sent_at:
+                type: string
+              email_error:
+                type: string
+              email_attempts:
+                type: number
+              last_email_attempt_at:
+                type: string
+              delivered_at:
+                type: string
+              bounce_type:
+                type: string
+                enum:
+                - hard
+                - soft
+            required:
+            - _id
+            additionalProperties: false
+      required:
+      - results
+      additionalProperties: false
+    UpdateUserDetailsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    IsUserAuthorizedOutput:
+      type: object
+      properties:
+        valid:
+          type: boolean
+        message:
+          type: string
+      required:
+      - valid
+      - message
+      additionalProperties: false
     CreateApiKeyUserOutput:
       type: object
       properties:
@@ -5226,369 +4697,24 @@ components:
       - api_key
       - project
       additionalProperties: false
-    DeleteUserInput:
+    DeleteUserOutput:
       type: object
       properties: {}
       additionalProperties: false
-    OAuthCallbackOutput:
+    ListUserKeysInput: {}
+    CreateProjectInviteOutput:
       type: object
       properties:
-        redirect_url:
+        invite_code:
           type: string
-      required:
-      - redirect_url
-    TwitterOauthCallbackInput:
-      type: object
-      properties:
-        arcade_id_key:
-          type: string
-        sharing_permission:
+        email_status:
           type: string
           enum:
-          - project
-          - user-private
-          default: project
-          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
+          - pending
+          - sent
+          - failed
       required:
-      - arcade_id_key
-      additionalProperties: true
-    IsUserAuthorizedOutput:
-      type: object
-      properties:
-        valid:
-          type: boolean
-        message:
-          type: string
-      required:
-      - valid
-      - message
-      additionalProperties: false
-    ListSlackChannelsOutput:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: string
-          name:
-            type: string
-        required:
-        - id
-        - name
-        additionalProperties: false
-    CreateProjectInviteInput:
-      type: object
-      properties:
-        permissions:
-          type: object
-          properties:
-            items:
-              type: object
-              additionalProperties:
-                type: object
-                properties:
-                  resources:
-                    type: object
-                    properties:
-                      datasets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      deployables:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      users:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      agents:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      knowledge_sets:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      chains:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      syncs:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                      workforces:
-                        type: object
-                        additionalProperties:
-                          type: boolean
-                  actions:
-                    type: object
-                    additionalProperties:
-                      type: boolean
-                additionalProperties: false
-            role_context:
-              oneOf:
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - organization
-                  role:
-                    type: string
-                    enum:
-                    - owner
-                    - admin
-                    - operator
-                    - viewer
-                    description: User's effective (actual) FGA role for this organization.
-                required:
-                - entity_type
-                additionalProperties: false
-              - type: object
-                properties:
-                  entity_type:
-                    type: string
-                    enum:
-                    - project
-                  is_inherited:
-                    type: boolean
-                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                  most_permissive_inherited_role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                  role:
-                    type: string
-                    enum:
-                    - admin
-                    - editor
-                    - operator
-                    - viewer
-                    - chat
-                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                required:
-                - entity_type
-                additionalProperties: false
-          required:
-          - items
-          additionalProperties: false
-        organization_permissions:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              items:
-                type: object
-                additionalProperties:
-                  type: object
-                  properties:
-                    resources:
-                      type: object
-                      properties:
-                        datasets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        deployables:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        users:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        agents:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        knowledge_sets:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        chains:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        syncs:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                        workforces:
-                          type: object
-                          additionalProperties:
-                            type: boolean
-                    actions:
-                      type: object
-                      additionalProperties:
-                        type: boolean
-                  additionalProperties: false
-              role_context:
-                oneOf:
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - organization
-                    role:
-                      type: string
-                      enum:
-                      - owner
-                      - admin
-                      - operator
-                      - viewer
-                      description: User's effective (actual) FGA role for this organization.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-                - type: object
-                  properties:
-                    entity_type:
-                      type: string
-                      enum:
-                      - project
-                    is_inherited:
-                      type: boolean
-                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
-                    most_permissive_inherited_role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
-                    role:
-                      type: string
-                      enum:
-                      - admin
-                      - editor
-                      - operator
-                      - viewer
-                      - chat
-                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
-                  required:
-                  - entity_type
-                  additionalProperties: false
-            required:
-            - items
-            additionalProperties: false
-        object:
-          type: string
-        relationship:
-          type: string
-          enum:
-          - admin
-          - editor
-          - operator
-          - viewer
-          - owning_organization
-          - owning_project
-          - can_clone
-          - can_trigger
-          - chat
-          - member
-        email:
-          type: string
-        user_id:
-          type: string
-        type:
-          type: string
-          enum:
-          - deployable
-          - project
-        role:
-          type: string
-    OpenSlackDmChannelsOutput:
-      type: array
-      items:
-        type: object
-        properties:
-          email:
-            type: string
-          channel_id:
-            type: string
-          name:
-            type: string
-          error:
-            type: string
-        required:
-        - email
-        additionalProperties: false
-    ConnectPipedreamAccountSuccessCallbackInput:
-      type: object
-      properties:
-        account_id:
-          type: string
-        external_user_id:
-          type: string
-        sharing_permission:
-          type: string
-          enum:
-          - project
-          - user-private
-          default: project
-          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
-      required:
-      - account_id
-      - external_user_id
-      additionalProperties: false
-    GetOAuthMCPUrlOutput:
-      type: object
-      properties:
-        auth_url:
-          type: string
-        scopes:
-          type: array
-          items:
-            type: string
-      required:
-      - auth_url
-      additionalProperties: false
-    ListTeamsChannelsOutput:
-      type: object
-      properties:
-        teamsWithChannels:
-          type: array
-          items:
-            type: object
-            properties:
-              teamId:
-                type: string
-              teamName:
-                type: string
-              teamDescription:
-                type:
-                - string
-                - 'null'
-              channels:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    name:
-                      type: string
-                  required:
-                  - id
-                  - name
-                  additionalProperties: false
-            required:
-            - teamId
-            - teamName
-            - channels
-            additionalProperties: false
-      required:
-      - teamsWithChannels
+      - invite_code
       additionalProperties: false
     GetAuthHeaderInfoOutput:
       type: object
@@ -5931,61 +5057,885 @@ components:
       - user_id
       - key_id
       - permissions
-    GetMissingScopesForOAuthAccountOutput:
+    TwitterOauthCallbackInput:
       type: object
       properties:
-        missing_scopes:
-          type: object
-          additionalProperties:
-            type: array
-            items:
-              type: string
-        admin_consent_url:
+        arcade_id_key:
           type: string
+        sharing_permission:
+          type: string
+          enum:
+          - project
+          - user-private
+          default: project
+          description: Defines which subset of a project's users are allowed to use this oauth account, by default all project users can use (for backwards compatibility)
       required:
-      - missing_scopes
+      - arcade_id_key
+      additionalProperties: true
+    DeleteUserKeyOutput:
+      type: object
+      properties: {}
       additionalProperties: false
-    GetPipedreamConnectTokenOutput:
+    GetOAuthAccessTokenOutput:
       type: object
       properties:
-        token:
+        access_token:
           type: string
         expires_at:
           type: string
-        external_user_id:
-          type: string
       required:
-      - token
+      - access_token
       - expires_at
-      - external_user_id
       additionalProperties: false
-    UpdateOrganizationUserPermissionsInput:
+    UpdateUserDetailsInput:
       type: object
       properties:
-        role:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        profile_picture_url:
+          type: string
+        company:
+          type: string
+        email:
+          type: string
+      additionalProperties: false
+    UpdateAssetUserPermissionsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    ListTeamsUsersOutput:
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              displayName:
+                type: string
+            required:
+            - id
+            - displayName
+            additionalProperties: false
+        next_cursor:
+          type:
+          - string
+          - 'null'
+      required:
+      - users
+      additionalProperties: false
+    GetPipedreamAppOutput:
+      type: object
+      properties:
+        app_data:
+          type: object
+          properties:
+            slug_name:
+              type: string
+            label:
+              type: string
+            img_src:
+              type: string
+          required:
+          - slug_name
+          - label
+      additionalProperties: false
+      required:
+      - app_data
+    CreateApiKeyUserInput:
+      type: object
+      properties:
+        permissions:
+          type: object
+          properties:
+            items:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  resources:
+                    type: object
+                    properties:
+                      datasets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      deployables:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      users:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      agents:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      knowledge_sets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      chains:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      syncs:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      workforces:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                  actions:
+                    type: object
+                    additionalProperties:
+                      type: boolean
+                additionalProperties: false
+            role_context:
+              oneOf:
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - organization
+                  role:
+                    type: string
+                    enum:
+                    - owner
+                    - admin
+                    - operator
+                    - viewer
+                    description: User's effective (actual) FGA role for this organization.
+                required:
+                - entity_type
+                additionalProperties: false
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - project
+                  is_inherited:
+                    type: boolean
+                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                  most_permissive_inherited_role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                  role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                required:
+                - entity_type
+                additionalProperties: false
+          required:
+          - items
+          additionalProperties: false
+        label:
+          type: string
+        tags:
+          type: object
+          additionalProperties:
+            oneOf:
+            - type: string
+            - type: boolean
+      required:
+      - permissions
+      - label
+      - tags
+      additionalProperties: false
+    AcceptProjectInviteInput:
+      type: object
+      properties:
+        invite_code:
+          type: string
+      required:
+      - invite_code
+      additionalProperties: false
+    VerifyExternalAssociationTokenOutput:
+      type: object
+      properties:
+        display:
+          type: object
+          properties:
+            provider:
+              type: string
+              enum:
+              - slack
+              - slack-ent
+              - teams
+              description: The external surface the association is being made with.
+            provider_display_name:
+              type: string
+              description: Human-readable name of the provider for the consent UI.
+            external_user_id:
+              type: string
+              description: 'Provider-specific identifier of the external user: Slack `user` ID for workspace and Enterprise Grid, Teams `aadObjectId`. The tenant (Slack `team_id` / `enterprise_id`) is carried separately on `workspace`.'
+            workspace:
+              type: string
+              description: 'Provider tenant identifier: Slack `team_id` for workspace installs, Slack `enterprise_id` for Enterprise Grid. Omitted for providers without a workspace concept (Teams).'
+          required:
+          - provider
+          - provider_display_name
+          - external_user_id
+          additionalProperties: false
+      required:
+      - display
+      additionalProperties: false
+    DeleteProjectInviteInput:
+      type: object
+      properties:
+        permissions:
+          type: object
+          properties:
+            items:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  resources:
+                    type: object
+                    properties:
+                      datasets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      deployables:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      users:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      agents:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      knowledge_sets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      chains:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      syncs:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      workforces:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                  actions:
+                    type: object
+                    additionalProperties:
+                      type: boolean
+                additionalProperties: false
+            role_context:
+              oneOf:
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - organization
+                  role:
+                    type: string
+                    enum:
+                    - owner
+                    - admin
+                    - operator
+                    - viewer
+                    description: User's effective (actual) FGA role for this organization.
+                required:
+                - entity_type
+                additionalProperties: false
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - project
+                  is_inherited:
+                    type: boolean
+                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                  most_permissive_inherited_role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                  role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                required:
+                - entity_type
+                additionalProperties: false
+          required:
+          - items
+          additionalProperties: false
+        organization_permissions:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              items:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    resources:
+                      type: object
+                      properties:
+                        datasets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        deployables:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        users:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        agents:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        knowledge_sets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        chains:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        syncs:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        workforces:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                    actions:
+                      type: object
+                      additionalProperties:
+                        type: boolean
+                  additionalProperties: false
+              role_context:
+                oneOf:
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - organization
+                    role:
+                      type: string
+                      enum:
+                      - owner
+                      - admin
+                      - operator
+                      - viewer
+                      description: User's effective (actual) FGA role for this organization.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - project
+                    is_inherited:
+                      type: boolean
+                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                    most_permissive_inherited_role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                    role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+            required:
+            - items
+            additionalProperties: false
+        object:
+          type: string
+        relationship:
           type: string
           enum:
           - admin
+          - editor
           - operator
           - viewer
-        admin:
-          type: boolean
+          - owning_organization
+          - owning_project
+          - can_clone
+          - can_trigger
+          - chat
+          - member
+        invite_code:
+          type: string
       required:
-      - admin
-      additionalProperties: false
-    OpenSlackDmChannelsInput:
+      - invite_code
+    UpdateUserInput:
       type: object
       properties:
-        emails:
+        profile_picture_url:
+          type: string
+        onboarded:
+          type: boolean
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+        company:
+          type: string
+        label:
+          type: string
+        notes:
+          type: string
+        tags:
+          type: object
+        permissions:
+          type: object
+          properties:
+            items:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  resources:
+                    type: object
+                    properties:
+                      datasets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      deployables:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      users:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      agents:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      knowledge_sets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      chains:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      syncs:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      workforces:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                  actions:
+                    type: object
+                    additionalProperties:
+                      type: boolean
+                additionalProperties: false
+            role_context:
+              oneOf:
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - organization
+                  role:
+                    type: string
+                    enum:
+                    - owner
+                    - admin
+                    - operator
+                    - viewer
+                    description: User's effective (actual) FGA role for this organization.
+                required:
+                - entity_type
+                additionalProperties: false
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - project
+                  is_inherited:
+                    type: boolean
+                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                  most_permissive_inherited_role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                  role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                required:
+                - entity_type
+                additionalProperties: false
+          required:
+          - items
+          additionalProperties: false
+        organization_permissions:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              items:
+                type: object
+                additionalProperties:
+                  type: object
+                  properties:
+                    resources:
+                      type: object
+                      properties:
+                        datasets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        deployables:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        users:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        agents:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        knowledge_sets:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        chains:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        syncs:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                        workforces:
+                          type: object
+                          additionalProperties:
+                            type: boolean
+                    actions:
+                      type: object
+                      additionalProperties:
+                        type: boolean
+                  additionalProperties: false
+              role_context:
+                oneOf:
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - organization
+                    role:
+                      type: string
+                      enum:
+                      - owner
+                      - admin
+                      - operator
+                      - viewer
+                      description: User's effective (actual) FGA role for this organization.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+                - type: object
+                  properties:
+                    entity_type:
+                      type: string
+                      enum:
+                      - project
+                    is_inherited:
+                      type: boolean
+                      description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                    most_permissive_inherited_role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                    role:
+                      type: string
+                      enum:
+                      - admin
+                      - editor
+                      - operator
+                      - viewer
+                      - chat
+                      description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                  required:
+                  - entity_type
+                  additionalProperties: false
+            required:
+            - items
+            additionalProperties: false
+        object:
+          type: string
+        relationship:
+          type: string
+          enum:
+          - admin
+          - editor
+          - operator
+          - viewer
+          - owning_organization
+          - owning_project
+          - can_clone
+          - can_trigger
+          - chat
+          - member
+        id_token:
+          type: string
+          description: The id token for a signed in account. This attaches the sign in account to the user.
+        overwrite:
+          type: boolean
+          default: false
+          description: Set this to true to replace users permissions for project, rather than upserting
+    CreateUserKeyOutput:
+      type: object
+      properties:
+        api_key:
+          type: string
+        id:
+          type: string
+      required:
+      - api_key
+      - id
+      additionalProperties: false
+    CreateUserInput:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        role:
+          type: string
+        company:
+          type: string
+        permissions:
+          type: object
+          properties:
+            items:
+              type: object
+              additionalProperties:
+                type: object
+                properties:
+                  resources:
+                    type: object
+                    properties:
+                      datasets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      deployables:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      users:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      agents:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      knowledge_sets:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      chains:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      syncs:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                      workforces:
+                        type: object
+                        additionalProperties:
+                          type: boolean
+                  actions:
+                    type: object
+                    additionalProperties:
+                      type: boolean
+                additionalProperties: false
+            role_context:
+              oneOf:
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - organization
+                  role:
+                    type: string
+                    enum:
+                    - owner
+                    - admin
+                    - operator
+                    - viewer
+                    description: User's effective (actual) FGA role for this organization.
+                required:
+                - entity_type
+                additionalProperties: false
+              - type: object
+                properties:
+                  entity_type:
+                    type: string
+                    enum:
+                    - project
+                  is_inherited:
+                    type: boolean
+                    description: 'DEPRECATED SOON: Previously indicated role inherited from parent organization which is now insufficient. Will be removed in the future when group permissions are fully implemented.'
+                  most_permissive_inherited_role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: 'Combined most permissive role from groups and org inheritance. Frontend uses this to prevent demotion below base access level when toggling explicit roles. Future: List endpoints will show explicit access only.'
+                  role:
+                    type: string
+                    enum:
+                    - admin
+                    - editor
+                    - operator
+                    - viewer
+                    - chat
+                    description: User's effective (actual) FGA role for this project. Represents the combined most permissive role from their explicit and inherited roles.
+                required:
+                - entity_type
+                additionalProperties: false
+          required:
+          - items
+          additionalProperties: false
+        referral_code:
+          type: string
+        organization_name:
+          type: string
+        project_name:
+          type: string
+        project:
+          type: string
+          description: The name of the project. This will contain all your datasets.
+        id_token:
+          type: string
+          description: The id token for a signed in account. This attaches the sign in account to the user.
+        invite_code:
+          type: string
+        is_usage_based_billing_enabled:
+          type: boolean
+          description: When true, newly created organizations will be on usage based billing
+        where_did_you_hear_about_us:
+          type: string
+        what_are_you_here_for:
           type: array
           items:
             type: string
-            minLength: 1
-            maxLength: 320
-          minItems: 1
-          maxItems: 200
-      required:
-      - emails
+            enum:
+            - build_agents
+            - use_agents
+        referral:
+          type: string
+        rewardful_referral_code:
+          type: string
+        technical_ability:
+          type: array
+          items:
+            type: string
+            enum:
+            - not_technical
+            - tech_savvy
+            - advanced
+        type:
+          type: string
+          enum:
+          - user
+          - machine
+        onboarded:
+          type: boolean
       additionalProperties: false
     CreateUserOutput:
       type: object
@@ -6003,19 +5953,69 @@ components:
       - api_key
       - project
       additionalProperties: false
-    ConnectPipedreamAccountSuccessCallbackOutput:
+    DeleteOAuthAccountToolLinkOutput:
+      type: object
+      additionalProperties: false
+    ConfirmExternalAssociationInput:
       type: object
       properties:
-        oauth_account_id:
+        token:
           type: string
-        status:
-          type: string
-          enum:
-          - success
-          - error
+          minLength: 1
+          maxLength: 8192
+          description: Association JWT minted by the magic-link endpoint and delivered to the user via the originating external surface.
       required:
-      - status
+      - token
       additionalProperties: false
+    ListProviderAccountsDataOutput:
+      type: array
+      items:
+        type: object
+        properties:
+          label:
+            type: string
+          value:
+            type: string
+          img_src:
+            type: string
+          provider_source:
+            type: string
+            enum:
+            - native
+            - pipedream
+            description: Source of the provider — 'native' for first-party integrations, 'pipedream' for Pipedream-backed ones.
+          api_onboarding:
+            type: object
+            properties:
+              url:
+                type: string
+              description:
+                type: string
+            required:
+            - url
+            additionalProperties: false
+          tags:
+            type: array
+            items:
+              type: string
+          accounts:
+            type: array
+            items:
+              type: object
+              properties:
+                account_id:
+                  type: string
+                contains_invalid_refresh_token:
+                  type: boolean
+              required:
+              - account_id
+              - contains_invalid_refresh_token
+              additionalProperties: false
+        required:
+        - label
+        - value
+        - accounts
+        additionalProperties: false
   securitySchemes:
     AuthorizationHeader:
       type: apiKey

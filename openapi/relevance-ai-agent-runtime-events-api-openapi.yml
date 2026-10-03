@@ -162,9 +162,6 @@ paths:
                 $ref: '#/components/schemas/UpsertAgentRuntimeEventOutput'
 components:
   schemas:
-    UpsertAgentRuntimeEventOutput:
-      type: object
-      additionalProperties: false
     UpsertAgentRuntimeEventInput:
       type: object
       properties:
@@ -282,126 +279,72 @@ components:
       additionalProperties: false
       required:
       - data
-    GetAgentRuntimeEventOutput:
+    UpsertAgentRuntimeEventOutput:
+      type: object
+      additionalProperties: false
+    DeleteAgentRuntimeEventInput: {}
+    DeleteAgentRuntimeEventOutput: {}
+    ListAgentRuntimeEventInput:
       type: object
       properties:
-        insert_date_: {}
-        update_date: {}
-        expiry_date_: {}
-        project:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+        select_fields:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        page_size:
+          type: integer
+          description: Size of each page of results
+        page:
+          type: integer
+          description: Page of the results
+        sort:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: object
+              additionalProperties:
+                type: string
+                enum:
+                - asc
+                - desc
+          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
+        include_vector:
+          type: boolean
+          description: Include vectors in the search results.
+        after_id:
+          type: array
+          items: {}
+          description: Retrieve items after these sort values in the sort order.
+        query:
           type: string
-        _id:
-          type: string
-        feature:
-          type: string
-        collection_id:
-          type: string
-        document_id:
-          type: string
-        data:
-          type: object
-          properties:
-            input:
-              type: object
-              properties:
-                type:
-                  type: string
-                  enum:
-                  - use_tool
-                  - record_tool_use
-                  - error
-                  - agent_message
-                  - run_until_end
-                  - run_one_step
-                  - user_message
-                  - finish
-                use_tool:
-                  type: object
-                  properties:
-                    params:
-                      type: object
-                      additionalProperties: true
-                    name:
-                      type: string
-                    agent_fills_inputs:
-                      type: boolean
-                      default: true
-                  required:
-                  - params
-                  - name
-                  additionalProperties: false
-                record_tool_use:
-                  type: object
-                  properties:
-                    params:
-                      type: object
-                      additionalProperties: true
-                    name:
-                      type: string
-                    output:
-                      type: object
-                      additionalProperties: true
-                  required:
-                  - params
-                  - name
-                  - output
-                  additionalProperties: false
-                error:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-                agent_message:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-                user_message:
-                  type: object
-                  properties:
-                    message:
-                      type: string
-                  required:
-                  - message
-                  additionalProperties: false
-              required:
-              - type
-              additionalProperties: false
-            output:
-              type: object
-              properties:
-                status:
-                  type: string
-                  enum:
-                  - success
-                requires_approval:
-                  type: boolean
-                output:
-                  type: object
-                  description: output of last tool ran
-                params:
-                  type: object
-                  description: params of last tool ran
-                name:
-                  type: string
-                  description: name of last tool ran
-          additionalProperties: false
-        deleted_date: {}
-      required:
-      - insert_date_
-      - update_date
-      - project
-      - _id
-      - feature
-      - collection_id
-      - document_id
-      - data
     ListAgentRuntimeEventOutput:
       type: object
       properties:
@@ -530,69 +473,126 @@ components:
       required:
       - results
       additionalProperties: false
-    DeleteAgentRuntimeEventInput: {}
-    ListAgentRuntimeEventInput:
+    GetAgentRuntimeEventOutput:
       type: object
       properties:
-        filters:
-          type: array
-          items:
-            type: object
-            properties:
-              condition:
-                type: string
-              case_insensitive:
-                type: boolean
-              field:
-                type: string
-              filter_type:
-                type: string
-                enum:
-                - exact_match
-                - exists
-                - ilike
-                - regexp
-                - ids
-                - date
-                - numeric
-                - or
-                - and
-                - size
-                - array_object_match
-              condition_value: {}
-        select_fields:
-          type: array
-          items:
-            type: string
-          description: Fields to include in the search results, empty array/list means all fields.
-        page_size:
-          type: integer
-          description: Size of each page of results
-        page:
-          type: integer
-          description: Page of the results
-        sort:
-          type: array
-          items:
-            oneOf:
-            - type: string
-            - type: object
-              additionalProperties:
-                type: string
-                enum:
-                - asc
-                - desc
-          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
-        include_vector:
-          type: boolean
-          description: Include vectors in the search results.
-        after_id:
-          type: array
-          items: {}
-          description: Retrieve items after these sort values in the sort order.
-        query:
+        insert_date_: {}
+        update_date: {}
+        expiry_date_: {}
+        project:
           type: string
-    DeleteAgentRuntimeEventOutput: {}
+        _id:
+          type: string
+        feature:
+          type: string
+        collection_id:
+          type: string
+        document_id:
+          type: string
+        data:
+          type: object
+          properties:
+            input:
+              type: object
+              properties:
+                type:
+                  type: string
+                  enum:
+                  - use_tool
+                  - record_tool_use
+                  - error
+                  - agent_message
+                  - run_until_end
+                  - run_one_step
+                  - user_message
+                  - finish
+                use_tool:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    agent_fills_inputs:
+                      type: boolean
+                      default: true
+                  required:
+                  - params
+                  - name
+                  additionalProperties: false
+                record_tool_use:
+                  type: object
+                  properties:
+                    params:
+                      type: object
+                      additionalProperties: true
+                    name:
+                      type: string
+                    output:
+                      type: object
+                      additionalProperties: true
+                  required:
+                  - params
+                  - name
+                  - output
+                  additionalProperties: false
+                error:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                agent_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+                user_message:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+                  required:
+                  - message
+                  additionalProperties: false
+              required:
+              - type
+              additionalProperties: false
+            output:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - success
+                requires_approval:
+                  type: boolean
+                output:
+                  type: object
+                  description: output of last tool ran
+                params:
+                  type: object
+                  description: params of last tool ran
+                name:
+                  type: string
+                  description: name of last tool ran
+          additionalProperties: false
+        deleted_date: {}
+      required:
+      - insert_date_
+      - update_date
+      - project
+      - _id
+      - feature
+      - collection_id
+      - document_id
+      - data
   securitySchemes:
     AuthorizationHeader:
       type: apiKey
