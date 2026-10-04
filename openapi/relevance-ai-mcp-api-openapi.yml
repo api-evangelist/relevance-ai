@@ -91,6 +91,33 @@ paths:
                 $ref: '#/components/schemas/DeleteUserMCPAuthOutput'
 components:
   schemas:
+    UpsertUserMCPAuthOutput:
+      type: object
+      properties:
+        mcp_server_display_id:
+          type: string
+          description: The display_id of the MCP server configuration
+        mcp_server_label:
+          type: string
+          description: Human-readable name of the MCP server
+        authentication_type:
+          type: string
+          description: Authentication type (api_key, custom_headers, or oauth)
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the auth was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the auth was last updated
+      required:
+      - mcp_server_display_id
+      - mcp_server_label
+      - authentication_type
+      - created_at
+      - updated_at
+      additionalProperties: false
     DeleteUserMCPAuthInput:
       type: object
       properties:
@@ -99,6 +126,44 @@ components:
           description: The display_id (UUID) of the MCP server to remove authentication for
       required:
       - mcp_server_display_id
+      additionalProperties: false
+    UpsertUserMCPAuthInput:
+      type: object
+      properties:
+        mcp_server_display_id:
+          type: string
+          description: The display_id (UUID) of the MCP server configuration to authenticate with
+        auth_details:
+          oneOf:
+          - type: object
+            properties:
+              api_key:
+                type: string
+                description: API key for authentication
+            required:
+            - api_key
+            additionalProperties: false
+          - type: object
+            properties:
+              headers:
+                type: object
+                additionalProperties:
+                  type: string
+                description: Custom headers for authentication
+            required:
+            - headers
+            additionalProperties: false
+          - type: object
+            properties:
+              oauth_account_id:
+                type: string
+                description: OAuth account ID to link to this MCP server.
+            required:
+            - oauth_account_id
+            additionalProperties: false
+      required:
+      - mcp_server_display_id
+      - auth_details
       additionalProperties: false
     AgentMCPAuthRequiredUserAccountsOutput:
       type: object
@@ -146,71 +211,6 @@ components:
           description: Whether the user's authentication was successfully removed
       required:
       - success
-      additionalProperties: false
-    UpsertUserMCPAuthOutput:
-      type: object
-      properties:
-        mcp_server_display_id:
-          type: string
-          description: The display_id of the MCP server configuration
-        mcp_server_label:
-          type: string
-          description: Human-readable name of the MCP server
-        authentication_type:
-          type: string
-          description: Authentication type (api_key, custom_headers, or oauth)
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the auth was created
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the auth was last updated
-      required:
-      - mcp_server_display_id
-      - mcp_server_label
-      - authentication_type
-      - created_at
-      - updated_at
-      additionalProperties: false
-    UpsertUserMCPAuthInput:
-      type: object
-      properties:
-        mcp_server_display_id:
-          type: string
-          description: The display_id (UUID) of the MCP server configuration to authenticate with
-        auth_details:
-          oneOf:
-          - type: object
-            properties:
-              api_key:
-                type: string
-                description: API key for authentication
-            required:
-            - api_key
-            additionalProperties: false
-          - type: object
-            properties:
-              headers:
-                type: object
-                additionalProperties:
-                  type: string
-                description: Custom headers for authentication
-            required:
-            - headers
-            additionalProperties: false
-          - type: object
-            properties:
-              oauth_account_id:
-                type: string
-                description: OAuth account ID to link to this MCP server.
-            required:
-            - oauth_account_id
-            additionalProperties: false
-      required:
-      - mcp_server_display_id
-      - auth_details
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

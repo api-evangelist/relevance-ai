@@ -285,6 +285,14 @@ paths:
                 $ref: '#/components/schemas/DeleteUserTagOutput'
 components:
   schemas:
+    DeleteAgentConversationsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteAgentConversationOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
     DeleteAgentConversationsInput:
       type: object
       properties:
@@ -299,42 +307,6 @@ components:
       additionalProperties: false
     DeleteAgentConversationInput:
       type: object
-      additionalProperties: false
-    DeleteAgentConversationOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    DeleteAgentConversationsOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    DeleteUserTagOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    DeleteUserTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    DeleteUserAgentTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    UpsertUserTagOutput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
       additionalProperties: false
     UpsertUserTagInput:
       type: object
@@ -359,6 +331,22 @@ components:
       required:
       - name
       - colour
+      additionalProperties: false
+    DeleteUserTagOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    UpsertUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserAgentTagOutput:
+      type: object
+      properties: {}
       additionalProperties: false
     ListUserTagsOutput:
       type: object
@@ -396,11 +384,23 @@ components:
       type: object
       properties: {}
       additionalProperties: false
-    DeleteUserAgentTagOutput:
+    UpsertUserTagOutput:
       type: object
-      properties: {}
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
       additionalProperties: false
-    UpsertUserAgentTagInput:
+    DeleteUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    DeleteUserTagInput:
       type: object
       properties:
         tag_id:

@@ -209,11 +209,22 @@ paths:
                 $ref: '#/components/schemas/GenerateBrandKitFromImagesOutput'
 components:
   schemas:
-    DeleteBrandingKitOutput:
+    GenerateBrandKitFromImagesInput:
       type: object
-      properties: {}
+      properties:
+        image_urls:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 10
+          description: List of image URLs to analyze for branding elements
+      required:
+      - image_urls
       additionalProperties: false
-    CreateBrandingKitInput:
+    UpdateBrandingKitOutput:
+      type: object
+    GenerateBrandKitFromImagesOutput:
       type: object
       properties:
         branding_kit_id:
@@ -312,8 +323,6 @@ components:
         updated_at:
           type: string
       additionalProperties: false
-    UpdateBrandingKitOutput:
-      type: object
     ListBrandingKitsOutput:
       type: object
       properties:
@@ -421,6 +430,19 @@ components:
       required:
       - branding_kits
       additionalProperties: false
+    DeleteBrandingKitOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteBrandingKitInput: {}
+    CreateBrandingKitOutput:
+      type: object
+      properties:
+        branding_kit_id:
+          type: string
+      additionalProperties: false
+      required:
+      - branding_kit_id
     UpdateBrandingKitInput:
       type: object
       properties:
@@ -520,29 +542,7 @@ components:
         updated_at:
           type: string
       additionalProperties: false
-    CreateBrandingKitOutput:
-      type: object
-      properties:
-        branding_kit_id:
-          type: string
-      additionalProperties: false
-      required:
-      - branding_kit_id
-    GenerateBrandKitFromImagesInput:
-      type: object
-      properties:
-        image_urls:
-          type: array
-          items:
-            type: string
-          minItems: 1
-          maxItems: 10
-          description: List of image URLs to analyze for branding elements
-      required:
-      - image_urls
-      additionalProperties: false
-    DeleteBrandingKitInput: {}
-    GenerateBrandKitFromImagesOutput:
+    CreateBrandingKitInput:
       type: object
       properties:
         branding_kit_id:

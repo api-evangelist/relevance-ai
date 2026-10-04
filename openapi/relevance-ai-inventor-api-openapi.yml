@@ -155,32 +155,77 @@ paths:
                 $ref: '#/components/schemas/GetInventorTaskUsageOutput'
 components:
   schemas:
-    GetInventorTaskUsageOutput:
+    UpdateInventorUserSettingsOutput:
       type: object
       properties:
-        parent_credits:
-          type: number
-        total_credits:
-          type: number
-        subagents:
-          type: array
-          items:
-            type: object
-            properties:
-              task_id:
-                type: string
-              credits:
-                type: number
-            required:
-            - task_id
-            - credits
-            additionalProperties: false
+        settings:
+          type: object
+          description: Per-user inventor settings.
+          properties:
+            user_context:
+              type: string
+              maxLength: 5000
+              description: Free-form context the user has provided about themselves. Rendered into the inventor system prompt when set.
+            memory_enabled:
+              type: boolean
+              description: Opt-in to cross-conversation memory. When true, inventor may save and recall user-specific facts and preferences across sessions.
+            notification_channels:
+              type: object
+              properties:
+                email:
+                  type: object
+                  properties:
+                    emails: {}
+                  additionalProperties: false
+                slack:
+                  type: object
+                  properties:
+                    channels:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          oauth_account_id: {}
+                        additionalProperties: false
+                  additionalProperties: false
+              additionalProperties: false
+            tool_approval_preferences:
+              type: array
+              maxItems: 200
+              description: Per-tool approval-level preferences. Only tools set away from their runtime default are stored; the client sends the whole list and it replaces the stored one wholesale. `classification` is the tool's class when the choice was made — a later re-tier invalidates the entry.
+              items:
+                type: object
+                properties:
+                  tool_name:
+                    type: string
+                    minLength: 1
+                    maxLength: 256
+                    pattern: ^[A-Za-z0-9_-]+$
+                  tier:
+                    type: string
+                    enum:
+                    - auto
+                    - ask
+                    - always_ask
+                    description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
+                  classification:
+                    type: string
+                    enum:
+                    - read
+                    - run
+                    - write
+                    - destructive
+                    description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
+                required:
+                - tool_name
+                - tier
+                - classification
+                additionalProperties: false
+          additionalProperties: false
       required:
-      - parent_credits
-      - total_credits
-      - subagents
+      - settings
       additionalProperties: false
-    UpdateInventorUserSettingsOutput:
+    UpdateInventorUserSettingsInput:
       type: object
       properties:
         settings:
@@ -368,75 +413,30 @@ components:
       required:
       - settings
       additionalProperties: false
-    UpdateInventorUserSettingsInput:
+    GetInventorTaskUsageOutput:
       type: object
       properties:
-        settings:
-          type: object
-          description: Per-user inventor settings.
-          properties:
-            user_context:
-              type: string
-              maxLength: 5000
-              description: Free-form context the user has provided about themselves. Rendered into the inventor system prompt when set.
-            memory_enabled:
-              type: boolean
-              description: Opt-in to cross-conversation memory. When true, inventor may save and recall user-specific facts and preferences across sessions.
-            notification_channels:
-              type: object
-              properties:
-                email:
-                  type: object
-                  properties:
-                    emails: {}
-                  additionalProperties: false
-                slack:
-                  type: object
-                  properties:
-                    channels:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          oauth_account_id: {}
-                        additionalProperties: false
-                  additionalProperties: false
-              additionalProperties: false
-            tool_approval_preferences:
-              type: array
-              maxItems: 200
-              description: Per-tool approval-level preferences. Only tools set away from their runtime default are stored; the client sends the whole list and it replaces the stored one wholesale. `classification` is the tool's class when the choice was made — a later re-tier invalidates the entry.
-              items:
-                type: object
-                properties:
-                  tool_name:
-                    type: string
-                    minLength: 1
-                    maxLength: 256
-                    pattern: ^[A-Za-z0-9_-]+$
-                  tier:
-                    type: string
-                    enum:
-                    - auto
-                    - ask
-                    - always_ask
-                    description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
-                  classification:
-                    type: string
-                    enum:
-                    - read
-                    - run
-                    - write
-                    - destructive
-                    description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
-                required:
-                - tool_name
-                - tier
-                - classification
-                additionalProperties: false
-          additionalProperties: false
+        parent_credits:
+          type: number
+        total_credits:
+          type: number
+        subagents:
+          type: array
+          items:
+            type: object
+            properties:
+              task_id:
+                type: string
+              credits:
+                type: number
+            required:
+            - task_id
+            - credits
+            additionalProperties: false
       required:
-      - settings
+      - parent_credits
+      - total_credits
+      - subagents
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

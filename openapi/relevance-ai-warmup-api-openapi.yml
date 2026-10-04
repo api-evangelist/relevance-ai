@@ -181,40 +181,7 @@ paths:
                 $ref: '#/components/schemas/StopEmailWarmupOutput'
 components:
   schemas:
-    CreateEmailWarmupInboxInput:
-      type: object
-      properties:
-        from_name:
-          type: string
-        email:
-          type: string
-        password:
-          type: string
-        max_email_per_day:
-          type: integer
-        custom_tracking_url:
-          type: string
-        bcc:
-          type: string
-        signature:
-          type: string
-        total_warmup_per_day: {}
-        daily_rampup:
-          type: integer
-        reply_rate_percentage:
-          type: integer
-      required:
-      - from_name
-      - email
-      - password
-    StopEmailWarmupInput:
-      type: object
-      properties:
-        email:
-          type: string
-      required:
-      - email
-    CreateEmailWarmupInboxOutput:
+    StartEmailWarmupOutput:
       type: object
       properties: {}
     GetEmailWarmupStatsOutput:
@@ -278,13 +245,46 @@ components:
                     type: integer
                   save_from_spam_count:
                     type: integer
-    StartEmailWarmupOutput:
-      type: object
-      properties: {}
     StopEmailWarmupOutput:
       type: object
       properties: {}
     StartEmailWarmupInput:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+      - email
+    CreateEmailWarmupInboxOutput:
+      type: object
+      properties: {}
+    CreateEmailWarmupInboxInput:
+      type: object
+      properties:
+        from_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        max_email_per_day:
+          type: integer
+        custom_tracking_url:
+          type: string
+        bcc:
+          type: string
+        signature:
+          type: string
+        total_warmup_per_day: {}
+        daily_rampup:
+          type: integer
+        reply_rate_percentage:
+          type: integer
+      required:
+      - from_name
+      - email
+      - password
+    StopEmailWarmupInput:
       type: object
       properties:
         email:

@@ -333,6 +333,167 @@ paths:
                 $ref: '#/components/schemas/SubmitBugReportOutput'
 components:
   schemas:
+    SlackInteractionsWebhookInput:
+      type: object
+      properties:
+        payload:
+          type: string
+          description: The raw payload from Slack
+      required:
+      - payload
+      description: Slack interactivity payload - accepts the raw payload from Slack
+      additionalProperties: true
+    GetFileUploadUrlsForDatasetInput:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+          description: files we be accessible under a url that will be returned in the output.
+        include_file_path_in_url:
+          type: boolean
+          default: false
+      required:
+      - files
+      additionalProperties: false
+    GetDeliveryExternalIdOutput:
+      type: object
+      properties:
+        aws_external_id:
+          type: string
+          description: 'The external ID for AWS IAM trust policy. Format: relevance_-_<org_id>_-_<uuid>'
+        organization_id:
+          type: number
+          description: The organization ID this external ID belongs to
+        created_at:
+          type: string
+          description: Timestamp when the external ID was created
+      required:
+      - aws_external_id
+      - organization_id
+      - created_at
+      additionalProperties: false
+    GetTemporaryFileUploadUrlInput:
+      type: object
+      properties:
+        extension:
+          type: string
+          default: csv
+          description: Used so when file is downloaded by customers, extension is correct.
+        filename:
+          type: string
+          description: Used to identify file hosted on the temporary url.
+    GetTemporaryPublicFileUploadUrlOutput:
+      type: object
+      properties:
+        upload_url:
+          type: string
+        download_url:
+          type: string
+      additionalProperties: false
+      required:
+      - upload_url
+      - download_url
+    GetFileUploadUrlsForDatasetOutput:
+      type: object
+      properties:
+        files:
+          type: array
+          items:
+            type: object
+            properties:
+              upload_url:
+                type: string
+              url:
+                type: string
+            additionalProperties: false
+            required:
+            - upload_url
+            - url
+      additionalProperties: false
+      required:
+      - files
+    GetTemporaryPublicFileUploadUrlInput:
+      type: object
+      properties:
+        extension:
+          type: string
+          default: csv
+          description: Used so when file is downloaded by customers, extension is correct.
+      additionalProperties: false
+    SubmitBugReportInput:
+      type: object
+      properties:
+        source:
+          type: string
+          description: Source of the bug report (e.g., 'web-app', 'api', 'mobile')
+          maxLength: 100
+        message:
+          type: string
+          description: Detailed message describing the bug
+          maxLength: 50000
+        category:
+          type: string
+          description: Category of the bug (e.g., 'UI', 'backend', 'performance')
+          maxLength: 100
+        region:
+          type: string
+          description: Region where the bug occurred
+        project:
+          type: string
+          description: Project ID where the bug occurred
+        context:
+          type: object
+          description: Additional context information about the bug
+          additionalProperties: true
+      required:
+      - source
+      - message
+      - category
+      - region
+      - project
+      additionalProperties: false
+    GetConfigFlagsOutput:
+      type: object
+      properties:
+        flags:
+          type: object
+          additionalProperties:
+            type: object
+            properties:
+              enabled:
+                type: boolean
+              payload: {}
+              source:
+                type: string
+                enum:
+                - global
+                - override
+            required:
+            - enabled
+            - source
+            additionalProperties: false
+        version:
+          type: number
+        content_hash:
+          type: string
+        resolved_at:
+          type: string
+          description: ISO-8601 timestamp of when the flags file was last written. Optional because it is absent until a flags file has been loaded.
+      required:
+      - flags
+      - version
+      - content_hash
+      additionalProperties: false
+    SubmitBugReportOutput:
+      type: object
+      properties:
+        bug_id:
+          type: number
+      required:
+      - bug_id
+      additionalProperties: false
     ListGoogleCalendarEventsOutput:
       type: object
       properties:
@@ -408,148 +569,6 @@ components:
       required:
       - events
       additionalProperties: false
-    SubmitBugReportOutput:
-      type: object
-      properties:
-        bug_id:
-          type: number
-      required:
-      - bug_id
-      additionalProperties: false
-    GetTemporaryFileUploadUrlOutput:
-      type: object
-      properties:
-        upload_url:
-          type: string
-        download_url:
-          type: string
-      additionalProperties: false
-      required:
-      - upload_url
-      - download_url
-    SlackInteractionsWebhookOutput: {}
-    GetTemporaryPublicFileUploadUrlInput:
-      type: object
-      properties:
-        extension:
-          type: string
-          default: csv
-          description: Used so when file is downloaded by customers, extension is correct.
-      additionalProperties: false
-    GetFileUploadUrlsForDatasetOutput:
-      type: object
-      properties:
-        files:
-          type: array
-          items:
-            type: object
-            properties:
-              upload_url:
-                type: string
-              url:
-                type: string
-            additionalProperties: false
-            required:
-            - upload_url
-            - url
-      additionalProperties: false
-      required:
-      - files
-    SlackInteractionsWebhookInput:
-      type: object
-      properties:
-        payload:
-          type: string
-          description: The raw payload from Slack
-      required:
-      - payload
-      description: Slack interactivity payload - accepts the raw payload from Slack
-      additionalProperties: true
-    SubmitBugReportInput:
-      type: object
-      properties:
-        source:
-          type: string
-          description: Source of the bug report (e.g., 'web-app', 'api', 'mobile')
-          maxLength: 100
-        message:
-          type: string
-          description: Detailed message describing the bug
-          maxLength: 50000
-        category:
-          type: string
-          description: Category of the bug (e.g., 'UI', 'backend', 'performance')
-          maxLength: 100
-        region:
-          type: string
-          description: Region where the bug occurred
-        project:
-          type: string
-          description: Project ID where the bug occurred
-        context:
-          type: object
-          description: Additional context information about the bug
-          additionalProperties: true
-      required:
-      - source
-      - message
-      - category
-      - region
-      - project
-      additionalProperties: false
-    GetTemporaryFileUploadUrlInput:
-      type: object
-      properties:
-        extension:
-          type: string
-          default: csv
-          description: Used so when file is downloaded by customers, extension is correct.
-        filename:
-          type: string
-          description: Used to identify file hosted on the temporary url.
-    GetTemporaryPublicFileUploadUrlOutput:
-      type: object
-      properties:
-        upload_url:
-          type: string
-        download_url:
-          type: string
-      additionalProperties: false
-      required:
-      - upload_url
-      - download_url
-    GetConfigFlagsOutput:
-      type: object
-      properties:
-        flags:
-          type: object
-          additionalProperties:
-            type: object
-            properties:
-              enabled:
-                type: boolean
-              payload: {}
-              source:
-                type: string
-                enum:
-                - global
-                - override
-            required:
-            - enabled
-            - source
-            additionalProperties: false
-        version:
-          type: number
-        content_hash:
-          type: string
-        resolved_at:
-          type: string
-          description: ISO-8601 timestamp of when the flags file was last written. Optional because it is absent until a flags file has been loaded.
-      required:
-      - flags
-      - version
-      - content_hash
-      additionalProperties: false
     GetPublicConfigFlagsOutput:
       type: object
       properties:
@@ -579,20 +598,7 @@ components:
       - version
       - content_hash
       additionalProperties: false
-    GetFileUploadUrlsForDatasetInput:
-      type: object
-      properties:
-        files:
-          type: array
-          items:
-            type: string
-          description: files we be accessible under a url that will be returned in the output.
-        include_file_path_in_url:
-          type: boolean
-          default: false
-      required:
-      - files
-      additionalProperties: false
+    SlackInteractionsWebhookOutput: {}
     ShortUrlRedirectOutput:
       type: object
       properties:
@@ -601,23 +607,17 @@ components:
       required:
       - redirect_url
       additionalProperties: false
-    GetDeliveryExternalIdOutput:
+    GetTemporaryFileUploadUrlOutput:
       type: object
       properties:
-        aws_external_id:
+        upload_url:
           type: string
-          description: 'The external ID for AWS IAM trust policy. Format: relevance_-_<org_id>_-_<uuid>'
-        organization_id:
-          type: number
-          description: The organization ID this external ID belongs to
-        created_at:
+        download_url:
           type: string
-          description: Timestamp when the external ID was created
-      required:
-      - aws_external_id
-      - organization_id
-      - created_at
       additionalProperties: false
+      required:
+      - upload_url
+      - download_url
   securitySchemes:
     AuthorizationHeader:
       type: apiKey

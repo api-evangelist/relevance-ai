@@ -116,6 +116,27 @@ components:
       required:
       - input_schema
       additionalProperties: false
+    GetFalAiCategoriesOutput:
+      type: object
+      properties:
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              model_count:
+                type: number
+              thumbnail_url:
+                type: string
+            required:
+            - name
+            - model_count
+            additionalProperties: false
+      required:
+      - categories
+      additionalProperties: false
     GetFalAiModelsOutput:
       type: object
       properties:
@@ -146,27 +167,6 @@ components:
           - 'null'
       required:
       - models
-      additionalProperties: false
-    GetFalAiCategoriesOutput:
-      type: object
-      properties:
-        categories:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              model_count:
-                type: number
-              thumbnail_url:
-                type: string
-            required:
-            - name
-            - model_count
-            additionalProperties: false
-      required:
-      - categories
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

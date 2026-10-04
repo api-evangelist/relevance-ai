@@ -130,9 +130,68 @@ paths:
                 $ref: '#/components/schemas/UpsertMASOutput'
 components:
   schemas:
-    UpsertMASOutput:
+    DeleteMASInput: {}
+    ListMASInput:
       type: object
-      additionalProperties: false
+      properties:
+        filters:
+          type: array
+          items:
+            type: object
+            properties:
+              condition:
+                type: string
+              case_insensitive:
+                type: boolean
+              field:
+                type: string
+              filter_type:
+                type: string
+                enum:
+                - exact_match
+                - exists
+                - ilike
+                - regexp
+                - ids
+                - date
+                - numeric
+                - or
+                - and
+                - size
+                - array_object_match
+              condition_value: {}
+        select_fields:
+          type: array
+          items:
+            type: string
+          description: Fields to include in the search results, empty array/list means all fields.
+        page_size:
+          type: integer
+          description: Size of each page of results
+        page:
+          type: integer
+          description: Page of the results
+        sort:
+          type: array
+          items:
+            oneOf:
+            - type: string
+            - type: object
+              additionalProperties:
+                type: string
+                enum:
+                - asc
+                - desc
+          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
+        include_vector:
+          type: boolean
+          description: Include vectors in the search results.
+        after_id:
+          type: array
+          items: {}
+          description: Retrieve items after these sort values in the sort order.
+        query:
+          type: string
     GetMASOutput:
       type: object
       properties:
@@ -707,8 +766,6 @@ components:
       - collection_id
       - document_id
       - data
-    DeleteMASOutput: {}
-    DeleteMASInput: {}
     ListMASOutput:
       type: object
       properties:
@@ -1291,6 +1348,7 @@ components:
       required:
       - results
       additionalProperties: false
+    DeleteMASOutput: {}
     UpsertMASInput:
       type: object
       properties:
@@ -1862,67 +1920,9 @@ components:
       additionalProperties: false
       required:
       - data
-    ListMASInput:
+    UpsertMASOutput:
       type: object
-      properties:
-        filters:
-          type: array
-          items:
-            type: object
-            properties:
-              condition:
-                type: string
-              case_insensitive:
-                type: boolean
-              field:
-                type: string
-              filter_type:
-                type: string
-                enum:
-                - exact_match
-                - exists
-                - ilike
-                - regexp
-                - ids
-                - date
-                - numeric
-                - or
-                - and
-                - size
-                - array_object_match
-              condition_value: {}
-        select_fields:
-          type: array
-          items:
-            type: string
-          description: Fields to include in the search results, empty array/list means all fields.
-        page_size:
-          type: integer
-          description: Size of each page of results
-        page:
-          type: integer
-          description: Page of the results
-        sort:
-          type: array
-          items:
-            oneOf:
-            - type: string
-            - type: object
-              additionalProperties:
-                type: string
-                enum:
-                - asc
-                - desc
-          description: 'Fields to sort by. For each field, sort by descending or ascending. If you are using descending by datetime, it will get the most recent ones. Can be provided in format ["sortfield","subsortfield"] or in format [{"sortfield":"desc"}, {"subsortfield":"asc"}]. If provided as a query parameter, use: sort=${JSON.stringify([{"sortfield":"desc"}])}'
-        include_vector:
-          type: boolean
-          description: Include vectors in the search results.
-        after_id:
-          type: array
-          items: {}
-          description: Retrieve items after these sort values in the sort order.
-        query:
-          type: string
+      additionalProperties: false
   securitySchemes:
     AuthorizationHeader:
       type: apiKey
