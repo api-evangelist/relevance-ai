@@ -762,6 +762,9 @@ apis:
   - type: DataModel
     url: data-model/relevance-ai-data-model.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/relevance-ai-capability-edges.yml
+    name: Relevance AI Business Capability Map
   - type: Website
     url: https://relevanceai.com
   - type: DeveloperPortal

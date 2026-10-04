@@ -1,0 +1,60 @@
+slug: relevance-ai
+provider: Relevance AI
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: Billing
+  spec_file: relevance-ai-billing-api-openapi.yml
+  capability_id: BC-4250
+  capability_id_l1: BC-4250
+  capability_name: Subscription Billing & Revenue Management
+  confidence: 0.85
+  evidence: POST /organizations/{organization_id}/subscription/cancel CancelSubscription; POST /organizations/{organization_id}/credits/buy
+    BuyCredits; GetBillingTotalsOutput; UpdateOverageConfigInput
+  reason: 'Clear SaaS subscription billing surface: billing totals, checkout sessions, credit purchase,
+    overage and auto-recharge config. Spans both billing/payment collection and subscription change/cancellation,
+    so L1 only.'
+- tag: Auth
+  spec_file: relevance-ai-auth-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: POST /auth/users/create CreateUser; POST /auth/is_authorized IsUserAuthorized; POST /auth/invite/create
+    CreateProjectInvite; ListAssetUserPermissionsOutput
+  reason: User creation, authorisation checks, asset-level permissions, project invites and OAuth token/account
+    management are identity and access management operations. Could also read as tenant identity federation,
+    but the surface is generic IAM for platform users.
+- tag: Marketplace
+  spec_file: relevance-ai-marketplace-api-openapi.yml
+  capability_id: BC-4270.60
+  capability_id_l1: BC-4270
+  capability_name: Partner App Programme Management
+  confidence: 0.75
+  evidence: POST /marketplace/submit SubmitMarketplaceListing; POST /marketplace/{listing_display_id}/approve
+    ApproveMarketplaceListing; ListMarketplaceBuildersOutput, ListMarketplacePurchasesOutput, AddListingReviewOutput
+  reason: The vendor operates a marketplace where third-party builders submit listings that are approved/rejected,
+    versioned, reviewed and purchased — stewardship of third-party apps including listing, certification
+    and monetisation, i.e. partner app programme management. Not BC-4270.70 (which is listing one's own
+    SaaS on external marketplaces).
+- tag: Evals
+  spec_file: relevance-ai-evals-api-openapi.yml
+  capability_id: BC-4200.50
+  capability_id_l1: BC-4200
+  capability_name: Software Quality Engineering
+  confidence: 0.7
+  evidence: POST /evals/{resource_type}/{resource_id}/test-cases CreateTestCase; POST /evals/{resource_type}/{resource_id}/evaluate
+    EvaluateResource; UpsertPrePublishConfigInput
+  reason: Test cases, test sets, eval rules, eval batches/runs and pre-publish gating constitute test-strategy
+    and automated test-suite stewardship for AI agents — quality engineering. Could alternatively be framed
+    as AI model lifecycle evaluation (BC-610.60), hence moderate confidence.
