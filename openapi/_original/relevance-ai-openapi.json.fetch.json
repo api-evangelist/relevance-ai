@@ -1,0 +1,12 @@
+{
+ "url": "https://api-f1db6c.stack.tryrelevance.com/latest/openapi_schema.json",
+ "requested_url": "https://api-f1db6c.stack.tryrelevance.com/latest/openapi_schema.json",
+ "status": 200,
+ "content_type": "application/json; charset=utf-8",
+ "bytes": 12015548,
+ "sha256": "107645eb847958d32705e8f286914f3a2557e2626183fb363e70aaac5ab68fba",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.967), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
