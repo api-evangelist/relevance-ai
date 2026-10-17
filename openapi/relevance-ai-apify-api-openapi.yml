@@ -112,6 +112,13 @@ paths:
                 $ref: '#/components/schemas/GetApifyActorSchemaOutput'
 components:
   schemas:
+    GetApifyActorSchemaOutput:
+      type: object
+      properties:
+        input_schema: {}
+      required:
+      - input_schema
+      additionalProperties: false
     GetApifyActorsOutput:
       type: object
       properties:
@@ -153,13 +160,6 @@ components:
       - page_size
       - total_pages
       - actors
-      additionalProperties: false
-    GetApifyActorSchemaOutput:
-      type: object
-      properties:
-        input_schema: {}
-      required:
-      - input_schema
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

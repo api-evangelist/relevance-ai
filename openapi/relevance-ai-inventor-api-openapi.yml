@@ -155,76 +155,6 @@ paths:
                 $ref: '#/components/schemas/GetInventorTaskUsageOutput'
 components:
   schemas:
-    UpdateInventorUserSettingsOutput:
-      type: object
-      properties:
-        settings:
-          type: object
-          description: Per-user inventor settings.
-          properties:
-            user_context:
-              type: string
-              maxLength: 5000
-              description: Free-form context the user has provided about themselves. Rendered into the inventor system prompt when set.
-            memory_enabled:
-              type: boolean
-              description: Opt-in to cross-conversation memory. When true, inventor may save and recall user-specific facts and preferences across sessions.
-            notification_channels:
-              type: object
-              properties:
-                email:
-                  type: object
-                  properties:
-                    emails: {}
-                  additionalProperties: false
-                slack:
-                  type: object
-                  properties:
-                    channels:
-                      type: array
-                      items:
-                        type: object
-                        properties:
-                          oauth_account_id: {}
-                        additionalProperties: false
-                  additionalProperties: false
-              additionalProperties: false
-            tool_approval_preferences:
-              type: array
-              maxItems: 200
-              description: Per-tool approval-level preferences. Only tools set away from their runtime default are stored; the client sends the whole list and it replaces the stored one wholesale. `classification` is the tool's class when the choice was made — a later re-tier invalidates the entry.
-              items:
-                type: object
-                properties:
-                  tool_name:
-                    type: string
-                    minLength: 1
-                    maxLength: 256
-                    pattern: ^[A-Za-z0-9_-]+$
-                  tier:
-                    type: string
-                    enum:
-                    - auto
-                    - ask
-                    - always_ask
-                    description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
-                  classification:
-                    type: string
-                    enum:
-                    - read
-                    - run
-                    - write
-                    - destructive
-                    description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
-                required:
-                - tool_name
-                - tier
-                - classification
-                additionalProperties: false
-          additionalProperties: false
-      required:
-      - settings
-      additionalProperties: false
     UpdateInventorUserSettingsInput:
       type: object
       properties:
@@ -294,54 +224,6 @@ components:
           additionalProperties: false
       required:
       - settings
-      additionalProperties: false
-    GetInventorBootstrapOutput:
-      type: object
-      properties:
-        tools:
-          type: array
-          description: Every inventor tool with its read/write classification.
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 1
-              title:
-                type: string
-                minLength: 1
-                description: Human-friendly tool name for display (e.g. `Delete Agent`).
-              classification:
-                type: string
-                enum:
-                - read
-                - run
-                - write
-                - destructive
-                description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
-              default_approval_tier:
-                type: string
-                enum:
-                - auto
-                - ask
-                - always_ask
-                description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
-            required:
-            - name
-            - title
-            - classification
-            - default_approval_tier
-            additionalProperties: false
-        invent_enabled:
-          type: boolean
-          description: 'Whether Invent is available to this caller in this project: the project''s `permit_invent` setting, or the caller being an admin of the project''s organization. False means the frontend hides every Invent entry point. Always true while the backend toggle flag is off.'
-        plan_mode_enabled:
-          type: boolean
-          description: Whether this caller may start a conversation in `plan` mode. Backend-driven rather than a separate frontend flag, so the toggle can never be offered while the backend would ignore `mode`.
-      required:
-      - tools
-      - invent_enabled
-      - plan_mode_enabled
       additionalProperties: false
     GetInventorUserSettingsOutput:
       type: object
@@ -437,6 +319,124 @@ components:
       - parent_credits
       - total_credits
       - subagents
+      additionalProperties: false
+    GetInventorBootstrapOutput:
+      type: object
+      properties:
+        tools:
+          type: array
+          description: Every inventor tool with its read/write classification.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 1
+              title:
+                type: string
+                minLength: 1
+                description: Human-friendly tool name for display (e.g. `Delete Agent`).
+              classification:
+                type: string
+                enum:
+                - read
+                - run
+                - write
+                - destructive
+                description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
+              default_approval_tier:
+                type: string
+                enum:
+                - auto
+                - ask
+                - always_ask
+                description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
+            required:
+            - name
+            - title
+            - classification
+            - default_approval_tier
+            additionalProperties: false
+        invent_enabled:
+          type: boolean
+          description: 'Whether Invent is available to this caller in this project: the project''s `permit_invent` setting, or the caller being an admin of the project''s organization. False means the frontend hides every Invent entry point. Always true while the backend toggle flag is off.'
+        plan_mode_enabled:
+          type: boolean
+          description: Whether this caller may start a conversation in `plan` mode. Backend-driven rather than a separate frontend flag, so the toggle can never be offered while the backend would ignore `mode`.
+      required:
+      - tools
+      - invent_enabled
+      - plan_mode_enabled
+      additionalProperties: false
+    UpdateInventorUserSettingsOutput:
+      type: object
+      properties:
+        settings:
+          type: object
+          description: Per-user inventor settings.
+          properties:
+            user_context:
+              type: string
+              maxLength: 5000
+              description: Free-form context the user has provided about themselves. Rendered into the inventor system prompt when set.
+            memory_enabled:
+              type: boolean
+              description: Opt-in to cross-conversation memory. When true, inventor may save and recall user-specific facts and preferences across sessions.
+            notification_channels:
+              type: object
+              properties:
+                email:
+                  type: object
+                  properties:
+                    emails: {}
+                  additionalProperties: false
+                slack:
+                  type: object
+                  properties:
+                    channels:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          oauth_account_id: {}
+                        additionalProperties: false
+                  additionalProperties: false
+              additionalProperties: false
+            tool_approval_preferences:
+              type: array
+              maxItems: 200
+              description: Per-tool approval-level preferences. Only tools set away from their runtime default are stored; the client sends the whole list and it replaces the stored one wholesale. `classification` is the tool's class when the choice was made — a later re-tier invalidates the entry.
+              items:
+                type: object
+                properties:
+                  tool_name:
+                    type: string
+                    minLength: 1
+                    maxLength: 256
+                    pattern: ^[A-Za-z0-9_-]+$
+                  tier:
+                    type: string
+                    enum:
+                    - auto
+                    - ask
+                    - always_ask
+                    description: Approval tier for a tool. `auto` runs without asking; `ask` asks but is skippable by the session auto-approve toggle; `always_ask` asks every time and auto-approve cannot skip it.
+                  classification:
+                    type: string
+                    enum:
+                    - read
+                    - run
+                    - write
+                    - destructive
+                    description: '`write` and `destructive` gate the draft refetch; `read` and `run` do not.'
+                required:
+                - tool_name
+                - tier
+                - classification
+                additionalProperties: false
+          additionalProperties: false
+      required:
+      - settings
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

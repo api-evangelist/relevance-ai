@@ -123,48 +123,6 @@ components:
       - input_schema
       - output_schema
       additionalProperties: false
-    GetReplicateCollectionsOutput:
-      type: object
-      properties:
-        fetched_at:
-          type: string
-        collection_count:
-          type: number
-        collections:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-              slug:
-                type: string
-              description:
-                type: string
-              model_count:
-                type: number
-              cover_image_url:
-                type: string
-              cover_video_url:
-                type: string
-              url:
-                type: string
-              featured_models:
-                type: array
-                items:
-                  type: string
-            required:
-            - name
-            - slug
-            - description
-            - model_count
-            - url
-            additionalProperties: true
-      required:
-      - fetched_at
-      - collection_count
-      - collections
-      additionalProperties: false
     GetReplicateCollectionModelsOutput:
       type: object
       properties:
@@ -300,6 +258,48 @@ components:
       - page_size
       - total_pages
       - models
+      additionalProperties: false
+    GetReplicateCollectionsOutput:
+      type: object
+      properties:
+        fetched_at:
+          type: string
+        collection_count:
+          type: number
+        collections:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              slug:
+                type: string
+              description:
+                type: string
+              model_count:
+                type: number
+              cover_image_url:
+                type: string
+              cover_video_url:
+                type: string
+              url:
+                type: string
+              featured_models:
+                type: array
+                items:
+                  type: string
+            required:
+            - name
+            - slug
+            - description
+            - model_count
+            - url
+            additionalProperties: true
+      required:
+      - fetched_at
+      - collection_count
+      - collections
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

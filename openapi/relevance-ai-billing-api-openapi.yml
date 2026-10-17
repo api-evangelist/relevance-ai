@@ -1209,38 +1209,6 @@ paths:
                 $ref: '#/components/schemas/DeleteAutoRechargeConfigOutput'
 components:
   schemas:
-    UpdateOverageConfigInput:
-      type: object
-      properties:
-        credits:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-        actions:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-        concurrency:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-          required:
-          - enabled
-          additionalProperties: false
-      additionalProperties: false
-    CancelDowngradeOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
     UpdateOrganizationBillingOutput:
       type: object
       properties:
@@ -1265,9 +1233,82 @@ components:
           - data
           additionalProperties: false
       additionalProperties: false
+    AggregateToolsCreditsUsedInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+        end_date:
+          type: string
+      additionalProperties: false
+    TriggerOrganizationPlanTrialInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+      additionalProperties: false
     CancelSubscriptionOutput:
       type: object
       properties: {}
+      additionalProperties: false
+    SyncSubscriptionInput: {}
+    AggregateAgentsCreditsUsedOutput:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              project_id:
+                type: string
+              description:
+                type: string
+              emoji:
+                type: string
+              credits_used:
+                type: number
+              actions_used:
+                type: number
+              metadata:
+                type: object
+                properties:
+                  last_run_date:
+                    type: string
+                additionalProperties: false
+              agent_id:
+                type: string
+              name:
+                type: string
+            additionalProperties: false
+            required:
+            - project_id
+            - credits_used
+            - agent_id
+            - name
+        total_credits:
+          type: number
+        total_actions:
+          type: number
+      required:
+      - results
+      - total_credits
+      additionalProperties: false
+    DeleteAutoRechargeConfigOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
+    AggregateAgentsCreditsUsedInput:
+      type: object
+      properties:
+        start_date:
+          type: string
+        end_date:
+          type: string
       additionalProperties: false
     GetRetentionOfferEligibilityOutput:
       type: object
@@ -1293,63 +1334,99 @@ components:
       required:
       - eligible
       additionalProperties: false
-    AcceptRetentionOfferInput:
+    UpdateOrganizationBillingInput:
       type: object
       properties:
-        cancellation_reason:
-          type: string
-        experiment_variant:
+        plan:
           type: string
           enum:
-          - test_30
-          - test_50
-      additionalProperties: false
-    AggregateToolsCreditsUsedInput:
-      type: object
-      properties:
-        start_date:
+          - free
+          - basic
+          - starter
+          - team
+          - business
+          - enterprise
+          - custom
+        billing_cycle:
           type: string
-        end_date:
-          type: string
-      additionalProperties: false
-    TriggerOrganizationPlanTrialInput:
-      type: object
-      properties:
+          enum:
+          - monthly
+          - yearly
+          description: The billing cycle of a Stripe subscription plan
         idempotency_key:
           type: string
+      required:
+      - plan
+      - billing_cycle
       additionalProperties: false
-    BuyCreditsInput:
+    AggregateToolsCreditsUsedOutput:
       type: object
       properties:
-        quantity:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              project_id:
+                type: string
+              description:
+                type: string
+              emoji:
+                type: string
+              credits_used:
+                type: number
+              actions_used:
+                type: number
+              metadata:
+                type: object
+                properties:
+                  last_run_date:
+                    type: string
+                additionalProperties: false
+              studio_id:
+                type: string
+              title:
+                type: string
+              is_linkable:
+                type: boolean
+            additionalProperties: false
+            required:
+            - project_id
+            - credits_used
+            - studio_id
+            - title
+            - is_linkable
+        total_credits:
           type: number
-          minimum: 10000
-        idempotency_key:
-          type: string
+        total_actions:
+          type: number
       required:
-      - idempotency_key
-      - quantity
+      - results
+      - total_credits
       additionalProperties: false
-    GetBillingFrontendLinkOutput:
+    GetBillingTotalsOutput:
       type: object
       properties:
-        link:
-          type: string
+        total_cost:
+          type: number
       required:
-      - link
+      - total_cost
       additionalProperties: false
-    AcceptRetentionOfferOutput:
+    UpsertAutoRechargeConfigOutput:
       type: object
       properties:
-        success:
-          type: boolean
-        message:
-          type: string
+        threshold:
+          type: number
+        amount:
+          type: number
       required:
-      - success
-      - message
+      - threshold
+      - amount
       additionalProperties: false
-    SyncSubscriptionInput: {}
+    DowngradeSubscriptionOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
     ChangeBillingSubscriptionInput:
       type: object
       properties:
@@ -1399,6 +1476,84 @@ components:
       - new_plan_name
       - billing_cycle
       additionalProperties: false
+    BuyCreditsInput:
+      type: object
+      properties:
+        quantity:
+          type: number
+          minimum: 10000
+        idempotency_key:
+          type: string
+      required:
+      - idempotency_key
+      - quantity
+      additionalProperties: false
+    UpdateOverageConfigInput:
+      type: object
+      properties:
+        credits:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        actions:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+        concurrency:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+          required:
+          - enabled
+          additionalProperties: false
+      additionalProperties: false
+    AcceptRetentionOfferInput:
+      type: object
+      properties:
+        cancellation_reason:
+          type: string
+        experiment_variant:
+          type: string
+          enum:
+          - test_30
+          - test_50
+      additionalProperties: false
+    CancelSubscriptionInput:
+      type: object
+      properties:
+        idempotency_key:
+          type: string
+    GetCheckoutCompletionStatusOutput:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - pending
+          - success
+          - fail
+      required:
+      - status
+      additionalProperties: false
+    ChangeBillingSubscriptionOutput:
+      type: object
+      properties:
+        client_secret:
+          type: string
+        checkout_session_id:
+          type: string
+      required:
+      - client_secret
+      - checkout_session_id
     DowngradeSubscriptionInput:
       type: object
       properties:
@@ -1446,9 +1601,16 @@ components:
       - idempotency_key
       - plan
       additionalProperties: false
-    BuyCreditsOutput:
+    AcceptRetentionOfferOutput:
       type: object
-      properties: {}
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+      - success
+      - message
       additionalProperties: false
     CreditPurchaseCheckoutSessionOutput:
       type: object
@@ -1467,97 +1629,6 @@ components:
           type: string
       required:
       - idempotency_key
-      additionalProperties: false
-    AggregateToolsCreditsUsedOutput:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              project_id:
-                type: string
-              description:
-                type: string
-              emoji:
-                type: string
-              credits_used:
-                type: number
-              actions_used:
-                type: number
-              metadata:
-                type: object
-                properties:
-                  last_run_date:
-                    type: string
-                additionalProperties: false
-              studio_id:
-                type: string
-              title:
-                type: string
-              is_linkable:
-                type: boolean
-            additionalProperties: false
-            required:
-            - project_id
-            - credits_used
-            - studio_id
-            - title
-            - is_linkable
-        total_credits:
-          type: number
-        total_actions:
-          type: number
-      required:
-      - results
-      - total_credits
-      additionalProperties: false
-    GetAutoRechargeConfigOutput:
-      type: object
-      properties:
-        config:
-          oneOf:
-          - type: object
-            properties:
-              threshold:
-                type: number
-              amount:
-                type: number
-            required:
-            - threshold
-            - amount
-            additionalProperties: false
-          - type: 'null'
-      required:
-      - config
-      additionalProperties: false
-    AggregateAgentsCreditsUsedInput:
-      type: object
-      properties:
-        start_date:
-          type: string
-        end_date:
-          type: string
-      additionalProperties: false
-    CreditPurchaseCheckoutSessionInput:
-      type: object
-      properties:
-        credits_quantity:
-          type: number
-        actions_quantity:
-          type: number
-      required:
-      - credits_quantity
-      - actions_quantity
-      additionalProperties: false
-    DowngradeSubscriptionOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    SyncSubscriptionOutput:
-      type: object
-      properties: {}
       additionalProperties: false
     TriggerOrganizationPlanTrialOutput:
       type: object
@@ -1583,13 +1654,42 @@ components:
           - data
           additionalProperties: false
       additionalProperties: false
-    DeleteAutoRechargeConfigOutput:
+    UpsertAutoRechargeConfigInput:
       type: object
       properties:
-        success:
-          type: boolean
+        threshold:
+          type: number
+          description: The auto-recharge threshold will be triggered when the balance drops below this amount.
+        amount:
+          type: number
+          description: This amount is NOT the amount that will be auto-recharged. The actual recharge amount is (threshold + amount) - (current balance), i.e. the amount required to bring the balance up.
       required:
-      - success
+      - threshold
+      - amount
+      additionalProperties: false
+    GetBillingFrontendLinkOutput:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+      - link
+      additionalProperties: false
+    GetBillingCheckoutSessionOutput:
+      type: object
+      properties:
+        link:
+          type: string
+      required:
+      - link
+      additionalProperties: false
+    BuyCreditsOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    SyncSubscriptionOutput:
+      type: object
+      properties: {}
       additionalProperties: false
     GetOverageConfigOutput:
       type: object
@@ -1625,131 +1725,22 @@ components:
           - limit
           additionalProperties: false
       additionalProperties: false
-    AggregateAgentsCreditsUsedOutput:
-      type: object
-      properties:
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              project_id:
-                type: string
-              description:
-                type: string
-              emoji:
-                type: string
-              credits_used:
-                type: number
-              actions_used:
-                type: number
-              metadata:
-                type: object
-                properties:
-                  last_run_date:
-                    type: string
-                additionalProperties: false
-              agent_id:
-                type: string
-              name:
-                type: string
-            additionalProperties: false
-            required:
-            - project_id
-            - credits_used
-            - agent_id
-            - name
-        total_credits:
-          type: number
-        total_actions:
-          type: number
-      required:
-      - results
-      - total_credits
-      additionalProperties: false
-    UpsertAutoRechargeConfigInput:
-      type: object
-      properties:
-        threshold:
-          type: number
-          description: The auto-recharge threshold will be triggered when the balance drops below this amount.
-        amount:
-          type: number
-          description: This amount is NOT the amount that will be auto-recharged. The actual recharge amount is (threshold + amount) - (current balance), i.e. the amount required to bring the balance up.
-      required:
-      - threshold
-      - amount
-      additionalProperties: false
-    GetBillingTotalsOutput:
-      type: object
-      properties:
-        total_cost:
-          type: number
-      required:
-      - total_cost
-      additionalProperties: false
-    GetCheckoutCompletionStatusOutput:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-          - pending
-          - success
-          - fail
-      required:
-      - status
-      additionalProperties: false
-    UpsertAutoRechargeConfigOutput:
-      type: object
-      properties:
-        threshold:
-          type: number
-        amount:
-          type: number
-      required:
-      - threshold
-      - amount
-      additionalProperties: false
-    UpdateOrganizationBillingInput:
-      type: object
-      properties:
-        plan:
-          type: string
-          enum:
-          - free
-          - basic
-          - starter
-          - team
-          - business
-          - enterprise
-          - custom
-        billing_cycle:
-          type: string
-          enum:
-          - monthly
-          - yearly
-          description: The billing cycle of a Stripe subscription plan
-        idempotency_key:
-          type: string
-      required:
-      - plan
-      - billing_cycle
-      additionalProperties: false
-    CancelSubscriptionInput:
-      type: object
-      properties:
-        idempotency_key:
-          type: string
-    GetBillingCheckoutSessionOutput:
-      type: object
-      properties:
-        link:
-          type: string
-      required:
-      - link
-      additionalProperties: false
     DeleteAutoRechargeConfigInput: {}
+    CreditPurchaseCheckoutSessionInput:
+      type: object
+      properties:
+        credits_quantity:
+          type: number
+        actions_quantity:
+          type: number
+      required:
+      - credits_quantity
+      - actions_quantity
+      additionalProperties: false
+    CancelDowngradeOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
     UpdateOverageConfigOutput:
       type: object
       properties:
@@ -1778,16 +1769,25 @@ components:
           - enabled
           additionalProperties: false
       additionalProperties: false
-    ChangeBillingSubscriptionOutput:
+    GetAutoRechargeConfigOutput:
       type: object
       properties:
-        client_secret:
-          type: string
-        checkout_session_id:
-          type: string
+        config:
+          oneOf:
+          - type: object
+            properties:
+              threshold:
+                type: number
+              amount:
+                type: number
+            required:
+            - threshold
+            - amount
+            additionalProperties: false
+          - type: 'null'
       required:
-      - client_secret
-      - checkout_session_id
+      - config
+      additionalProperties: false
   securitySchemes:
     AuthorizationHeader:
       type: apiKey

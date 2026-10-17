@@ -285,11 +285,11 @@ paths:
                 $ref: '#/components/schemas/DeleteUserTagOutput'
 components:
   schemas:
-    DeleteAgentConversationsOutput:
+    DeleteAgentConversationOutput:
       type: object
       properties: {}
       additionalProperties: false
-    DeleteAgentConversationOutput:
+    DeleteAgentConversationsOutput:
       type: object
       properties: {}
       additionalProperties: false
@@ -307,6 +307,34 @@ components:
       additionalProperties: false
     DeleteAgentConversationInput:
       type: object
+      additionalProperties: false
+    DeleteUserTagOutput:
+      type: object
+      properties: {}
+      additionalProperties: false
+    DeleteUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    UpsertUserAgentTagInput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
+      additionalProperties: false
+    UpsertUserTagOutput:
+      type: object
+      properties:
+        tag_id:
+          type: string
+      required:
+      - tag_id
       additionalProperties: false
     UpsertUserTagInput:
       type: object
@@ -332,11 +360,11 @@ components:
       - name
       - colour
       additionalProperties: false
-    DeleteUserTagOutput:
+    UpsertUserAgentTagOutput:
       type: object
       properties: {}
       additionalProperties: false
-    UpsertUserAgentTagInput:
+    DeleteUserTagInput:
       type: object
       properties:
         tag_id:
@@ -379,34 +407,6 @@ components:
             additionalProperties: false
       required:
       - results
-      additionalProperties: false
-    UpsertUserAgentTagOutput:
-      type: object
-      properties: {}
-      additionalProperties: false
-    UpsertUserTagOutput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    DeleteUserAgentTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
-      additionalProperties: false
-    DeleteUserTagInput:
-      type: object
-      properties:
-        tag_id:
-          type: string
-      required:
-      - tag_id
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

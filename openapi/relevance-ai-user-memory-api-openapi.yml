@@ -126,6 +126,34 @@ paths:
                 $ref: '#/components/schemas/ListUserMemoriesOutput'
 components:
   schemas:
+    UpsertUserMemoryOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+        memory_id:
+          type: string
+      required:
+      - success
+      - memory_id
+      additionalProperties: false
+    DeleteUserMemoryInput:
+      type: object
+      properties:
+        memory_id:
+          type: string
+          description: Memory ID to delete
+      required:
+      - memory_id
+      additionalProperties: false
+    DeleteUserMemoryOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+      required:
+      - success
+      additionalProperties: false
     ListUserMemoriesOutput:
       type: object
       properties:
@@ -173,42 +201,6 @@ components:
       - memories
       - total
       additionalProperties: false
-    ListUserMemoriesInput:
-      type: object
-      properties:
-        agent_id:
-          type: string
-          description: Agent ID
-        page:
-          type: number
-          default: 1
-        page_size:
-          type: number
-          default: 50
-          maximum: 100
-      required:
-      - agent_id
-      additionalProperties: false
-    UpsertUserMemoryOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-        memory_id:
-          type: string
-      required:
-      - success
-      - memory_id
-      additionalProperties: false
-    DeleteUserMemoryInput:
-      type: object
-      properties:
-        memory_id:
-          type: string
-          description: Memory ID to delete
-      required:
-      - memory_id
-      additionalProperties: false
     UpsertUserMemoryInput:
       type: object
       properties:
@@ -243,13 +235,21 @@ components:
       - agent_id
       - text
       additionalProperties: false
-    DeleteUserMemoryOutput:
+    ListUserMemoriesInput:
       type: object
       properties:
-        success:
-          type: boolean
+        agent_id:
+          type: string
+          description: Agent ID
+        page:
+          type: number
+          default: 1
+        page_size:
+          type: number
+          default: 50
+          maximum: 100
       required:
-      - success
+      - agent_id
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:

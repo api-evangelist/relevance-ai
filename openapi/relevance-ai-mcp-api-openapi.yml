@@ -91,32 +91,52 @@ paths:
                 $ref: '#/components/schemas/DeleteUserMCPAuthOutput'
 components:
   schemas:
-    UpsertUserMCPAuthOutput:
+    AgentMCPAuthRequiredUserAccountsOutput:
       type: object
       properties:
-        mcp_server_display_id:
-          type: string
-          description: The display_id of the MCP server configuration
-        mcp_server_label:
-          type: string
-          description: Human-readable name of the MCP server
-        authentication_type:
-          type: string
-          description: Authentication type (api_key, custom_headers, or oauth)
-        created_at:
-          type: string
-          format: date-time
-          description: Timestamp when the auth was created
-        updated_at:
-          type: string
-          format: date-time
-          description: Timestamp when the auth was last updated
+        mcps_requiring_user_auth:
+          type: array
+          description: MCP servers requiring user-level authentication (OAuth, API keys, or custom headers)
+          items:
+            type: object
+            description: MCP server requiring user-level authentication (OAuth, API keys, or custom headers)
+            properties:
+              mcp_server_config_id:
+                type: string
+                description: MCP server display_id
+              label:
+                type: string
+                description: Human-readable MCP server name (e.g., 'Google Drive')
+              url:
+                type: string
+                description: MCP server URL
+              authentication_type:
+                type: string
+                description: Authentication type (oauth, api_key, custom_headers)
+              provider:
+                type: string
+                description: OAuth provider name (e.g., 'google', 'linear') - only present for OAuth
+              user_has_auth:
+                type: boolean
+                description: Whether the current user has authentication configured for this MCP
+            required:
+            - mcp_server_config_id
+            - label
+            - url
+            - authentication_type
+            - user_has_auth
+            additionalProperties: false
       required:
-      - mcp_server_display_id
-      - mcp_server_label
-      - authentication_type
-      - created_at
-      - updated_at
+      - mcps_requiring_user_auth
+      additionalProperties: false
+    DeleteUserMCPAuthOutput:
+      type: object
+      properties:
+        success:
+          type: boolean
+          description: Whether the user's authentication was successfully removed
+      required:
+      - success
       additionalProperties: false
     DeleteUserMCPAuthInput:
       type: object
@@ -165,52 +185,32 @@ components:
       - mcp_server_display_id
       - auth_details
       additionalProperties: false
-    AgentMCPAuthRequiredUserAccountsOutput:
+    UpsertUserMCPAuthOutput:
       type: object
       properties:
-        mcps_requiring_user_auth:
-          type: array
-          description: MCP servers requiring user-level authentication (OAuth, API keys, or custom headers)
-          items:
-            type: object
-            description: MCP server requiring user-level authentication (OAuth, API keys, or custom headers)
-            properties:
-              mcp_server_config_id:
-                type: string
-                description: MCP server display_id
-              label:
-                type: string
-                description: Human-readable MCP server name (e.g., 'Google Drive')
-              url:
-                type: string
-                description: MCP server URL
-              authentication_type:
-                type: string
-                description: Authentication type (oauth, api_key, custom_headers)
-              provider:
-                type: string
-                description: OAuth provider name (e.g., 'google', 'linear') - only present for OAuth
-              user_has_auth:
-                type: boolean
-                description: Whether the current user has authentication configured for this MCP
-            required:
-            - mcp_server_config_id
-            - label
-            - url
-            - authentication_type
-            - user_has_auth
-            additionalProperties: false
+        mcp_server_display_id:
+          type: string
+          description: The display_id of the MCP server configuration
+        mcp_server_label:
+          type: string
+          description: Human-readable name of the MCP server
+        authentication_type:
+          type: string
+          description: Authentication type (api_key, custom_headers, or oauth)
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the auth was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the auth was last updated
       required:
-      - mcps_requiring_user_auth
-      additionalProperties: false
-    DeleteUserMCPAuthOutput:
-      type: object
-      properties:
-        success:
-          type: boolean
-          description: Whether the user's authentication was successfully removed
-      required:
-      - success
+      - mcp_server_display_id
+      - mcp_server_label
+      - authentication_type
+      - created_at
+      - updated_at
       additionalProperties: false
   securitySchemes:
     AuthorizationHeader:
