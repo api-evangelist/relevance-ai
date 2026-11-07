@@ -168,7 +168,7 @@ notes:
     Credits and migrated all customers. Any integration reading pre-September-2025 credit
     figures is reading a retired unit.
 x-canonical:
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   vocabulary: engine/economics/plans-canonical.yml
   models:
   - free
