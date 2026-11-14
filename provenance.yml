@@ -8,6 +8,9 @@ artifacts:
   a2a/relevance-ai-agent-card.json:
     method: unknown
     evidence: no authorship recorded
+  ai-preferences/relevance-ai-ai-preferences.yml:
+    method: harvested
+    evidence: declared in the artifact
   asyncapi/relevance-ai-events.yml:
     method: searched
     evidence: declared in the artifact
@@ -17,8 +20,17 @@ artifacts:
   capabilities/relevance-ai-capability-edges.yml:
     method: unknown
     evidence: no authorship recorded
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
+    method: unknown
+    evidence: no authorship recorded
   changelog/relevance-ai-changelog.yml:
     method: searched
+    evidence: declared in the artifact
+  compliance/relevance-ai-compliance.yml:
+    method: harvested
     evidence: declared in the artifact
   components/relevance-ai-components.yml:
     method: searched
@@ -29,8 +41,14 @@ artifacts:
   conventions/relevance-ai-conventions.yml:
     method: derived
     evidence: declared in the artifact
+  data-license/relevance-ai-data-license.yml:
+    method: harvested
+    evidence: declared in the artifact
   data-model/relevance-ai-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  eligibility/relevance-ai-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/relevance-ai-problem-types.yml:
     method: unknown
@@ -47,6 +65,9 @@ artifacts:
   heartbeat/2026-11-06.yml:
     method: unknown
     evidence: no authorship recorded
+  heartbeat/2026-11-13.yml:
+    method: unknown
+    evidence: no authorship recorded
   integrations/_index.yml:
     method: generated
     evidence: carries an API Evangelist house phrase
@@ -56,7 +77,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -120,6 +141,9 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-11-02T082323.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/relevance-ai-lifecycle.yml:
@@ -336,6 +360,9 @@ artifacts:
   plans/relevance-ai-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
+  privacy/relevance-ai-privacy-policy.yml:
+    method: harvested
+    evidence: declared in the artifact
   rate-limits/relevance-ai-rate-limits.yml:
     method: searched
     evidence: declared in the artifact
@@ -389,6 +416,9 @@ artifacts:
     evidence: no authorship recorded
   sla/relevance-ai-sla.yml:
     method: searched
+    evidence: declared in the artifact
+  terms/relevance-ai-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   well-known/relevance-ai-docs-agent-card.json:
     method: unknown
